@@ -1,4 +1,4 @@
-///nsp_statement_positions(Start, End, Statement)
+///nsp_statement_positions(OLD.OLD.IWBTJ.Start, End, Statement)
 /*
 Underlying NSP script.
 */

@@ -1,4 +1,4 @@
-///nsp_grid_shift(Grid, Start, End)
+///nsp_grid_shift(Grid, OLD.OLD.IWBTJ.Start, End)
 /*
 Underlying NSP script.
 NOTE: There will be some excess data at the end of the grid!

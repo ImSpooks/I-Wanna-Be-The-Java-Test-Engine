@@ -4,7 +4,7 @@
 //Resets triggers
 //Resets codable objects to their initial state
 
-//TODO: disable restart for any modal dialog, right now is just oInputOverlay (maybe that's good enough)
+//T0D0: disable restart for any modal dialog, right now is just oInputOverlay (maybe that's good enough)
 if not instance_exists(oInputOverlay) {
     for (var i = 0; i < ds_list_size(global.dynamic_instance_list); i++)
         with global.dynamic_instance_list[|i]

@@ -1,4 +1,4 @@
-///NSP_notify(Message, [OPT] List, Start, End)
+///NSP_notify(Message, [OPT] List, OLD.OLD.IWBTJ.Start, End)
 /*
 Notifies the user about an error that has occured. You can change this script
 (read NSP Documentation for more info).
