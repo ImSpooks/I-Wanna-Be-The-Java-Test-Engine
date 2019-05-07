@@ -11,6 +11,7 @@
     <modules>
         <module>Engine</module>
         <module>Level Editor</module>
+        <module>Resources</module>
     </modules>
 
     <build>

@@ -1,5 +1,3 @@
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import me.ImSpooks.iwbtgengine.Main;
 
 /**
@@ -10,17 +8,6 @@ import me.ImSpooks.iwbtgengine.Main;
 public class Start {
 
     public static void main(String[] args) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-
-        config.title = "I Wanna Be The Java Engine";
-
-        config.width = 806;
-        config.height = 637;
-
-        config.foregroundFPS = 50;
-        config.backgroundFPS = 50;
-        config.resizable = false;
-
-        new LwjglApplication(new Main(), config);
+        new Main();
     }
 }

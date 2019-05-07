@@ -1,5 +1,6 @@
 package me.ImSpooks.IWBTJ.game;
 
+import lombok.Getter;
 import me.ImSpooks.IWBTJ.Handler;
 import me.ImSpooks.IWBTJ.Main;
 import me.ImSpooks.IWBTJ.hitbox.Hitbox;
@@ -17,6 +18,7 @@ import me.ImSpooks.IWBTJ.object.gameobjects.misc.Wootar;
 import me.ImSpooks.IWBTJ.object.gameobjects.saves.Save;
 import me.ImSpooks.IWBTJ.object.interfaces.GameObject;
 import me.ImSpooks.IWBTJ.save.SaveFile;
+import me.ImSpooks.iwbtgengine.game.room.readers.MapReader;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -25,14 +27,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class IRoom extends IObject {
 
+    @Getter private MapReader mapReader;
     private List<GameObject> objects;
-
     private int startX = 32, startY = 32;
 
     public IRoom(Handler handler, String resourcePath) {
@@ -203,8 +203,8 @@ public abstract class IRoom extends IObject {
                 }
             }
 
-            Collections.sort(ids);
-            System.out.println(Arrays.toString(ids.toArray(new Integer[ids.size()])));
+            //Collections.sort(ids);
+            //System.out.println(Arrays.toString(ids.toArray(new Integer[ids.size()])));
 
         } catch (Exception e) {
             System.out.println("Something went wrong adding object at x = [" + lastX + "], y = [" + lastY + "], id = [" + lastID + "]");

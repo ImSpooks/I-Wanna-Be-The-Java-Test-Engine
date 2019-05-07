@@ -1,44 +1,89 @@
 package me.ImSpooks.iwbtgengine;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import lombok.Getter;
+import me.ImSpooks.iwbtgengine.KeyController.KeyController;
+import me.ImSpooks.iwbtgengine.game.room.RoomManager;
+import me.ImSpooks.iwbtgengine.global.Global;
+import me.ImSpooks.iwbtgengine.handler.GameHandler;
+import me.ImSpooks.iwbtgengine.handler.ResourceHandler;
+import me.ImSpooks.iwbtgengine.screen.AbstractScreen;
 import me.ImSpooks.iwbtgengine.screen.GameScreen;
+
+import java.awt.*;
+import java.util.logging.Logger;
 
 /**
  * Created by Nick on 09 Dec 2018.
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
-public class Main extends Game {
+public class Main extends Canvas {
 
 
-    @Getter private static String baseFolder = "src/main/resources/";
-
+    // Instance of the main class
     @Getter private static Main instance;
 
-    @Getter private GameScreen screen;
+    // Location of the base folder (must be empty when building)
+    @Getter private static final String baseFolder = "src/main/resources/";
+
+    // Resource Handler
+    @Getter private final ResourceHandler resourceHandler = new ResourceHandler(this);
+
+    // Game screen
+    @Getter private AbstractScreen screen;
+
+    // Logger
+    @Getter private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+    // Key Controller
+    @Getter private KeyController keyController;
+
+    // Frame of the game
+    @Getter private Window window;
+
+    // Render manager
+    @Getter private RenderManager renderManager;
+
+    // Room manager + cached rooms
+    @Getter private RoomManager roomManager;
+
 
     public Main() {
         instance = this;
-
-
+        create();
     }
 
-    @Override
     public void create() {
+        long startTime = System.currentTimeMillis();
+        logger.info("Loading game...");
 
-        this.setScreen(this.screen = new GameScreen(this));
+        this.window = new Window(this, Global.GAME_NAME, Global.GAME_WIDTH, Global.GAME_HEIGHT);
+
+        this.addKeyListener(this.keyController = new KeyController(this));
+
+        this.resourceHandler.initialize();
+        this.resourceHandler.finishLoading();
+
+        this.roomManager = new RoomManager();
+
+        this.setScreen(new GameScreen(this, new GameHandler(this)));
+
+        Thread thread = new Thread(this.renderManager = new RenderManager(this));
+        thread.start();
+
+        logger.info("Finished loading (took " + ((double)(System.currentTimeMillis() - startTime) / 1000.0) + "s)");
     }
 
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    public void setScreen(AbstractScreen screen) {
+        (this.screen = screen).preLoad();
+        this.screen.initUI();
+    }
 
-        this.screen.update(Gdx.graphics.getDeltaTime());
+    public GameHandler getHandler() {
+        return this.screen.getHandler();
+    }
 
-        super.render();
+    public boolean isDebugging() {
+        return java.lang.management.ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
     }
 }

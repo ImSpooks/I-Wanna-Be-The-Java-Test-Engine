@@ -3,99 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>iwbtj</artifactId>
         <groupId>me.ImSpooks</groupId>
+        <artifactId>iwbtj</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>editor</artifactId>
+    <artifactId>LevelEditor</artifactId>
 
     <dependencies>
-
         <dependency>
-            <groupId>com.badlogingames.gdx</groupId>
-            <artifactId>gdx</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx.jar</systemPath>
+            <groupId>me.ImSpooks</groupId>
+            <artifactId>Resources</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-platform</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx-natives.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-tools</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx-tools.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-backend-lwjgl</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx-backend-lwjgl.jar</systemPath>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.badlogingames.gdx</groupId>
-            <artifactId>gdx-backend-lwjgl-platform</artifactId>
-            <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx-backend-lwjgl-natives.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-freetype</artifactId>
-            <version>1.9.8</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx-freetype.jar</systemPath>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-freetype-platform</artifactId>
-            <version>1.9.8</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx-freetype-natives.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-sources</artifactId>
-            <version>1.9.8</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/gdx-sources.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>tween-engine</artifactId>
-            <version>1.9.8</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/tween-engine-api.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>tween-engine-sources</artifactId>
-            <version>1.9.8</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/lib/tween-engine-api-sources.jar</systemPath>
-        </dependency>
-
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -4,7 +4,6 @@ import lombok.Getter;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.event.EventHandler;
-import me.ImSpooks.iwbtgengine.game.object.player.Kid;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
@@ -14,18 +13,14 @@ import java.awt.*;
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
-public class GameScreen extends AbstractScreen {
+public class TitleScreen extends AbstractScreen {
 
     @Getter private final EventHandler eventHandler;
 
-    public GameScreen(Main game, GameHandler handler) {
+    public TitleScreen(Main game, GameHandler handler) {
         super(game, handler);
 
         this.eventHandler = new EventHandler();
-
-        //TODO REMOVE
-        this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom("stage1_room1"));
-        this.getHandler().setKid(new Kid(null, 32, 32, this.getHandler()));
     }
 
     @Override

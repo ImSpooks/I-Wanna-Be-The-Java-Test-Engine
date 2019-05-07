@@ -14,8 +14,8 @@ import java.awt.image.WritableRaster;
 
 public abstract class IObject {
 
-    protected double x,y;
     protected ID id;
+    protected double x,y;
     protected double velX, velY;
     protected Handler handler;
 
