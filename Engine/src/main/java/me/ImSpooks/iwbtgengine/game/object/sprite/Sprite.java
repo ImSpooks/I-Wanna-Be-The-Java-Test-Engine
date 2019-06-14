@@ -15,6 +15,7 @@ public class Sprite {
 
     public Sprite(BufferedImage image) {
         this.image = image;
+        this.update(1000 / 50);
     }
 
     public void update(float delta) {

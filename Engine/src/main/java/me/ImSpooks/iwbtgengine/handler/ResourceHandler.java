@@ -41,6 +41,16 @@ public class ResourceHandler {
         // blocks
         this.add("block_texture_default", "/resources/sprites/blocks/sprBlock.png", ResourceType.IMAGE);
         this.add("block-mini_texture_default", "/resources/sprites/blocks/sprMiniblock.png", ResourceType.IMAGE);
+
+        // killers
+        this.add("cherry_texture_default", "/resources/sprites/killers/sprCherry.png", ResourceType.IMAGE);
+        this.add("cherry-white_texture_default", "/resources/sprites/killers/sprCherryWhite.png", ResourceType.IMAGE);
+        this.add("block-killer_texture_default", "/resources/sprites/killers/sprKillerBlock.png", ResourceType.IMAGE);
+        this.add("block-killer_texture_default", "/resources/sprites/killers/sprKillerBlock.png", ResourceType.IMAGE);
+        for (String str : new String[] {"Down", "Left", "Right", "Up"}) {
+            this.add("spike-" + str.toLowerCase() + "_texture_default", "/resources/sprites/killers/sprSpike" + str + ".png", ResourceType.IMAGE);
+            this.add("spike-mini-" + str.toLowerCase() + "_texture_default", "/resources/sprites/killers/sprMini" + str + ".png", ResourceType.IMAGE);
+        }
     }
 
     public void add(String value, String path, ResourceType type) {

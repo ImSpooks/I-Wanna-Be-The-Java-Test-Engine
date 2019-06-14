@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.game.room.readers;
 
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.Block;
+import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
@@ -85,6 +86,25 @@ public class JToolReader extends MapReader {
                                 object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("block-mini_texture_default", BufferedImage.class)));
                             }
 
+
+                            else if (id >= 3 && id <= 10) {
+                                String direction = "down";
+
+                                if (id == 3 || id == 7) { // up
+                                    direction = "up";
+                                }
+                                else if (id == 4 || id == 8) { // right
+                                    direction = "right";
+                                }
+                                else if (id == 5 || id == 9) { // left
+                                    direction = "left";
+                                }
+
+                                boolean isMini = id >= 7;
+
+                                object = new Spike(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("spike-" + (isMini ? "mini-" : "") + direction + "_texture_default", BufferedImage.class)));
+                            }
+
                             /*else if (id == 19) { // save blocker
                                 object = new SaveBlocker(x, y, ID.MISC, handler);
                                 object.setSprite(getSprites().getSaveBlocker());
@@ -97,31 +117,6 @@ public class JToolReader extends MapReader {
                             }
 
                             //spikes
-                            else if (id >= 3 && id <= 10) {
-                                ObjectDirection direction;
-
-                                if (id == 3 || id == 7) { // up
-                                    direction = ObjectDirection.UP;
-                                }
-                                else if (id == 4 || id == 8) { // right
-                                    direction = ObjectDirection.RIGHT;
-                                }
-                                else if (id == 5 || id == 9) { // left
-                                    direction = ObjectDirection.LEFT;
-                                }
-                                else  { // down
-                                    direction = ObjectDirection.DOWN;
-                                }
-
-                                if (id >= 7) {
-                                    object = new MiniSpike(x, y, ID.SPIKE, handler);
-                                    object.setSprite(getSprites().getMinispikeSprite(direction));
-                                }
-                                else {
-                                    object = new Spike(x, y, ID.SPIKE, handler);
-                                    object.setSprite(getSprites().getSpikeSprite(direction));
-                                }
-                            }
 
 
                             else if (id == 11) { // apple

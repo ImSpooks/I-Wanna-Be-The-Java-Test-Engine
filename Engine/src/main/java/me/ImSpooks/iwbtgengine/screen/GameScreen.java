@@ -5,6 +5,7 @@ import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.event.EventHandler;
 import me.ImSpooks.iwbtgengine.game.object.player.Kid;
+import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
@@ -30,6 +31,18 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(Graphics graphics) {
+        graphics.setColor(Color.CYAN);
+        graphics.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
+
+        graphics.setColor(new Color(0, 255, 255, 128).darker().darker());
+        for (int i = 0; i < 20; i++) {
+            graphics.drawLine(0, 32 * i,Global.GAME_WIDTH, 32 * i);
+        }
+
+        for (int i = 0; i < 30; i++) {
+            graphics.drawLine(32 * i, 0, 32 * i, Global.GAME_HEIGHT);
+        }
+
         this.getHandler().render(graphics);
     }
 

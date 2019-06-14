@@ -65,8 +65,6 @@ public abstract class KidObject extends GameObject {
             }
         });
 
-        this.getSprites().values().forEach(sprites -> sprites.update(0));
-
         this.setSprite(this.getSprites().get("idle"));
 
         this.addDefaultKeys();
@@ -74,6 +72,9 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public void update(float delta) {
+        if (this.isDeath())
+            return;
+
         super.update(delta);
 
         velY = velY + (gravity * Global.GRAVITY);
@@ -89,8 +90,6 @@ public abstract class KidObject extends GameObject {
 
         // Collision stuff
 
-        this.x += this.velX;
-
         if (velY > 0.4 || velY < 0.4) {
             //System.out.println("y = " + velY);
         }
@@ -101,19 +100,35 @@ public abstract class KidObject extends GameObject {
             boolean falling = velY > 0;
 
             if (Math.abs(velY) < 1) {
-                if (checkCollision(falling) || !falling) {
+                if (floorCollision(falling) || !falling) {
                     this.y += velY;
                 }
             }
             else {
                 for (double yvel = 0; yvel < Math.ceil(Math.abs(velY)); yvel++) {
-                    if (checkCollision(falling) || !falling) {
+                    if (floorCollision(falling) || !falling) {
                         if (falling) {
                             this.y++;
                         }
                         else {
                             this.y--;
                         }
+                    }
+                }
+            }
+            if (velX != 0) {
+                boolean left = velX < 0;
+                for (int i = 0; i < Math.ceil(Math.abs(velX)); i++) {
+                    if (wallCollision(left ? -1 : 1)) {
+                        if (left) {
+                            this.x--;
+                        }
+                        else {
+                            this.x++;
+                        }
+                    }
+                    else {
+                        break;
                     }
                 }
             }
@@ -155,19 +170,46 @@ public abstract class KidObject extends GameObject {
 
         this.getHitbox().renderHitbox((int) x, (int) y, graphics);
 
-        /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
+        for (GameObject gameObject : getHandler().getRoom().getObjects()) {
             gameObject.getHitbox().renderHitbox((int)gameObject.getX(), (int)gameObject.getY(), graphics);
-        }*/
+        }//*/
     }
 
     public abstract Map<String, Sprite> getSpriteMap();
 
-    private boolean checkCollision(boolean falling) {
+    private void reset() {
+        getHandler().setRoom(getHandler().getRoom().clone());
+        x = getHandler().getRoom().getMap().getStartX();
+        y = getHandler().getRoom().getMap().getStartY();
+
+        this.setDeath(false);
+        canJump = 1;
+        velY = 0;
+    }
+
+    private void kill() {
+        // TODO blood
+
+        this.setDeath(true);
+        this.x = -32;
+        this.y = -32;
+    }
+
+    private boolean floorCollision(boolean falling) {
         for (int i = 12; i < 12 + 11; i++) {
             int x = (int) this.x + i;
 
             for (GameObject gameObject : this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? 32 : 10))) {
-                if (gameObject instanceof Block) {
+                if (gameObject instanceof KillerObject) {
+                    if (gameObject.getHitbox() != null) {
+                        if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
+                            this.kill();
+                            break;
+                        }
+                    }
+                    //TODO kill
+                }
+                else if (gameObject instanceof Block) {
                     velY = 0;
 
                     if (falling) {
@@ -177,8 +219,29 @@ public abstract class KidObject extends GameObject {
 
 
                     break;
-                } else if (gameObject instanceof KillerObject) {
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean wallCollision(int xScale) {
+        for (int i = 12; i < 12 + 20; i++) {
+            int y = (int) this.y + i;
+
+            for (GameObject gameObject : this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? 13 + 10 : 10), y)) {
+                if (gameObject instanceof KillerObject) {
+                    if (gameObject.getHitbox() != null) {
+                        if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
+                            System.out.println("dead man");
+                            this.kill();
+                            break;
+                        }
+                    }
                     //TODO kill
+                }
+                else if (gameObject instanceof Block) {
+                    return false;
                 }
             }
         }
@@ -203,12 +266,7 @@ public abstract class KidObject extends GameObject {
                 else if (keycode == KeyEvent.VK_R) {
                     //TODO reset room
                     
-                    getHandler().setRoom(getHandler().getRoom().clone());
-                    x = getHandler().getRoom().getMap().getStartX();
-                    y = getHandler().getRoom().getMap().getStartY();
-
-                    canJump = 1;
-                    velY = 0;
+                    reset();
                 }
 
                 if (!frozen) {

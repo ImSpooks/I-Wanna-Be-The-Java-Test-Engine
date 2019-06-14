@@ -19,12 +19,12 @@ public abstract class Hitbox {
 
     public abstract List<int[]> getPixels();
 
-    public boolean intersects(Hitbox hitbox, int x, int y) {
+    public boolean intersects(Hitbox hitbox, int x1, int y1, int x2, int y2) {
         for (int[] integers : hitbox.getPixels()) {
-            if (this.pixels.contains(new int[] {
-                    x + integers[0], y + integers[1]
-            })) {
-                return true;
+            for (int[] pixel : this.pixels) {
+                if (integers[0] + x1 == pixel[0] + x2 && integers[1] + y1 == pixel[1] + y2) {
+                    return true;
+                }
             }
         }
         return false;

@@ -51,6 +51,11 @@ public class KeyController extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            System.exit(-1);
+            return;
+        }
+
         if (main.getHandler() == null)
             return;
 

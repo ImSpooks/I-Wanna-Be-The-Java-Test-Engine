@@ -25,6 +25,7 @@ public class TitleScreen extends AbstractScreen {
 
     @Override
     public void render(Graphics graphics) {
+
         this.getHandler().render(graphics);
     }
 

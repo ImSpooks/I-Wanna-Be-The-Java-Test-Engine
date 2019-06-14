@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.game.room;
 
 import lombok.Getter;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
+import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerObject;
 import me.ImSpooks.iwbtgengine.game.room.readers.JToolReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.MapReader;
 import me.ImSpooks.iwbtgengine.global.ErrorCodes;
@@ -89,6 +90,8 @@ public class Room {
         List<GameObject> list = new ArrayList<>();
 
         for (GameObject gameObject : this.getObjects()) {
+            if (gameObject instanceof KillerObject) {
+            }
             if (x >= gameObject.getX() && x < gameObject.getX() + gameObject.getWidth()) {
                 if (y >= gameObject.getY() && y < gameObject.getY() + gameObject.getHeight()) {
                     list.add(gameObject);

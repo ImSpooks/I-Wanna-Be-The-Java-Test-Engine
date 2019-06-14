@@ -14,4 +14,12 @@ public abstract class KillerObject extends GameObject {
     public KillerObject(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
     }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+
+        this.x += this.velX;
+        this.y += this.velY;
+    }
 }
