@@ -137,8 +137,9 @@ public abstract class KidObject extends GameObject {
         //wall
 
 
-        if (velY > 0 && canJump == 2)
+        if (velY > 0 && canJump == 2) {
             canJump = 1;
+        }
 
         if (velX == 0 && velY == 0) {
             this.setSprite(this.getSprites().get("idle"));
@@ -294,6 +295,7 @@ public abstract class KidObject extends GameObject {
                             velY = -jump * Global.GRAVITY;
 
                             pressedShift = true;
+
                         } else if (canJump == 1) { //double jump
                             canJump = 0;
 
@@ -368,7 +370,7 @@ public abstract class KidObject extends GameObject {
 
                     long time = System.currentTimeMillis() - lastRelease;
 
-                    if (time >= 20 && time < 40) {
+                    if (time >= 20 && time < 40 && canJump == 1) {
                         velY = -jump * gravity;
                     }
                 }
