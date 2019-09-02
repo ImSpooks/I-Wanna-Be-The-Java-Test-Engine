@@ -1,7 +1,5 @@
 package me.ImSpooks.iwbtgengine;
 
-import me.ImSpooks.iwbtgengine.global.Global;
-
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -20,9 +18,9 @@ public class RenderManager implements Runnable {
 
     @Override
     public void run() {
-        double tps = 50;
+        double tps = 50.0;
         long lastRender = System.nanoTime();
-        double ns = 1000000000 / tps;
+        double ns = 1000000000.0 / tps;
         double delta = 0;
         long timer = System.currentTimeMillis();
 
@@ -37,12 +35,14 @@ public class RenderManager implements Runnable {
                     update((float)delta / 1000.0f);
                     render();
 
-                    delta = 0;
+                    delta--;
                     frames++;
+
                 }
 
                 if (System.currentTimeMillis() - timer > 1000) {
                     timer += 1000;
+                    System.out.println("frames = " + frames);
                     frames = 0;
 
                     /*if (SaveSelection.selected != null) {
@@ -81,8 +81,7 @@ public class RenderManager implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
 
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
+        //g.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
 
         this.main.getScreen().render(g);
 

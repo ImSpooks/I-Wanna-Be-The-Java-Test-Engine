@@ -1,4 +1,4 @@
-///nsp_list_remove(OLD.OLD.IWBTJ.Start, End)
+///nsp_list_remove(OLD.OLD.IWBTJ.InitializeTextures, End)
 /*
 Underlying NSP script.
 */

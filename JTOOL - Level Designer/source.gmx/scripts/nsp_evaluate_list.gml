@@ -1,4 +1,4 @@
-///nsp_evaluate_list(OLD.OLD.IWBTJ.Start, End)
+///nsp_evaluate_list(OLD.OLD.IWBTJ.InitializeTextures, End)
 /*
 Underlying NSP script.
 */

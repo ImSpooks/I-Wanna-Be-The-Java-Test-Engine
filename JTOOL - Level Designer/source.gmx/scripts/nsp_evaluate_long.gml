@@ -1,4 +1,4 @@
-///nsp_evaluate_long(Grid, Recursive call, [Optional] OLD.OLD.IWBTJ.Start, [Optional] End)
+///nsp_evaluate_long(Grid, Recursive call, [Optional] OLD.OLD.IWBTJ.InitializeTextures, [Optional] End)
 /*
 Underlying NSP script.
 */

@@ -1,4 +1,4 @@
-package me.ImSpooks.iwbtgengine.KeyController;
+package me.ImSpooks.iwbtgengine.keycontroller;
 
 
 import me.ImSpooks.iwbtgengine.Main;

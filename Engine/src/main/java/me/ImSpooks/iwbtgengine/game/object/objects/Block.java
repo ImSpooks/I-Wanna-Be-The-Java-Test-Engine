@@ -22,7 +22,7 @@ public class Block extends GameObject {
         this.setHeight(sprite.getImage().getHeight());
 
 
-        this.setHitbox(new Hitbox() {
+        this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

@@ -1,4 +1,4 @@
-///nsp_list_to_string(List, OLD.OLD.IWBTJ.Start, End, Separator);
+///nsp_list_to_string(List, OLD.OLD.IWBTJ.InitializeTextures, End, Separator);
 /*
 Underlying NSP script.
 */

@@ -2,7 +2,6 @@ package me.ImSpooks.iwbtgengine.game.object.player;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.ImSpooks.iwbtgengine.KeyController.KeyListener;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
@@ -12,6 +11,7 @@ import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
+import me.ImSpooks.iwbtgengine.keycontroller.KeyListener;
 import me.ImSpooks.iwbtgengine.util.ImageUtils;
 
 import java.awt.*;
@@ -48,7 +48,7 @@ public abstract class KidObject extends GameObject {
 
         this.sprites = this.getSpriteMap();
 
-        this.setHitbox(new Hitbox() {
+        this.setHitbox(new Hitbox(Hitbox.HitboxType.RECTANGLE) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> list = new ArrayList<>();
@@ -168,10 +168,11 @@ public abstract class KidObject extends GameObject {
             graphics.drawImage(ImageUtils.getInstance().flipImage(sprite.getImage(), true), (int) this.x, (int) this.y, null);
         }
 
-        this.getHitbox().renderHitbox((int) x, (int) y, graphics);
+        //this.getHitbox().renderHitbox((int) x, (int) y, graphics);
 
-        for (GameObject gameObject : getHandler().getRoom().getObjects()) {
-            gameObject.getHitbox().renderHitbox((int)gameObject.getX(), (int)gameObject.getY(), graphics);
+        /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
+            if (gameObject instanceof Block)
+                gameObject.getHitbox().renderHitbox((int)gameObject.getX(), (int)gameObject.getY(), graphics);
         }//*/
     }
 

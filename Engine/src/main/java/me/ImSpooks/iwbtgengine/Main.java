@@ -1,11 +1,11 @@
 package me.ImSpooks.iwbtgengine;
 
 import lombok.Getter;
-import me.ImSpooks.iwbtgengine.KeyController.KeyController;
 import me.ImSpooks.iwbtgengine.game.room.RoomManager;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 import me.ImSpooks.iwbtgengine.handler.ResourceHandler;
+import me.ImSpooks.iwbtgengine.keycontroller.KeyController;
 import me.ImSpooks.iwbtgengine.screen.AbstractScreen;
 import me.ImSpooks.iwbtgengine.screen.GameScreen;
 

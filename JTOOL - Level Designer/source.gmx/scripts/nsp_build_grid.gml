@@ -1,4 +1,4 @@
-///nsp_build_grid(OLD.OLD.IWBTJ.Start, End)
+///nsp_build_grid(OLD.OLD.IWBTJ.InitializeTextures, End)
 /*
 Underlying NSP script.
 */

@@ -1,4 +1,4 @@
-package me.ImSpooks.iwbtgengine.KeyController;
+package me.ImSpooks.iwbtgengine.keycontroller;
 
 /**
  * Created by Nick on 01 May 2019.

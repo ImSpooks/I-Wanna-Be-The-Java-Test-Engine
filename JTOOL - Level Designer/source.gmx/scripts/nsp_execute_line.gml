@@ -1,4 +1,4 @@
-///nsp_execute_line(OLD.OLD.IWBTJ.Start, End)
+///nsp_execute_line(OLD.OLD.IWBTJ.InitializeTextures, End)
 /*
 Underlying NSP script.
 */

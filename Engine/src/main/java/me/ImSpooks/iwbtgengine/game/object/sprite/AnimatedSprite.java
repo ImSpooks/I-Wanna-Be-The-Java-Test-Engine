@@ -26,6 +26,7 @@ public class AnimatedSprite extends Sprite {
         this.frameCount = frameCount;
         this.frameLength = frameLength;
 
+        this.update(1000 / 50);
     }
 
     private int tick;

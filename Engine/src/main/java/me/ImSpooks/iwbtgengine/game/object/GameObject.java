@@ -2,10 +2,10 @@ package me.ImSpooks.iwbtgengine.game.object;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.ImSpooks.iwbtgengine.KeyController.KeyListener;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.keycontroller.KeyListener;
 
 import java.awt.*;
 import java.util.ArrayList;

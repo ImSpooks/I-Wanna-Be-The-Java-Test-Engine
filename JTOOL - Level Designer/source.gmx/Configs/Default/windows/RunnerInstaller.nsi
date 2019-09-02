@@ -112,7 +112,7 @@ VIAddVersionKey /LANG=1033 "FileDescription" "${FILE_DESC}"
 !insertmacro MUI_PAGE_INSTFILES
     # These indented statements modify settings for MUI_PAGE_FINISH
     !define MUI_FINISHPAGE_NOAUTOCLOSE
-    !define MUI_FINISHPAGE_RUN_TEXT "OLD.OLD.IWBTJ.Start ${PRODUCT_NAME}"
+    !define MUI_FINISHPAGE_RUN_TEXT "OLD.OLD.IWBTJ.InitializeTextures ${PRODUCT_NAME}"
     !define MUI_FINISHPAGE_RUN "$INSTDIR\${PRODUCT_NAME}.exe"
 !insertmacro MUI_PAGE_FINISH
 
@@ -145,7 +145,7 @@ Section `${APP_NAME}`
 SectionEnd
 
 ; Optional section (can be disabled by the user)
-Section "OLD.OLD.IWBTJ.Start Menu Shortcuts"
+Section "OLD.OLD.IWBTJ.InitializeTextures Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\${APP_NAME}"
   CreateShortCut "$SMPROGRAMS\${APP_NAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0

@@ -1,6 +1,7 @@
 package me.ImSpooks.iwbtgengine.game.room;
 
 import lombok.Getter;
+import me.ImSpooks.iwbtgengine.game.room.init.TestRoom;
 import me.ImSpooks.iwbtgengine.global.ErrorCodes;
 
 import java.util.LinkedHashMap;
@@ -20,7 +21,7 @@ public class RoomManager {
         this.rooms = new LinkedHashMap<>();
         this.roomsById = new LinkedHashMap<>();
 
-        this.rooms.put("stage1_room1", new Room(RoomType.JTOOL, "/room/level/stage1/room1.jmap"));
+        this.rooms.put("stage1_room1", new TestRoom());
 
         for (Room room : this.rooms.values()) {
             roomsById.put(roomsById.size(), room);

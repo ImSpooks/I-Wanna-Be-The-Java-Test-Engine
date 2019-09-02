@@ -15,6 +15,7 @@ public class Window {
     @Getter private JFrame frame;
 
     public Window(Main main, String title, int width, int height) {
+        System.setProperty("sun.java2d.opengl", "true");
 
         this.frame = new JFrame(title);
         frame.setPreferredSize(new Dimension(width, height));
