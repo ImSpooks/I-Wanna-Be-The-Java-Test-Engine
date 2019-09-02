@@ -2,6 +2,7 @@ package me.ImSpooks.IWBTJ;
 
 import me.ImSpooks.IWBTJ.game.mainmenu.SaveSelection;
 import me.ImSpooks.IWBTJ.save.SaveFile;
+import me.ImSpooks.iwbtgengine.global.Global;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -16,7 +17,7 @@ public class RenderManager implements Runnable {
 
     @Override
     public void run() {
-        double tps = 50;
+        double tps = Global.FRAME_RATE;
         long lastRender = System.nanoTime();
         double ns = 1000000000 / tps;
         double delta = 0;

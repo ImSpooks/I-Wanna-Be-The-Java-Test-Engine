@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +56,17 @@ public class InitializeTextures {
 
         File file = new File(editorPath, "resources.js");
 
-        List<String> content = new ArrayList<>(Arrays.asList("var Resources = {"));
+        String typeArray = "[";
+        for (int i = 0; i < ResourceType.CACHE.length; i++) {
+            if (ResourceType.CACHE[i].isEnabled())
+                typeArray += "\"" + ResourceType.CACHE[i] + "\"" + (i + 1 < ResourceType.CACHE.length ? ", " : "");
+        }
+        typeArray += "]";
+
+        List<String> content = new ArrayList<>();
+
+        content.add("var Types = " + typeArray + ";");
+        content.add("var Resources = {");
 
         for (int i = 0; i < resources.size(); i++) {
             Resource resource = resources.get(i);
@@ -66,9 +75,9 @@ public class InitializeTextures {
 
             content.add("   " + fileName + ": {");
 
-            content.add("       " + "path: " + resource.getPath());
-            content.add("       " + "type: " + resource.getResourceType().getType());
-            content.add("       " + "subtype: " + resource.getResourceType().getSubtype());
+            content.add("       " + "path: \"" + resource.getPath() + "\",");
+            content.add("       " + "type: \"" + resource.getResourceType().getType().toUpperCase() + "\",");
+            content.add("       " + "subtype: \"" + resource.getResourceType().getSubtype().toUpperCase() + "\",");
 
             content.add("   " + "}" + (i + 1 < resources.size() ? "," : ""));
         }
@@ -79,6 +88,10 @@ public class InitializeTextures {
             System.out.println("Overwriting existing file");
 
         try {
+            if (!file.getParentFile().exists() && file.getParentFile().mkdir()) {
+                System.out.println("Created folder");
+            }
+
             if (file.createNewFile()) {
 
                 PrintWriter writer = new PrintWriter(file.getPath(), "UTF-8");

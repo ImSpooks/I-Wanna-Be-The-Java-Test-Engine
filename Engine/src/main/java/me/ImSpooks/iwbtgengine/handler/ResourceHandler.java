@@ -1,6 +1,7 @@
 package me.ImSpooks.iwbtgengine.handler;
 
 import me.ImSpooks.iwbtgengine.Main;
+import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 
 import javax.imageio.ImageIO;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class ResourceHandler {
     public void initialize() {
         // player
 
-        this.add("player_default_idle", "/resources/sprites/kid/sprPlayerIdle.png", ResourceType.IMAGE);
+        this.add("player_default_idle", "/resources/sprites/kid/sprPlayerIdle.gif", ResourceType.GIF);
         this.add("player_default_running", "/resources/sprites/kid/sprPlayerRunning.png", ResourceType.IMAGE);
         this.add("player_default_fall", "/resources/sprites/kid/sprPlayerFall.png", ResourceType.IMAGE);
         this.add("player_default_jump", "/resources/sprites/kid/sprPlayerJump.png", ResourceType.IMAGE);
@@ -85,6 +86,15 @@ public class ResourceHandler {
                             resources.put(entry.getKey(), ImageIO.read(getClass().getResourceAsStream(path)));
                             break;
                         }
+                        case GIF: {
+                            if (path.startsWith("/"))
+                                path = path.substring(1);
+
+                            GIFIcon icon = new GIFIcon();
+                            icon.setSource(path);
+                            resources.put(entry.getKey(), icon);
+                            break;
+                        }
                     }
 
                 } catch (Exception e) {
@@ -99,6 +109,7 @@ public class ResourceHandler {
 
     public enum ResourceType {
         IMAGE,
+        GIF,
         TXT,
         ;
     }

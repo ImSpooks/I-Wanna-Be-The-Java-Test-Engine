@@ -2,6 +2,8 @@ package me.ImSpooks.iwbtgengine.game.object.player;
 
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.game.object.sprite.AnimatedSprite;
+import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
+import me.ImSpooks.iwbtgengine.game.object.sprite.GIFSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
@@ -35,8 +37,9 @@ public class Kid extends KidObject {
     @Override
     public Map<String, Sprite> getSpriteMap() {
         Map<String, Sprite> spritesMap = new HashMap<>();
-        
-        spritesMap.put("idle", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_idle", BufferedImage.class), 32, 32, 4, 5));
+
+        //spritesMap.put("idle", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_idle", BufferedImage.class), 32, 32, 4, 5));
+        spritesMap.put("idle", new GIFSprite(Main.getInstance().getResourceHandler().get("player_default_idle", GIFIcon.class)));
         spritesMap.put("running", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_running", BufferedImage.class), 32, 32, 4, 2));
         spritesMap.put("fall", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_fall", BufferedImage.class), 32, 32, 2, 2));
         spritesMap.put("jump", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_jump", BufferedImage.class), 32, 32, 2, 2));

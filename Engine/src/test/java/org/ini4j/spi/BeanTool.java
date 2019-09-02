@@ -232,7 +232,7 @@ public class BeanTool
             else
             {
 
-                // TODO handle constructor with String arg as converter from String
+                // handle constructor with String arg as converter from String
                 // look for "valueOf" converter method
                 Method parser = clazz.getMethod(PARSE_METHOD, new Class[] { String.class });
 
