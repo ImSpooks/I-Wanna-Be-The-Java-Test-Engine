@@ -79,30 +79,30 @@ public class JToolReader extends MapReader {
                             }*/
 
                             else if (id == 1) { // block
-                                object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("block_texture_default", BufferedImage.class)));
+                                object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprBlock", BufferedImage.class)));
                             }
 
                             else if (id == 2) { // mini block
-                                object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("block-mini_texture_default", BufferedImage.class)));
+                                object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprMiniblock", BufferedImage.class)));
                             }
 
 
                             else if (id >= 3 && id <= 10) {
-                                String direction = "down";
+                                String direction = "Down";
 
                                 if (id == 3 || id == 7) { // up
-                                    direction = "up";
+                                    direction = "Up";
                                 }
                                 else if (id == 4 || id == 8) { // right
-                                    direction = "right";
+                                    direction = "Right";
                                 }
                                 else if (id == 5 || id == 9) { // left
-                                    direction = "left";
+                                    direction = "Left";
                                 }
 
                                 boolean isMini = id >= 7;
 
-                                object = new Spike(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("spike-" + (isMini ? "mini-" : "") + direction + "_texture_default", BufferedImage.class)));
+                                object = new Spike(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("spr" + (!isMini ? "Spike" : "Mini") + direction, BufferedImage.class)));
                             }
 
                             /*else if (id == 19) { // save blocker

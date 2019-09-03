@@ -62,7 +62,6 @@ public class Main extends Canvas {
         this.addKeyListener(this.keyController = new KeyController(this));
 
         this.resourceHandler.initialize();
-        this.resourceHandler.finishLoading();
 
         this.roomManager = new RoomManager();
 

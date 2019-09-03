@@ -1,3 +1,4 @@
+var canvas = document.getElementById("canvas");
 
 var selectedCategory = Types[0];
 var selectedObject;
@@ -31,7 +32,7 @@ function initialize() {
                     image.src = "../../Resources/src/main/resources/resources/" + value.path;
 
                     image.onclick = function(event) {
-                        selectedObject = value;
+                        selectedObject = key;
                         objectImage = image;
                     };
 

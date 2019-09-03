@@ -1,7 +1,6 @@
 package me.ImSpooks.iwbtgengine.game.object.player;
 
 import me.ImSpooks.iwbtgengine.Main;
-import me.ImSpooks.iwbtgengine.game.object.sprite.AnimatedSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
@@ -9,7 +8,6 @@ import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,11 +37,13 @@ public class Kid extends KidObject {
         Map<String, Sprite> spritesMap = new HashMap<>();
 
         //spritesMap.put("idle", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_idle", BufferedImage.class), 32, 32, 4, 5));
-        spritesMap.put("idle", new GIFSprite(Main.getInstance().getResourceHandler().get("player_default_idle", GIFIcon.class)));
-        spritesMap.put("running", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_running", BufferedImage.class), 32, 32, 4, 2));
-        spritesMap.put("fall", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_fall", BufferedImage.class), 32, 32, 2, 2));
-        spritesMap.put("jump", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_jump", BufferedImage.class), 32, 32, 2, 2));
-        spritesMap.put("sliding", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_sliding", BufferedImage.class), 32, 32, 2, 2));
+        spritesMap.put("idle", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerIdle", GIFIcon.class)));
+        spritesMap.put("running", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerRunning", GIFIcon.class)));
+        spritesMap.put("fall", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerFall", GIFIcon.class)));
+        spritesMap.put("jump", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerJump", GIFIcon.class)));
+        spritesMap.put("sliding", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerSliding", GIFIcon.class)));
+
+        //TODO running animation is too slow
 
         return spritesMap;
     }

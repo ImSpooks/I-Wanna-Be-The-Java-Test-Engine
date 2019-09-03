@@ -39,7 +39,7 @@ public class Room {
     }
 
     public void render(Graphics graphics) {
-        //this.getObjects().forEach(object -> object.render(graphics));
+        this.getObjects().forEach(object -> object.render(graphics));
     }
 
     public void update(float delta) {
@@ -79,7 +79,7 @@ public class Room {
     //TODO cache positions question mark?
 
     public int[] getStartingPositions() {
-        return new int[] {this.map.getStartX(), this.getMap().getStartY()};
+        return new int[] {this.map.getStartX(), this.map.getStartY()};
     }
 
     public List<GameObject> getObjects() {

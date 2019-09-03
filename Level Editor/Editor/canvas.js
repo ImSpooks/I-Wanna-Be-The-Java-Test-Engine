@@ -8,18 +8,16 @@ var oldTime = 0;
 
 var last = 0;
 
-var canvas = document.getElementById("canvas");
-
-var objects = {};
-
 var mousePosition = {x: 0, y: 0};
+var oldMousePosition = mousePosition;
 
-let mouseDown = false;
+let leftClickDown = false;
+let rightClickDown = false;
 
 function loop(time){
     requestAnimationFrame(loop);
 
-    interval = 1000 / 60;
+    interval = 1000 / 240;
     now = new Date().getTime();
     delta = now - then;
 
@@ -28,7 +26,7 @@ function loop(time){
         last = now;
     }
 
-    if (delta > interval) {
+    if (delta > 0) {
         // update time stuffs
         then = now - (delta % interval);
 
@@ -49,19 +47,44 @@ function loop(time){
         graphics.fillRect(0, 0, canvas.width, canvas.height);
 
         graphics.fillStyle = "#00ffff";
-        graphics.fillRect(32, 32, 800, 608);
+        if (map_type.value === "shift") {
+            let roomsHorizontally = parseInt(document.getElementById("rooms_h").value);
+            let roomsVertically = parseInt(document.getElementById("rooms_v").value);
+
+
+            graphics.fillRect(32, 32, 800 * roomsHorizontally, (610 - 1) * roomsVertically);
+
+
+            graphics.fillStyle = "#B6C176";
+
+            for (let i = 0; i < roomsHorizontally; i++) {
+                graphics.fillRect(32 + 800 * i, 32, 32, 609 * roomsVertically);
+                graphics.fillRect(800 + 800 * i, 32, 32, 609 * roomsVertically);
+            }
+
+            for (let i = 0; i < roomsVertically; i++) {
+                graphics.fillRect(32, 32 + (610 - 1) * i, 800 * roomsHorizontally, 32);
+                graphics.fillRect(32, 609 + (610 - 1) * i, 800 * roomsHorizontally, 32);
+            }//*/
+
+            graphics.fillStyle = "#00ffff";
+        }
+        else {
+            graphics.fillRect(32, 32, canvas.width - 65, canvas.height - 65);
+        }
+
 
         graphics.lineWidth = 1;
         graphics.strokeStyle = "#509684";
 
-        for (let i = 0; i < 22; i++) {
+        for (let i = 0; i < canvas.height / 32; i++) {
             graphics.beginPath();
             graphics.moveTo(0, 32 * i + 0.5);
             graphics.lineTo(canvas.width, 32 * i + 0.5);
             graphics.stroke();
         }
 
-        for (let i = 0; i < 32; i++) {
+        for (let i = 0; i < canvas.width / 32; i++) {
             graphics.beginPath();
             graphics.moveTo(32 * i + 0.5, 0);
             graphics.lineTo(32 * i + 0.5, canvas.height);
@@ -75,15 +98,19 @@ function loop(time){
 
         let gridSize = document.getElementById("gridSize").value;
 
-        let x = Math.floor((mousePosition.x) / gridSize) * gridSize;
-        let y = Math.floor((mousePosition.y) / gridSize) * gridSize;
+        let x = Math.floor(mousePosition.x / gridSize) * gridSize;
+        let y = Math.floor(mousePosition.y / gridSize) * gridSize;
 
-        if (mouseDown && currentObjects["x" + x + "_y" + y] == null)
-            currentObjects["x" + x + "_y" + y] = [selectedObject.subtype, x, y, selectedObject.path, objectImage];
+        if (selectedObject != null) {
+            if (leftClickDown && currentObjects["x" + x + "_y" + y] == null)
+                currentObjects["x" + x + "_y" + y] = [selectedObject, Resources[selectedObject].subtype, x, y, Resources[selectedObject].path, objectImage];
+            else if (rightClickDown && currentObjects["x" + x + "_y" + y] != null)
+                delete currentObjects["x" + x + "_y" + y];
+        }
 
         Object.keys(currentObjects).forEach(function (key, index, array) {
             let value = currentObjects[key];
-            graphics.drawImage(value[4], value[1], value[2]);
+            graphics.drawImage(value[5], value[2], value[3]);
         });
 
 
@@ -92,17 +119,40 @@ function loop(time){
         }
 
         frames++;
+
+        oldMousePosition = mousePosition;
     }
 }
 
 
-//TODO remove objects https://stackoverflow.com/questions/2405771/is-right-click-a-javascript-event
-canvas.onmousedown = function() {
-    mouseDown = true;
+canvas.onmousedown = function(event) {
+    var isRightMB;
+    event = event || window.event;
+
+    if ("which" in event)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+        isRightMB = event.which == 3;
+    else if ("button" in event)  // IE, Opera
+        isRightMB = event.button == 2;
+
+    if (isRightMB)
+        rightClickDown = true;
+    else
+        leftClickDown = true;
 };
 
-canvas.onmouseup = function() {
-    mouseDown = false;
+canvas.onmouseup = function(event) {
+    var isRightMB;
+    event = event || window.event;
+
+    if ("which" in event)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
+        isRightMB = event.which == 3;
+    else if ("button" in event)  // IE, Opera
+        isRightMB = event.button == 2;
+
+    if (isRightMB)
+        rightClickDown = false;
+    else
+        leftClickDown = false;
 };
 
 window.addEventListener('mousemove', function (event) {

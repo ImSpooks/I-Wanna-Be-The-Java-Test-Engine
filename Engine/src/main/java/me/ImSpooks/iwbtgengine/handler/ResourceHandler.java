@@ -1,10 +1,18 @@
 package me.ImSpooks.iwbtgengine.handler;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 
 import javax.imageio.ImageIO;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -17,100 +25,103 @@ public class ResourceHandler {
 
     private final Main main;
 
-    private Map<String, HashMap<String, ResourceType>> cache;
     private Map<String, Object> resources;
+
 
     public ResourceHandler(Main main) {
         this.main = main;
 
-        this.cache = new HashMap<>();
         this.resources = new HashMap<>();
     }
 
     public void initialize() {
-        // player
+        try {
+            resourcesLoop: for (String resourceFile : getResourceFiles("resources/")) {
 
-        this.add("player_default_idle", "/resources/sprites/kid/sprPlayerIdle.gif", ResourceType.GIF);
-        this.add("player_default_running", "/resources/sprites/kid/sprPlayerRunning.png", ResourceType.IMAGE);
-        this.add("player_default_fall", "/resources/sprites/kid/sprPlayerFall.png", ResourceType.IMAGE);
-        this.add("player_default_jump", "/resources/sprites/kid/sprPlayerJump.png", ResourceType.IMAGE);
-        this.add("player_default_sliding", "/resources/sprites/kid/sprPlayerSliding.png", ResourceType.IMAGE);
-        this.add("player_default_bullet", "/resources/sprites/kid/sprBullet.png", ResourceType.IMAGE);
-        this.add("player_default_blood", "/resources/sprites/kid/sprBlood.png", ResourceType.IMAGE);
-        this.add("player_default_bow", "/resources/sprites/kid/sprBow.png", ResourceType.IMAGE);
+                for (ResourceType resourceType : ResourceType.CACHE) {
+                    for (String extension : resourceType.getExtensions()) {
+                        if (resourceFile.endsWith("." + extension)) {
+                            this.cacheResource("/" + resourceFile, resourceType);
 
-        // blocks
-        this.add("block_texture_default", "/resources/sprites/blocks/sprBlock.png", ResourceType.IMAGE);
-        this.add("block-mini_texture_default", "/resources/sprites/blocks/sprMiniblock.png", ResourceType.IMAGE);
-
-        // killers
-        this.add("cherry_texture_default", "/resources/sprites/killers/sprCherry.png", ResourceType.IMAGE);
-        this.add("cherry-white_texture_default", "/resources/sprites/killers/sprCherryWhite.png", ResourceType.IMAGE);
-        this.add("block-killer_texture_default", "/resources/sprites/killers/sprKillerBlock.png", ResourceType.IMAGE);
-        this.add("block-killer_texture_default", "/resources/sprites/killers/sprKillerBlock.png", ResourceType.IMAGE);
-        for (String str : new String[] {"Down", "Left", "Right", "Up"}) {
-            this.add("spike-" + str.toLowerCase() + "_texture_default", "/resources/sprites/killers/sprSpike" + str + ".png", ResourceType.IMAGE);
-            this.add("spike-mini-" + str.toLowerCase() + "_texture_default", "/resources/sprites/killers/sprMini" + str + ".png", ResourceType.IMAGE);
+                            continue resourcesLoop;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    public void add(String value, String path, ResourceType type) {
-        cache.put(value, new HashMap<>());
-        cache.get(value).put(path, type);
     }
 
     public <T> T get(String value, Class<T> clazz) {
         if (!resources.containsKey(value)) {
-            if (cache == null) {
-                main.getLogger().log(Level.WARNING, "Resource {%s} was not initialized.", value);
-            }
-            else {
-                main.getLogger().log(Level.WARNING, "Unable to load resources.", value);
-            }
+            main.getLogger().log(Level.WARNING, "Resource {%s} was not initialized.", value);
             return null;
         }
 
         return clazz.cast(resources.get(value));
     }
 
-    public void finishLoading() {
-        for (Map.Entry<String, HashMap<String, ResourceType>> entry : cache.entrySet()) {
-            for (Map.Entry<String, ResourceType> typeEntry : entry.getValue().entrySet()) {
-                try {
+    private void cacheResource(String resource, ResourceType type) throws IOException{
+        String fileName = resource.split("/")[resource.split("/").length - 1].split("\\.")[0];
 
-                    String path = typeEntry.getKey();
-                    ResourceType type = typeEntry.getValue();
-
-                    switch (type) {
-                        case IMAGE: {
-                            resources.put(entry.getKey(), ImageIO.read(getClass().getResourceAsStream(path)));
-                            break;
-                        }
-                        case GIF: {
-                            if (path.startsWith("/"))
-                                path = path.substring(1);
-
-                            GIFIcon icon = new GIFIcon();
-                            icon.setSource(path);
-                            resources.put(entry.getKey(), icon);
-                            break;
-                        }
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+        switch (type) {
+            case IMAGE: {
+                resources.put(fileName, ImageIO.read(getClass().getResourceAsStream(resource)));
+                break;
             }
+            case GIF: {
+                if (resource.startsWith("/"))
+                    resource = resource.substring(1);
 
+                GIFIcon icon = new GIFIcon();
+                icon.setSource(resource);
+                resources.put(fileName, icon);
+                break;
+            }
         }
-        cache = null;
     }
 
+    @RequiredArgsConstructor
     public enum ResourceType {
-        IMAGE,
-        GIF,
-        TXT,
+        IMAGE(new String[] {"png", "jpg", "jpeg", "bmp"}),
+        GIF(new String[] {"gif"}),
+        TXT(new String[] {"txt"}),
         ;
+
+        public static ResourceType[] CACHE = values();
+
+        @Getter private final String[] extensions;
+    }
+
+    private List<String> getResourceFiles(String path) throws IOException {
+        List<String> filenames = new ArrayList<>();
+
+        try (
+                InputStream in = getResourceAsStream(path);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+            String resource;
+
+            while ((resource = br.readLine()) != null) {
+                if (!resource.contains(".")) {
+                    filenames.addAll(getResourceFiles(path + resource + "/"));
+                    continue;
+                }
+                filenames.add(path + resource);
+            }
+        }
+
+        return filenames;
+    }
+
+    private InputStream getResourceAsStream(String resource) {
+        final InputStream in
+                = getContextClassLoader().getResourceAsStream(resource);
+
+        return in == null ? getClass().getResourceAsStream(resource) : in;
+    }
+
+    private ClassLoader getContextClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
     }
 }

@@ -10,7 +10,7 @@
 
     <div id="container">
         <div id="canvasParent">
-            <canvas id="canvas" width="864" height="674"> <!-- width = 800 + 64 = 864, height = 630 + 64 = 694-->
+            <canvas id="canvas" width="864" height="674"> <!-- width = 800 + 64 = 864, height = 610 + 64 = 674-->
             </canvas>
         </div>
 
@@ -23,12 +23,24 @@
             </div>
             <div id="inputs">
                 <p>Grid Size: <input id="gridSize" type="number" value="32" min="1" max="32"></p>
+
+                <p>Map type:
+                <select name="Map type" id="map_type">
+                    <option value="normal">Normal</option>
+                    <option value="scrolling">Scrolling</option>
+                    <option value="shift">Shift</option>
+                </select>
+                </p>
+
+                <div id="map_properties">
+                </div>
             </div>
         </div>
     </div>
 
 
     <script src="resources.js"></script>
+    <script src="mapProperties.js"></script>
     <script src="script.js"></script>
     <script src="canvas.js"></script>
 </body>

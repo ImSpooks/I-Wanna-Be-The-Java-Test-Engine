@@ -145,6 +145,11 @@ var Resources = {
        type: "SPRITES",
        subtype: "KILLERS"
    },
+   playerstart: {
+       path: "sprites/misc/playerstart.png",
+       type: "SPRITES",
+       subtype: "MISC"
+   },
    sprGravityDown: {
        path: "sprites/misc/sprGravityDown.png",
        type: "SPRITES",

@@ -154,13 +154,13 @@ public class InitializeTextures {
         // Sprites
         BLOCKS("sprites", "blocks", true),
         ITEMS("sprites", "items", true),
-        KID("sprites", "kid", true),
+        KID("sprites", "kid", false),
         KILLERS("sprites", "killers", true),
         MISC("sprites", "misc", true),
         PLATFORMS("sprites", "platforms", true),
         SAVES("sprites", "saves", true),
         SLOPES("sprites", "slopes", true),
-        UI("sprites", "ui", true),
+        UI("sprites", "ui", false),
         TRIGGERS("sprites", "triggers", true),
         WARPS("sprites", "warps", true),
 
