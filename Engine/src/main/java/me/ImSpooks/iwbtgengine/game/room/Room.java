@@ -39,7 +39,7 @@ public class Room {
     }
 
     public void render(Graphics graphics) {
-        this.getObjects().forEach(object -> object.render(graphics));
+        //this.getObjects().forEach(object -> object.render(graphics));
     }
 
     public void update(float delta) {

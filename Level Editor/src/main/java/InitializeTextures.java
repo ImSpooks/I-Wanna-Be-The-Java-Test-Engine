@@ -71,18 +71,18 @@ public class InitializeTextures {
         for (int i = 0; i < resources.size(); i++) {
             Resource resource = resources.get(i);
 
-            String fileName = resource.getPath().split("/")[resource.getPath().split("/").length - 1].replaceAll(".png", "");
+            String fileName = resource.getPath().split("/")[resource.getPath().split("/").length - 1].split("\\.")[0];
 
             content.add("   " + fileName + ": {");
 
             content.add("       " + "path: \"" + resource.getPath() + "\",");
             content.add("       " + "type: \"" + resource.getResourceType().getType().toUpperCase() + "\",");
-            content.add("       " + "subtype: \"" + resource.getResourceType().getSubtype().toUpperCase() + "\",");
+            content.add("       " + "subtype: \"" + resource.getResourceType().getSubtype().toUpperCase() + "\"");
 
             content.add("   " + "}" + (i + 1 < resources.size() ? "," : ""));
         }
         
-        content.add("}");
+        content.add("};");
 
         if (file.exists() && file.delete())
             System.out.println("Overwriting existing file");

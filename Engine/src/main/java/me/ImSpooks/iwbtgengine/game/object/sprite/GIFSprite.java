@@ -37,8 +37,6 @@ public class GIFSprite extends Sprite {
         if (renderedFrame >= this.icon.getFrameCount()) {
             this.renderedFrame = 0;
         }
-
-        System.out.println("this.getIcon().getFrameCount() = " + this.getIcon().getFrameCount());
     }
 
     @Override

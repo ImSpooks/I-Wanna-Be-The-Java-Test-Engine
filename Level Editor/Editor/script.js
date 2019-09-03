@@ -1,9 +1,12 @@
 
-let selectedCategory = Types[0];
-let selectedObject = Resources.sprBlock;
+var selectedCategory = Types[0];
+var selectedObject;
+var objectImage;
 
-let categoriesDiv = document.getElementById("categories");
-let itemsDiv = document.getElementById("items");
+var categoriesDiv = document.getElementById("categories");
+var itemsDiv = document.getElementById("items");
+
+var currentObjects = {};
 
 function initialize() {
     for (let i = 0; i < Types.length; i++) {
@@ -13,22 +16,24 @@ function initialize() {
 
         type.onclick = function(event) {
             selectedCategory = Types[i];
-            console.log("test1");
 
             while (itemsDiv.children.length > 0)
                 itemsDiv.children[0].remove();
 
             Object.keys(Resources).forEach(function (key, index, array) {
-                console.log("test2");
                 let value = Resources[key];
 
                 if (value.subtype === selectedCategory) {
-                    console.log("test3");
                     let image = document.createElement("img");
                     image.alt = key;
                     image.id = key;
                     image.classList.add(Types[i]);
                     image.src = "../../Resources/src/main/resources/resources/" + value.path;
+
+                    image.onclick = function(event) {
+                        selectedObject = value;
+                        objectImage = image;
+                    };
 
                     itemsDiv.appendChild(image);
                 }
@@ -39,6 +44,8 @@ function initialize() {
     }
 
     document.getElementById(selectedCategory).onclick();
+
+
 }
 
 
