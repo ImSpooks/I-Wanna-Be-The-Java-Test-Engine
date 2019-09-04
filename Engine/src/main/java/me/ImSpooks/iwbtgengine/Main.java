@@ -8,6 +8,7 @@ import me.ImSpooks.iwbtgengine.handler.ResourceHandler;
 import me.ImSpooks.iwbtgengine.keycontroller.KeyController;
 import me.ImSpooks.iwbtgengine.screen.AbstractScreen;
 import me.ImSpooks.iwbtgengine.screen.GameScreen;
+import me.ImSpooks.iwbtgengine.sound.SoundManager;
 
 import java.awt.*;
 import java.util.logging.Logger;
@@ -47,6 +48,8 @@ public class Main extends Canvas {
     // Room manager + cached rooms
     @Getter private RoomManager roomManager;
 
+    @Getter private SoundManager soundManager;
+
 
     public Main() {
         instance = this;
@@ -57,13 +60,15 @@ public class Main extends Canvas {
         long startTime = System.currentTimeMillis();
         logger.info("Loading game...");
 
-        this.window = new Window(this, Global.GAME_NAME, Global.GAME_WIDTH, Global.GAME_HEIGHT);
+        this.window = new Window(this, Global.GAME_NAME, Global.GAME_WIDTH + 7, Global.GAME_HEIGHT + 27);
 
         this.addKeyListener(this.keyController = new KeyController(this));
 
         this.resourceHandler.initialize();
 
         this.roomManager = new RoomManager();
+
+        this.soundManager = new SoundManager(this);
 
         this.setScreen(new GameScreen(this, new GameHandler(this)));
 

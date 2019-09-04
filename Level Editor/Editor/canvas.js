@@ -102,14 +102,14 @@ function loop(time){
         let y = Math.floor(mousePosition.y / gridSize) * gridSize;
 
         if (selectedObject != null) {
-            if (leftClickDown && currentObjects["x" + x + "_y" + y] == null)
-                currentObjects["x" + x + "_y" + y] = [selectedObject, Resources[selectedObject].subtype, x, y, Resources[selectedObject].path, objectImage];
-            else if (rightClickDown && currentObjects["x" + x + "_y" + y] != null)
-                delete currentObjects["x" + x + "_y" + y];
+            if (leftClickDown && objects["x" + x + "_y" + y] == null)
+                objects["x" + x + "_y" + y] = [selectedObject, Resources[selectedObject].subtype, x, y, Resources[selectedObject].path, objectImage, document.getElementById("custom_id").value];
+            else if (rightClickDown && objects["x" + x + "_y" + y] != null)
+                delete objects["x" + x + "_y" + y];
         }
 
-        Object.keys(currentObjects).forEach(function (key, index, array) {
-            let value = currentObjects[key];
+        Object.keys(objects).forEach(function (key, index, array) {
+            let value = objects[key];
             graphics.drawImage(value[5], value[2], value[3]);
         });
 

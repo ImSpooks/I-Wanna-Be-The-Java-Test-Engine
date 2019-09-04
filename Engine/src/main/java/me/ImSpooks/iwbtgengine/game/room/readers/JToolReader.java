@@ -1,7 +1,7 @@
 package me.ImSpooks.iwbtgengine.game.room.readers;
 
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
-import me.ImSpooks.iwbtgengine.game.object.objects.Block;
+import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;

@@ -17,7 +17,7 @@ public class GameHandler {
 
     @Getter private final Main main;
 
-    @Getter @Setter private Room room;
+    @Getter private Room room;
 
     @Getter @Setter private KidObject kid;
 
@@ -41,5 +41,10 @@ public class GameHandler {
         if (kid != null) {
             kid.update(delta);
         }
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+        //room.reset();
     }
 }

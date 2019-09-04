@@ -22,6 +22,8 @@
             <div id="items">
             </div>
             <div id="inputs">
+                <p>Export Name: <input id="internalName" type="text" value="DefaultRoom"></p>
+
                 <p>Grid Size: <input id="gridSize" type="number" value="32" min="1" max="32"></p>
 
                 <p>Map type:
@@ -34,6 +36,8 @@
 
                 <div id="map_properties">
                 </div>
+
+                <button id="export" onclick="exportMap()">Export</button>
             </div>
         </div>
     </div>

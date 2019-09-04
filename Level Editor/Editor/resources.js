@@ -1,4 +1,4 @@
-var Types = ["BLOCKS", "ITEMS", "KID", "KILLERS", "MISC", "PLATFORMS", "SAVES", "SLOPES", "UI", "TRIGGERS", "WARPS"];
+var Types = ["BLOCKS", "ITEMS", "KILLERS", "MISC", "PLATFORMS", "SAVES", "SLOPES", "TRIGGERS", "WARPS"];
 var Resources = {
    sprBlock: {
        path: "sprites/blocks/sprBlock.png",
@@ -44,51 +44,6 @@ var Resources = {
        path: "sprites/items/sprSecretItem.png",
        type: "SPRITES",
        subtype: "ITEMS"
-   },
-   sprBlood: {
-       path: "sprites/kid/sprBlood.png",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprBow: {
-       path: "sprites/kid/sprBow.png",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprBullet: {
-       path: "sprites/kid/sprBullet.png",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprGameOver: {
-       path: "sprites/kid/sprGameOver.png",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprPlayerFall: {
-       path: "sprites/kid/sprPlayerFall.png",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprPlayerIdle: {
-       path: "sprites/kid/sprPlayerIdle.gif",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprPlayerJump: {
-       path: "sprites/kid/sprPlayerJump.png",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprPlayerRunning: {
-       path: "sprites/kid/sprPlayerRunning.png",
-       type: "SPRITES",
-       subtype: "KID"
-   },
-   sprPlayerSliding: {
-       path: "sprites/kid/sprPlayerSliding.png",
-       type: "SPRITES",
-       subtype: "KID"
    },
    sprCherry: {
        path: "sprites/killers/sprCherry.png",
@@ -279,11 +234,6 @@ var Resources = {
        path: "sprites/triggers/sprTriggerMask.png",
        type: "SPRITES",
        subtype: "TRIGGERS"
-   },
-   loadingScreen: {
-       path: "sprites/ui/loadingScreen.png",
-       type: "SPRITES",
-       subtype: "UI"
    },
    sprWarp: {
        path: "sprites/warps/sprWarp.png",

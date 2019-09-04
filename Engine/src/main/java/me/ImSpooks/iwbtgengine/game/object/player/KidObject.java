@@ -2,11 +2,12 @@ package me.ImSpooks.iwbtgengine.game.object.player;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
-import me.ImSpooks.iwbtgengine.game.object.objects.Block;
+import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
+import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerObject;
+import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
@@ -82,12 +83,6 @@ public abstract class KidObject extends GameObject {
             velY = 9;
         }
 
-        /*if (y >= 300) {
-            y = 300;
-            velY = 0;
-            canJump = 2;
-        }*/
-
         // Collision stuff
 
         if (velY > 0.4 || velY < 0.4) {
@@ -96,8 +91,7 @@ public abstract class KidObject extends GameObject {
 
         if (velY != 0) {
             //floor
-
-            boolean falling = velY > 0;
+            boolean falling = velY * Global.GRAVITY > 0;
 
             if (Math.abs(velY) < 1) {
                 if (floorCollision(falling) || !falling) {
@@ -116,22 +110,25 @@ public abstract class KidObject extends GameObject {
                     }
                 }
             }
-            if (velX != 0) {
-                boolean left = velX < 0;
-                for (int i = 0; i < Math.ceil(Math.abs(velX)); i++) {
-                    if (wallCollision(left ? -1 : 1)) {
-                        if (left) {
-                            this.x--;
-                        }
-                        else {
-                            this.x++;
-                        }
+        }
+
+        if (velX != 0) {
+            boolean left = velX < 0;
+            for (int i = 0; i < Math.ceil(Math.abs(velX)); i++) {
+                if (wallCollision(left ? -1 : 1)) {
+                    if (left) {
+                        this.x--;
                     }
                     else {
-                        break;
+                        this.x++;
                     }
                 }
+                else {
+                    break;
+                }
             }
+
+            onMove();
         }
 
         //wall
@@ -177,10 +174,16 @@ public abstract class KidObject extends GameObject {
         }//*/
     }
 
+    public abstract void onMove();
+
+    public abstract void onJump(JumpType type);
+
+    public abstract void onShoot();
+
     public abstract Map<String, Sprite> getSpriteMap();
 
     private void reset() {
-        getHandler().setRoom(getHandler().getRoom().clone());
+        getHandler().getRoom().reset();
         x = getHandler().getRoom().getMap().getStartX();
         y = getHandler().getRoom().getMap().getStartY();
 
@@ -202,10 +205,16 @@ public abstract class KidObject extends GameObject {
             int x = (int) this.x + i;
 
             for (GameObject gameObject : this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? 32 : 10))) {
-                if (gameObject instanceof KillerObject) {
+                if (gameObject instanceof Interactable) {
                     if (gameObject.getHitbox() != null) {
                         if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
-                            this.kill();
+
+                            if (gameObject instanceof KillerObject)
+                                this.kill();
+
+                            if (gameObject instanceof Trigger)
+                                ((Trigger) gameObject).getOnTouch().onTouch();
+
                             break;
                         }
                     }
@@ -216,9 +225,9 @@ public abstract class KidObject extends GameObject {
 
                     if (falling) {
                         canJump = 2;
+                        ((Block) gameObject).getOnTouch().onTouch();
                         return false;
                     }
-
 
                     break;
                 }
@@ -232,11 +241,16 @@ public abstract class KidObject extends GameObject {
             int y = (int) this.y + i;
 
             for (GameObject gameObject : this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? 13 + 10 : 10), y)) {
-                if (gameObject instanceof KillerObject) {
+                if (gameObject instanceof Interactable) {
                     if (gameObject.getHitbox() != null) {
                         if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
-                            System.out.println("dead man");
-                            this.kill();
+
+                            if (gameObject instanceof KillerObject)
+                                this.kill();
+
+                            if (gameObject instanceof Trigger)
+                                ((Trigger) gameObject).getOnTouch().onTouch();
+
                             break;
                         }
                     }
@@ -257,9 +271,9 @@ public abstract class KidObject extends GameObject {
 
             @Override
             public void onKeyPress(int keycode) {
-                if (keycode == KeyEvent.VK_W && Main.getInstance().isDebugging()) {// warp to your mouse point - only in debug mode
+                if (keycode == KeyEvent.VK_W && getHandler().getMain().isDebugging()) {// warp to your mouse point - only in debug mode
                     Point mousePoint = MouseInfo.getPointerInfo().getLocation();
-                    Point appLocation = Main.getInstance().getWindow().getFrame().getLocationOnScreen();
+                    Point appLocation = getHandler().getMain().getWindow().getFrame().getLocationOnScreen();
 
                     setX(mousePoint.x - appLocation.x - 16);
                     setY(mousePoint.y - appLocation.y - 48);
@@ -272,7 +286,7 @@ public abstract class KidObject extends GameObject {
                 }
 
                 if (!frozen) {
-                    if (Main.getInstance().isDebugging()) { // change alignment - only in debug mode
+                    if (getHandler().getMain().isDebugging()) { // change alignment - only in debug mode
                         if (keycode == KeyEvent.VK_A) {
                             setX(getX() - 1);
                         } else if (keycode == KeyEvent.VK_D) {
@@ -289,33 +303,30 @@ public abstract class KidObject extends GameObject {
                     //jump
                     if (keycode == KeyEvent.VK_SHIFT) {
                         if (canJump == 2) { //main jump
+                            onJump(JumpType.FULL_JUMP);
+
                             canJump = 1;
 
                             //SoundPlayer.playFX(SoundPlayer.getRegisteredSounds().getSoundFX("kidJump")).start();
-                            velY = -jump * Global.GRAVITY;
+                            velY = -jump;
 
                             pressedShift = true;
-
                         } else if (canJump == 1) { //double jump
+                            onJump(JumpType.DOUBLE_JUMP);
+
                             canJump = 0;
 
                             //SoundPlayer.playFX(SoundPlayer.getRegisteredSounds().getSoundFX("kidDJump")).start();
-                            velY = -jump2 * Global.GRAVITY;
+                            velY = -jump2;
 
                             pressedShift = true;
                         }
                     }
 
                     //shoot
-                    /*else if (keycode == Keybinds.KEY_SHOOT) {
-                        if (KidBullet.amount < 4) {
-                            KidBullet bullet = new KidBullet(getX(), getY(), ID.BULLET, handler, KidObject.this);
-                            handler.addObject(bullet);
-                            bullets.add(bullet);
-
-                            SoundPlayer.playFX(SoundPlayer.getRegisteredSounds().getSoundFX("kidShoot")).start();
-                        }
-                    }*/
+                    else if (keycode == KeyEvent.VK_Z) {
+                        onShoot();
+                    }
                 }
 
                 /*else if (keycode == Keybinds.KEY_SKIP) {
@@ -329,15 +340,15 @@ public abstract class KidObject extends GameObject {
                     return;
                 }
 
-                if (Main.getInstance().getKeyController().getKeys().containsKey(KeyEvent.VK_LEFT)) {
-                    if (Main.getInstance().getKeyController().getKeys().containsKey(KeyEvent.VK_RIGHT)) {
+                if (getHandler().getMain().getKeyController().getKeys().containsKey(KeyEvent.VK_LEFT)) {
+                    if (getHandler().getMain().getKeyController().getKeys().containsKey(KeyEvent.VK_RIGHT)) {
                         velX = 3;
                         xScale = 1;
                     } else {
                         velX = -3;
                         xScale = -1;
                     }
-                } else if (Main.getInstance().getKeyController().getKeys().containsKey(KeyEvent.VK_RIGHT)) {
+                } else if (getHandler().getMain().getKeyController().getKeys().containsKey(KeyEvent.VK_RIGHT)) {
                     velX = 3;
                     xScale = 1;
                 }
@@ -370,8 +381,10 @@ public abstract class KidObject extends GameObject {
 
                     long time = System.currentTimeMillis() - lastRelease;
 
-                    if (time >= 20 && time < 40 && canJump == 1) {
+                    if (time >= 20 && time < 40 && canJump > 0) {
                         velY = -jump * gravity;
+
+                        onJump(JumpType.CANCEL_JUMP);
                     }
                 }
             }

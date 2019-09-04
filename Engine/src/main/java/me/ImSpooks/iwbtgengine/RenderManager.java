@@ -42,7 +42,7 @@ public class RenderManager implements Runnable {
 
                 if (System.currentTimeMillis() - timer > 1000) {
                     timer += 1000;
-                    System.out.println("frames = " + frames);
+                    //System.out.println("frames = " + frames);
                     frames = 0;
 
                     /*if (SaveSelection.selected != null) {

@@ -7,8 +7,6 @@ var objectImage;
 var categoriesDiv = document.getElementById("categories");
 var itemsDiv = document.getElementById("items");
 
-var currentObjects = {};
-
 function initialize() {
     for (let i = 0; i < Types.length; i++) {
         let type = document.createElement("button");
@@ -39,6 +37,9 @@ function initialize() {
                     itemsDiv.appendChild(image);
                 }
             });
+
+            itemsDiv.appendChild(addOption("Custom Id (Optional): ", "custom_id", "text", "").parent);
+
         };
 
         categoriesDiv.appendChild(type);

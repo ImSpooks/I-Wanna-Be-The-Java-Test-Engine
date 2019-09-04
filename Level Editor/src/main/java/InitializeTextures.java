@@ -147,6 +147,9 @@ public class InitializeTextures {
             You can add a resource type manually, if a file is found but has a non existent type it will not be added.
          */
 
+
+        BACKGROUNDS("backgrounds", "", false),
+
         // Sounds
         MUSIC("sound", "music", false),
         SFX("sound", "sfx", false),

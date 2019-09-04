@@ -1,6 +1,7 @@
 package me.ImSpooks.iwbtgengine.game.object.player;
 
 import me.ImSpooks.iwbtgengine.Main;
+import me.ImSpooks.iwbtgengine.game.object.player.subplayer.Bullet;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
@@ -8,7 +9,9 @@ import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,18 +21,61 @@ import java.util.Map;
  */
 public class Kid extends KidObject {
 
+    private List<Bullet> bullets;
+    private int maxBullets = 4;
+
     public Kid(Room parent, double x, double y, GameHandler handler) {
         super(parent, x, y, handler);
+        this.bullets = new ArrayList<>();
     }
 
     @Override
     public void render(Graphics graphics) {
         super.render(graphics);
+
+        bullets.forEach(bullet -> bullet.render(graphics));
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+
+        List<Bullet> toRemove = new ArrayList<>();
+
+        for (Bullet bullet : bullets) {
+            if (bullet.getParent() != Main.getInstance().getHandler().getRoom()
+                    || bullet.getX() < 0 || bullet.getX() > bullet.getParent().getMap().getRoomWidth()
+                    || bullet.getY() < 0 || bullet.getY() > bullet.getParent().getMap().getRoomHeight()) {
+                toRemove.add(bullet);
+                continue;
+            }
+
+            bullet.update(delta);
+        }
+
+        bullets.removeAll(toRemove);
+    }
+
+    @Override
+    public void onMove() {
+
+    }
+
+    @Override
+    public void onJump(JumpType type) {
+        //getHandler().getMain().getSoundManager().playSound(null);
+
+        //getHandler().getMain().getResourceHandler().get("snd" + (getCanJump() == 2 ? "" : "D") + "Jump", Sound.class).play();
+    }
+
+
+
+    @Override
+    public void onShoot() {
+        if (bullets.size() < maxBullets) {
+            Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceHandler().getResource("sprBullet")), this.getXScale());
+            bullets.add(bullet);
+        }
     }
 
     @Override
@@ -37,11 +83,11 @@ public class Kid extends KidObject {
         Map<String, Sprite> spritesMap = new HashMap<>();
 
         //spritesMap.put("idle", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_idle", BufferedImage.class), 32, 32, 4, 5));
-        spritesMap.put("idle", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerIdle", GIFIcon.class)));
-        spritesMap.put("running", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerRunning", GIFIcon.class)));
-        spritesMap.put("fall", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerFall", GIFIcon.class)));
-        spritesMap.put("jump", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerJump", GIFIcon.class)));
-        spritesMap.put("sliding", new GIFSprite(Main.getInstance().getResourceHandler().get("sprPlayerSliding", GIFIcon.class)));
+        spritesMap.put("idle", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerIdle", GIFIcon.class)));
+        spritesMap.put("running", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerRunning", GIFIcon.class)));
+        spritesMap.put("fall", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerFall", GIFIcon.class)));
+        spritesMap.put("jump", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerJump", GIFIcon.class)));
+        spritesMap.put("sliding", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerSliding", GIFIcon.class)));
 
         //TODO running animation is too slow
 

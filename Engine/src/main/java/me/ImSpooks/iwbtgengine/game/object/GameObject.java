@@ -31,6 +31,8 @@ public abstract class GameObject {
 
     @Getter private List<KeyListener> keyListener = new ArrayList<>();
 
+    @Getter @Setter private String customId = "";
+
     public GameObject(Room parent, double x, double y, Sprite sprite) {
         this.parent = parent;
         this.x = x;

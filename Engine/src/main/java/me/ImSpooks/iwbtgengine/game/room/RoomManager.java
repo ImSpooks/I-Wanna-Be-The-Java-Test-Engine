@@ -21,11 +21,19 @@ public class RoomManager {
         this.rooms = new LinkedHashMap<>();
         this.roomsById = new LinkedHashMap<>();
 
-        this.rooms.put("stage1_room1", new TestRoom());
+        Map<String, Room> cache = new LinkedHashMap<>();
 
-        for (Room room : this.rooms.values()) {
-            roomsById.put(roomsById.size(), room);
+        cache.put("stage1_room1", new TestRoom());
+
+        for (Map.Entry<String, Room> entry : cache.entrySet()) {
+            Room room = entry.getValue();
+            room.setInternalId(entry.getKey());
+
+            this.rooms.put(entry.getKey(), room);
+            this.roomsById.put(roomsById.size(), room);
         }
+
+        cache.clear();
     }
 
     public Room getRoom(String name) {
@@ -33,7 +41,7 @@ public class RoomManager {
             System.exit(ErrorCodes.ROOM_NOT_FOUND);
             throw new NullPointerException(String.format("Room with name \"%s\" not found.", name));
         }
-        return this.rooms.get(name).clone();
+        return this.rooms.get(name);
     }
 
     public Room getRoom(int id) {
@@ -41,6 +49,6 @@ public class RoomManager {
             System.exit(ErrorCodes.ROOM_NOT_FOUND);
             throw new NullPointerException(String.format("Room with id \"%s\" not found.", id));
         }
-        return this.roomsById.get(id).clone();
+        return this.roomsById.get(id);
     }
 }

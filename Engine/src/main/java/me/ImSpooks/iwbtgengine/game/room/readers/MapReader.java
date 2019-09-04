@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.game.room.RoomType;
 import me.ImSpooks.iwbtgengine.handler.ResourceHandler;
 
 import java.awt.*;
@@ -18,8 +19,11 @@ import java.util.List;
  * Copyright © ImSpooks
  */
 public abstract class MapReader {
-    @Getter private List<GameObject> objects;
+    @Getter @Setter private List<GameObject> objects;
     @Getter @Setter private int startX = 32, startY = 32;
+    @Getter @Setter private RoomType roomType = RoomType.NORMAL;
+
+    @Getter @Setter private int roomWidth = 800, roomHeight = 610;
 
     @Getter @Setter private Dimension roomSize = new Dimension(25, 19);
     @Getter @Setter private boolean deathBorder = false;

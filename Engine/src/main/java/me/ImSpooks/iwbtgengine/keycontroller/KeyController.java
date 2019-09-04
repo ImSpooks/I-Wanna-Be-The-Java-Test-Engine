@@ -85,6 +85,7 @@ public class KeyController extends KeyAdapter {
         if (keys.containsKey(e.getKeyCode())) {
             keys.remove(e.getKeyCode());
 
+
             for (GameObject gameObject : main.getHandler().getRoom().getObjects()) {
                 if (!gameObject.getKeyListener().isEmpty()) {
                     gameObject.getKeyListener().forEach(keyListener -> keyListener.onKeyRelease(e.getKeyCode()));

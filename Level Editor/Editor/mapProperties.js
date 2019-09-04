@@ -30,7 +30,58 @@ map_type.onchange();
 
 
 function exportMap() {
+    let data = {};
 
+    switch (map_type.value) {
+        default:
+        case "normal": {
+            data["map_type"] = {type: "normal"};
+            break;
+        }
+
+        case "scrolling": {
+            data["map_type"] = {type: "scrolling",
+                width: parseInt(document.getElementById("room_width").value),
+                height: parseInt(document.getElementById("room_height").value)};
+            break;
+        }
+
+        case "shift": {
+            data["map_type"] = {type: "shift",
+                rooms_horizontal: parseInt(document.getElementById("rooms_h").value),
+                rooms_vertical: parseInt(document.getElementById("rooms_v").value)};
+            break;
+        }
+    }
+
+    data["objects"] = [];
+
+    Object.keys(objects).forEach(function (key, index, array) {
+        let value = objects[key];
+
+        let tile = {
+            tile: value[0],
+            type: value[1],
+            x: value[2] - 32,
+            y: value[3] - 32,
+            custom_id: value[6]
+        };
+
+        data["objects"].push(tile);
+    });
+
+    let json = JSON.stringify(data);
+    let blob = new Blob([json], {type: "octet/stream"});
+    let url = window.URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.href = url;
+    a.download = document.getElementById("internalName").value + ".json";
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
 }
 
 function resetMap() {
