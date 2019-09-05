@@ -188,7 +188,7 @@ public abstract class KidObject extends GameObject {
     }
 
     private void kill() {
-        // TODO blood + effect
+        //TODO kill, blood + effect=
 
         this.setDeath(true);
         this.x = -32;
@@ -224,7 +224,6 @@ public abstract class KidObject extends GameObject {
                                 ((Trigger) gameObject).getOnTouch().onTouch();
                         }
                     }
-                    //TODO kill
                 }
             }
         }
@@ -252,7 +251,6 @@ public abstract class KidObject extends GameObject {
                                 ((Trigger) gameObject).getOnTouch().onTouch();
                         }
                     }
-                    //TODO kill
                 }
             }
         }
@@ -276,8 +274,6 @@ public abstract class KidObject extends GameObject {
                 }
 
                 else if (keycode == KeyEvent.VK_R) {
-                    //TODO reset room
-                    
                     reset();
                 }
 
@@ -334,7 +330,7 @@ public abstract class KidObject extends GameObject {
                 }
 
                 /*else if (keycode == Keybinds.KEY_SKIP) {
-                    //TODO skip cutscene
+                    //TODO skip cutscene if one is executed
                 }*/
             }
 

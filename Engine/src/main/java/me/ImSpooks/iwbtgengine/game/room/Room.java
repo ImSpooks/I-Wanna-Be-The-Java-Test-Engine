@@ -137,8 +137,6 @@ public abstract class Room {
         }
     }
 
-    //TODO cache positions question mark?
-
     public int[] getStartingPositions() {
         return new int[] {this.map.getStartX(), this.map.getStartY()};
     }
