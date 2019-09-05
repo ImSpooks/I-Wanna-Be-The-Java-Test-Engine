@@ -41,14 +41,14 @@ public abstract class AbstractScreen {
      *
      * @param delta Framerate of the screen update
      */
-    public abstract void update(float delta);
+    public abstract void update(Camera camera, float delta);
 
     /**
      * Called when a screen renders.
      *
      * @param graphics Graphics of the game
      */
-    public abstract void render(Graphics graphics);
+    public abstract void render(Camera camera, Graphics graphics);
 
     /**
      * Called before initUI(). In here you load the stuff you will need when initializing the UI.

@@ -1,6 +1,6 @@
 package me.ImSpooks.iwbtgengine.game.room.init;
 
-import me.ImSpooks.iwbtgengine.Main;
+import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.events.TouchObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
@@ -19,12 +19,13 @@ public class TestRoom extends Room {
     public TestRoom() {
         super(ReaderType.ENGINE, "/room/level/stage1/DefaultRoom.json");
 
-        this.background = Main.getInstance().getResourceHandler().get("test background");
+        //this.background = Main.getInstance().getResourceHandler().get("test background");
+        this.shiftBackroundImage = true;
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    public void update(Camera camera, float delta) {
+        super.update(camera, delta);
     }
 
     @Override
@@ -42,8 +43,8 @@ public class TestRoom extends Room {
                         touched.set(true);
 
 
-                        for (GameObject gameObject : getObjectsById("triggerspike1")) {
-                            gameObject.setVelX(3);
+                        for (GameObject gameObject : getObjectsById("triggerblock1")) {
+                            gameObject.removeObject();
                         }
                     }
                 }

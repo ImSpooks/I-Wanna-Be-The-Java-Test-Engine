@@ -60,10 +60,7 @@
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources/</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*</include>
-                </includes>
+                <filtering>false</filtering>
             </resource>
         </resources>
     </build>

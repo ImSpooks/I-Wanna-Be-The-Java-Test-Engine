@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.game.object;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
@@ -52,9 +53,9 @@ public abstract class GameObject {
         }
     }
 
-    public void render(Graphics graphics) {
+    public void render(Camera camera, Graphics graphics) {
         if (this.sprite != null) {
-            graphics.drawImage(sprite.getImage(), (int) this.x, (int) this.y, null);
+            sprite.draw(camera, graphics, (int) this.x, (int) this.y);
         }
     }
 

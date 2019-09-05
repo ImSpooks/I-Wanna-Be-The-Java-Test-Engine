@@ -3,8 +3,10 @@ package me.ImSpooks.iwbtgengine.handler;
 import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.Main;
+import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.sound.Sound;
 
 import java.awt.*;
 
@@ -23,20 +25,22 @@ public class GameHandler {
 
     public GameHandler(Main main) {
         this.main = main;
+
+        this.getMain().getResourceHandler().get("Test", Sound.class).play();
     }
 
-    public void render(Graphics graphics) {
+    public void render(Camera camera, Graphics graphics) {
         if (this.room != null) {
-            room.render(graphics);
+            room.render(camera, graphics);
         }
         if (kid != null) {
-            kid.render(graphics);
+            kid.render(camera, graphics);
         }
     }
 
-    public void update(float delta) {
+    public void update(Camera camera, float delta) {
         if (this.room != null) {
-            room.update(delta);
+            room.update(camera, delta);
         }
         if (kid != null) {
             kid.update(delta);

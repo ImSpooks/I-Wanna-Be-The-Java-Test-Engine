@@ -24,15 +24,15 @@ public class TitleScreen extends AbstractScreen {
     }
 
     @Override
-    public void render(Graphics graphics) {
+    public void render(Camera camera, Graphics graphics) {
 
-        this.getHandler().render(graphics);
+        this.getHandler().render(camera, graphics);
     }
 
     @Override
-    public void update(float delta) {
+    public void update(Camera camera, float delta) {
         this.eventHandler.update(delta);
-        this.getHandler().update(delta);
+        this.getHandler().update(camera, delta);
     }
 
     @Override

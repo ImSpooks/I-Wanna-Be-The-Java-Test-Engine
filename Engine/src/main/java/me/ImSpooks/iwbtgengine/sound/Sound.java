@@ -20,37 +20,42 @@ public class Sound {
         this.audioClip = audioClip;
     }
 
-    public void play() {
+    public Sound play() {
         new Thread(audioClip::start).start();
+        return this;
     }
 
-    public void loop(int times) {
+    public Sound loop(int times) {
         new Thread(() -> {
             audioClip.loop(times);
         }).start();
+        return this;
     }
 
-    public void stop() {
+    public Sound stop() {
         if (audioClip.isRunning())
             audioClip.stop();
+        return this;
     }
 
     private boolean paused;
     private int currentFrame;
 
-    public void pause() {
+    public Sound pause() {
         if (paused)
-            return;
+            return this;
         paused = true;
         this.currentFrame = this.audioClip.getFramePosition();
         stop();
+        return this;
     }
-    public void resume() {
+    public Sound resume() {
         if (!paused)
-            return;
+            return this;
         paused = false;
         this.audioClip.setFramePosition(this.currentFrame);
         play();
+        return this;
     }
 
     public Sound setVolume(double volume) {

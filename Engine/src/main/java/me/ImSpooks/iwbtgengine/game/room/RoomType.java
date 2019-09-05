@@ -8,6 +8,6 @@ package me.ImSpooks.iwbtgengine.game.room;
 public enum RoomType {
     NORMAL,
     SCROLLING,
-    SHIFTING,
+    SHIFT,
     ;
 }

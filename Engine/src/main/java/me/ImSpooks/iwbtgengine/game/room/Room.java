@@ -3,6 +3,7 @@ package me.ImSpooks.iwbtgengine.game.room;
 import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.Main;
+import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
@@ -10,6 +11,8 @@ import me.ImSpooks.iwbtgengine.game.room.readers.EngineReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.JToolReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.MapReader;
 import me.ImSpooks.iwbtgengine.global.ErrorCodes;
+import me.ImSpooks.iwbtgengine.global.Global;
+import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Nick on 01 May 2019.
@@ -25,13 +29,17 @@ import java.util.List;
  */
 public abstract class Room {
 
+
     @Getter private MapReader map;
 
     private String path;
+    @Getter private GameHandler handler;
 
     @Getter @Setter private String internalId = "";
 
     @Getter protected BufferedImage background = null;
+
+    @Getter protected boolean shiftBackroundImage = true;
 
     public Room(ReaderType type, String path) {
         this.path = path;
@@ -41,16 +49,62 @@ public abstract class Room {
         this.onLoad();
     }
 
-    public void render(Graphics graphics) {
+    public void render(Camera camera, Graphics graphics) {
         if (this.background != null) {
-            graphics.drawImage(this.background, 0, 0, map.getRoomWidth(), map.getRoomHeight(), null);
+            if (this.map.getRoomType() == RoomType.SHIFT && shiftBackroundImage) graphics.drawImage(this.background, 0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT, null);
+            else graphics.drawImage(this.background, 0 - camera.getCameraX(), 0 - camera.getCameraY(), map.getRoomWidth(), map.getRoomHeight(), null);
         }
 
-        this.getObjects().stream().filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger)).forEach(object -> object.render(graphics));
+        this.getObjects().stream().filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger)).forEach(object -> object.render(camera, graphics));
     }
 
-    public void update(float delta) {
+    public void update(Camera camera, float delta) {
         this.getObjects().forEach(object -> object.update(delta));
+
+        if (this.map.getRoomType() == RoomType.NORMAL) {
+            if (camera.isSmoothTransition()) {
+                camera.setSmoothTransition(false);
+            }
+            camera.setCameraPosition(0, 0);
+        }
+
+        else if (this.getMap().getRoomType() == RoomType.SCROLLING) {
+            if (!camera.isSmoothTransition()) {
+                camera.setSmoothTransition(true);
+            }
+
+            int kidX = (int) Math.floor(this.getHandler().getKid().getX());
+            int kidY = (int) Math.floor(this.getHandler().getKid().getY());
+
+            int x = 0, y = 0;
+
+            if (this.getHandler().getKid() != null) {
+                x = (int) Math.floor(kidX - Global.GAME_WIDTH / 2.0 + 16);
+                y = (int) Math.floor(kidY - Global.GAME_HEIGHT / 2.0 + 16);
+            }
+
+            if (!this.getHandler().getKid().isDeath())
+                camera.setCameraPosition(Math.max(Math.min(x, this.map.getRoomWidth() - Global.GAME_WIDTH), 0), Math.max(Math.min(y, this.map.getRoomHeight() - Global.GAME_HEIGHT - 2), 0));
+        }
+
+        else if (this.getMap().getRoomType() == RoomType.SHIFT) {
+            if (camera.isSmoothTransition()) {
+                camera.setSmoothTransition(false);
+            }
+
+            int kidX = (int) Math.floor(this.getHandler().getKid().getX());
+            int kidY = (int) Math.floor(this.getHandler().getKid().getY());
+
+            int x = 0, y = 0;
+
+            if (this.getHandler().getKid() != null) {
+                x = (int) Math.floor((kidX + 16.0) / Global.GAME_WIDTH) * Global.GAME_WIDTH;
+                y = (int) Math.floor((kidY + 16.0) / Global.GAME_HEIGHT) * Global.GAME_HEIGHT;
+            }
+
+            if (!this.getHandler().getKid().isDeath())
+                camera.setCameraPosition(Math.max(Math.min(x, this.map.getRoomWidth()), 0), Math.max(Math.min(y, this.map.getRoomHeight()), 0));
+        }
     }
 
     public void readMap(ReaderType type) {
@@ -121,11 +175,22 @@ public abstract class Room {
 
     public void reset() {
         try {
-            Main.getInstance().getHandler().setRoom(this.getClass().newInstance());
+            long now = System.nanoTime();
+            Main.getInstance().getHandler().setRoom(this.getClass().newInstance().setHandler(this.getHandler()));
+            long time = System.nanoTime() - now;
+
+            if (time > TimeUnit.MILLISECONDS.toNanos(20)) {
+                System.out.println(String.format("Reloading room took more than a single frame (%s ns, %s ms)", time, time / 1000000L));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public abstract void onLoad();
+
+    public Room setHandler(GameHandler handler) {
+        this.handler = handler;
+        return this;
+    }
 }

@@ -5,6 +5,10 @@
 
 #canvasParent {
     grid-area: canvas;
+
+    max-height: 679px; /*674 + 5*/
+
+    overflow: auto;
 }
 
 #sidebar {

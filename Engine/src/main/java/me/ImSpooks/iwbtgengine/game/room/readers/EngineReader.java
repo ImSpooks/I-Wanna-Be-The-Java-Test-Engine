@@ -7,6 +7,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.game.room.RoomType;
+import me.ImSpooks.iwbtgengine.global.Global;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -40,6 +41,25 @@ public class EngineReader extends MapReader {
             JSONObject mapType = (JSONObject) map.get("map_type");
 
             this.setRoomType(RoomType.valueOf(((String) mapType.get("type")).toUpperCase()));
+
+            switch (this.getRoomType()) {
+                default:
+                case NORMAL: {
+                    this.setRoomWidth(Global.GAME_WIDTH);
+                    this.setRoomHeight(Global.GAME_HEIGHT);
+                    break;
+                }
+                case SCROLLING: {
+                    this.setRoomWidth(Math.toIntExact((long) mapType.get("width")));
+                    this.setRoomHeight(Math.toIntExact((long) mapType.get("height")));
+                    break;
+                }
+                case SHIFT: {
+                    this.setRoomWidth(Math.toIntExact((long) mapType.get("rooms_horizontal")) * Global.GAME_WIDTH);
+                    this.setRoomHeight(Math.toIntExact((long) mapType.get("rooms_vertical")) * Global.GAME_HEIGHT);
+                    break;
+                }
+            }
 
             JSONArray objects = (JSONArray) map.get("objects");
 

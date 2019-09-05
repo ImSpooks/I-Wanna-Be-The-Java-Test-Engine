@@ -1,5 +1,6 @@
 package me.ImSpooks.iwbtgengine.handler;
 
+import com.sun.media.sound.RIFFInvalidDataException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.ImSpooks.iwbtgengine.Main;
@@ -34,18 +35,27 @@ public class ResourceHandler {
     public void initialize() {
         try {
             resourcesLoop: for (String resourceFile : getResourceFiles("resources/")) {
+                try {
 
-                for (ResourceType resourceType : ResourceType.CACHE) {
-                    for (String extension : resourceType.getExtensions()) {
-                        if (resourceFile.endsWith("." + extension)) {
-                            this.cacheResource("/" + resourceFile, resourceType);
+                    for (ResourceType resourceType : ResourceType.CACHE) {
+                        for (String extension : resourceType.getExtensions()) {
+                            if (resourceFile.endsWith("." + extension)) {
+                                this.cacheResource("/" + resourceFile, resourceType);
 
-                            continue resourcesLoop;
+                                continue resourcesLoop;
+                            }
                         }
                     }
+
+                } catch (UnsupportedAudioFileException | LineUnavailableException e) {
+                    main.getLogger().log(Level.WARNING, String.format("Unable to load resource '%s', thrown exception: '%s'", resourceFile, e.getClass().getSimpleName()));
+                    e.printStackTrace();
+                } catch (EOFException | RIFFInvalidDataException e) {
+                    main.getLogger().log(Level.WARNING, String.format("Unable to load resource '%s', thrown exception: '%s'", resourceFile, e.getClass().getSimpleName()));
+                    e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -93,7 +103,6 @@ public class ResourceHandler {
                 break;
             }
             case SOUND: {
-                System.out.println("resource = " + resource);
                 AudioInputStream stream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(resource)));
 
                 // load the sound into memory (a Clip)
@@ -105,7 +114,7 @@ public class ResourceHandler {
 
                 this.resources.put(fileName, Arrays.asList(sound, type.getClazz()));
 
-                System.out.println("Loaded sfx " + fileName);
+                System.out.println(String.format("Audio file '%s' loaded succefully", fileName));
                 break;
             }
         }

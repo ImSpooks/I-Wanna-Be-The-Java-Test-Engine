@@ -23,7 +23,7 @@ public abstract class MapReader {
     @Getter @Setter private int startX = 32, startY = 32;
     @Getter @Setter private RoomType roomType = RoomType.NORMAL;
 
-    @Getter @Setter private int roomWidth = 800, roomHeight = 610;
+    @Getter @Setter private int roomWidth, roomHeight;
 
     @Getter @Setter private Dimension roomSize = new Dimension(25, 19);
     @Getter @Setter private boolean deathBorder = false;

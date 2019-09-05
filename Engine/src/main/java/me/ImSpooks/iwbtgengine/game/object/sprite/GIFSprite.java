@@ -29,7 +29,7 @@ public class GIFSprite extends Sprite {
 
     @Override
     public void update(float delta) {
-        if (++tick >= this.icon.getDelay() / (100.0 / Global.FRAME_RATE)) {
+        if (++tick >= this.getIcon().getDuration(this.renderedFrame) / (100.0 / Global.FRAME_RATE)) {
             tick = 0;
             renderedFrame++;
         }

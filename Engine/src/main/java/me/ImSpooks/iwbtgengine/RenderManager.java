@@ -67,7 +67,8 @@ public class RenderManager implements Runnable {
     }
 
     private void update(float delta) {
-        this.main.getScreen().update(delta);
+        if (this.main.getScreen() != null && this.main.getScreen().getCamera() != null)
+            this.main.getScreen().update(this.main.getScreen().getCamera(), delta);
         this.main.getKeyController().tickKeyboard();
     }
 
@@ -83,7 +84,8 @@ public class RenderManager implements Runnable {
 
         //g.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
 
-        this.main.getScreen().render(g);
+        if (this.main.getScreen() != null && this.main.getScreen().getCamera() != null)
+            this.main.getScreen().render(this.main.getScreen().getCamera(), g);
 
         g.dispose();
         bs.show();

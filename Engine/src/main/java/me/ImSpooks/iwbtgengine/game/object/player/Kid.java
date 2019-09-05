@@ -1,12 +1,14 @@
 package me.ImSpooks.iwbtgengine.game.object.player;
 
 import me.ImSpooks.iwbtgengine.Main;
+import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.player.subplayer.Bullet;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
+import me.ImSpooks.iwbtgengine.sound.Sound;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,10 +32,10 @@ public class Kid extends KidObject {
     }
 
     @Override
-    public void render(Graphics graphics) {
-        super.render(graphics);
+    public void render(Camera camera, Graphics graphics) {
+        super.render(camera, graphics);
 
-        bullets.forEach(bullet -> bullet.render(graphics));
+        bullets.forEach(bullet -> bullet.render(camera, graphics));
     }
 
     @Override
@@ -75,6 +77,8 @@ public class Kid extends KidObject {
         if (bullets.size() < maxBullets) {
             Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceHandler().getResource("sprBullet")), this.getXScale());
             bullets.add(bullet);
+
+            getHandler().getMain().getResourceHandler().get("sndShoot", Sound.class).play();
         }
     }
 
@@ -88,8 +92,6 @@ public class Kid extends KidObject {
         spritesMap.put("fall", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerFall", GIFIcon.class)));
         spritesMap.put("jump", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerJump", GIFIcon.class)));
         spritesMap.put("sliding", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerSliding", GIFIcon.class)));
-
-        //TODO running animation is too slow
 
         return spritesMap;
     }

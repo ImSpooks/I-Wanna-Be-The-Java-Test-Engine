@@ -17,7 +17,8 @@ import java.awt.*;
  */
 public class GameScreen extends AbstractScreen {
 
-    @Getter private final EventHandler eventHandler;
+    @Getter
+    private final EventHandler eventHandler;
 
     public GameScreen(Main game, GameHandler handler) {
         super(game, handler);
@@ -25,31 +26,32 @@ public class GameScreen extends AbstractScreen {
         this.eventHandler = new EventHandler();
 
         //TODO REMOVE
-        this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom("stage1_room1"));
+        this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom("stage1_room1").setHandler(this.getHandler()));
         this.getHandler().setKid(new Kid(null, 32, 32, this.getHandler()));
     }
 
     @Override
-    public void render(Graphics graphics) {
+    public void render(Camera camera, Graphics graphics) {
         graphics.setColor(Color.CYAN);
         graphics.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
 
         graphics.setColor(new Color(0, 255, 255, 128).darker().darker());
         for (int i = 0; i < 20; i++) {
-            graphics.drawLine(0, 32 * i,Global.GAME_WIDTH, 32 * i);
+            graphics.drawLine(camera.getCameraX(), 32 * i, Global.GAME_WIDTH, 32 * i);
         }
 
         for (int i = 0; i < 30; i++) {
             graphics.drawLine(32 * i, 0, 32 * i, Global.GAME_HEIGHT);
         }
 
-        this.getHandler().render(graphics);
+        this.getHandler().render(camera, graphics);
     }
 
     @Override
-    public void update(float delta) {
+    public void update(Camera camera, float delta) {
+        this.getCamera().update(delta);
         this.eventHandler.update(delta);
-        this.getHandler().update(delta);
+        this.getHandler().update(camera, delta);
     }
 
     @Override

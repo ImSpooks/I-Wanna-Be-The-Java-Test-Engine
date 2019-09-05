@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.game.object.player;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
@@ -13,7 +14,6 @@ import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 import me.ImSpooks.iwbtgengine.keycontroller.KeyListener;
-import me.ImSpooks.iwbtgengine.util.ImageUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -158,13 +158,8 @@ public abstract class KidObject extends GameObject {
     }
 
     @Override
-    public void render(Graphics graphics) {
-        if (xScale == 1) {
-            graphics.drawImage(sprite.getImage(), (int) this.x, (int) this.y, null);
-        }
-        else {
-            graphics.drawImage(ImageUtils.getInstance().flipImage(sprite.getImage(), true), (int) this.x, (int) this.y, null);
-        }
+    public void render(Camera camera, Graphics graphics) {
+        sprite.draw(camera, graphics, (int) this.x, (int) this.y, xScale == -1, Global.GRAVITY != 1);
 
         //this.getHitbox().renderHitbox((int) x, (int) y, graphics);
 
@@ -205,22 +200,7 @@ public abstract class KidObject extends GameObject {
             int x = (int) this.x + i;
 
             for (GameObject gameObject : this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? 32 : 10))) {
-                if (gameObject instanceof Interactable) {
-                    if (gameObject.getHitbox() != null) {
-                        if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
-
-                            if (gameObject instanceof KillerObject)
-                                this.kill();
-
-                            if (gameObject instanceof Trigger)
-                                ((Trigger) gameObject).getOnTouch().onTouch();
-
-                            break;
-                        }
-                    }
-                    //TODO kill
-                }
-                else if (gameObject instanceof Block) {
+                if (gameObject instanceof Block) {
                     velY = 0;
 
                     if (falling) {
@@ -230,6 +210,21 @@ public abstract class KidObject extends GameObject {
                     }
 
                     break;
+                }
+                else if (gameObject instanceof Interactable) {
+                    if (gameObject.getHitbox() != null) {
+                        if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
+
+                            if (gameObject instanceof KillerObject) {
+                                this.kill();
+                                break;
+                            }
+
+                            if (gameObject instanceof Trigger)
+                                ((Trigger) gameObject).getOnTouch().onTouch();
+                        }
+                    }
+                    //TODO kill
                 }
             }
         }
@@ -241,23 +236,23 @@ public abstract class KidObject extends GameObject {
             int y = (int) this.y + i;
 
             for (GameObject gameObject : this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? 13 + 10 : 10), y)) {
-                if (gameObject instanceof Interactable) {
+                if (gameObject instanceof Block) {
+                    return false;
+                }
+                else if (gameObject instanceof Interactable) {
                     if (gameObject.getHitbox() != null) {
                         if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
 
-                            if (gameObject instanceof KillerObject)
+                            if (gameObject instanceof KillerObject) {
                                 this.kill();
+                                break;
+                            }
 
                             if (gameObject instanceof Trigger)
                                 ((Trigger) gameObject).getOnTouch().onTouch();
-
-                            break;
                         }
                     }
                     //TODO kill
-                }
-                else if (gameObject instanceof Block) {
-                    return false;
                 }
             }
         }
@@ -268,6 +263,7 @@ public abstract class KidObject extends GameObject {
         // default keys
         this.getKeyListener().add(new KeyListener() {
             private boolean pressedShift = false;
+            long lastRelease = 0;
 
             @Override
             public void onKeyPress(int keycode) {
@@ -275,8 +271,8 @@ public abstract class KidObject extends GameObject {
                     Point mousePoint = MouseInfo.getPointerInfo().getLocation();
                     Point appLocation = getHandler().getMain().getWindow().getFrame().getLocationOnScreen();
 
-                    setX(mousePoint.x - appLocation.x - 16);
-                    setY(mousePoint.y - appLocation.y - 48);
+                    setX(mousePoint.x - appLocation.x - 16 + getHandler().getMain().getScreen().getCamera().getCameraX());
+                    setY(mousePoint.y - appLocation.y - 48 + getHandler().getMain().getScreen().getCamera().getCameraY());
                 }
 
                 else if (keycode == KeyEvent.VK_R) {
@@ -302,7 +298,16 @@ public abstract class KidObject extends GameObject {
 
                     //jump
                     if (keycode == KeyEvent.VK_SHIFT) {
-                        if (canJump == 2) { //main jump
+                        long time = System.currentTimeMillis() - lastRelease;
+
+                        // cancel jump
+                        if (time >= 20 && time < 40 && canJump > 0) {
+                            velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
+
+                            onJump(JumpType.CANCEL_JUMP);
+                        }
+
+                        else if (canJump == 2) { //main jump
                             onJump(JumpType.FULL_JUMP);
 
                             canJump = 1;
@@ -322,7 +327,6 @@ public abstract class KidObject extends GameObject {
                             pressedShift = true;
                         }
                     }
-
                     //shoot
                     else if (keycode == KeyEvent.VK_Z) {
                         onShoot();
@@ -360,32 +364,9 @@ public abstract class KidObject extends GameObject {
                     velY *= gravity;
                     pressedShift = false;
                 }
-            }
-        });
 
-
-        // cancel jump
-        this.getKeyListener().add(new KeyListener() {
-            long lastRelease = 0;
-
-            @Override
-            public void onKeyRelease(int keycode) {
                 if (keycode == KeyEvent.VK_SHIFT) {
                     lastRelease = System.currentTimeMillis();
-                }
-            }
-
-            @Override
-            public void onKeyPress(int keycode) {
-                if (keycode == KeyEvent.VK_SHIFT) {
-
-                    long time = System.currentTimeMillis() - lastRelease;
-
-                    if (time >= 20 && time < 40 && canJump > 0) {
-                        velY = -jump * gravity;
-
-                        onJump(JumpType.CANCEL_JUMP);
-                    }
                 }
             }
         });

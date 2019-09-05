@@ -24,11 +24,12 @@ public class KeyController extends KeyAdapter {
         this.main = main;
     }
 
+    @SuppressWarnings("unchecked")
     public void tickKeyboard() {
         if (main.getHandler() == null)
             return;
 
-        HashMap<Integer, Long> keysCopy = new HashMap<>(keys); // keysCopy is to remove the java.util.ConcurrentModificationException crash
+        HashMap<Integer, Long> keysCopy = new HashMap<Integer, Long>((HashMap<Integer, Long>) keys.clone()); // keysCopy is to remove the java.util.ConcurrentModificationException crash
 
         keysCopy.keySet().forEach(keycode -> {
             try {
