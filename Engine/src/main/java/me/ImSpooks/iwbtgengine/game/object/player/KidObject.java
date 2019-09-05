@@ -188,7 +188,7 @@ public abstract class KidObject extends GameObject {
     }
 
     private void kill() {
-        //TODO kill, blood + effect=
+        //TODO kill, blood + effect
 
         this.setDeath(true);
         this.x = -32;

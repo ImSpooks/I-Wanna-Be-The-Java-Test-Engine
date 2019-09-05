@@ -36,12 +36,13 @@ public class GameScreen extends AbstractScreen {
         graphics.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
 
         graphics.setColor(new Color(0, 255, 255, 128).darker().darker());
-        for (int i = 0; i < 20; i++) {
-            graphics.drawLine(camera.getCameraX(), 32 * i, Global.GAME_WIDTH, 32 * i);
+
+        for (int i = (int)Math.floor(camera.getCameraX() / 32.0); i < (int)Math.ceil(camera.getCameraX() / 32.0) + 26; i++) {
+            graphics.drawLine(32 * i - camera.getCameraX(), 0, 32 * i - camera.getCameraX(), Global.GAME_HEIGHT);
         }
 
-        for (int i = 0; i < 30; i++) {
-            graphics.drawLine(32 * i, 0, 32 * i, Global.GAME_HEIGHT);
+        for (int i = (int)Math.floor(camera.getCameraY() / 32.0); i < (int)Math.floor(camera.getCameraY() / 32.0) + 20; i++) {
+            graphics.drawLine(0, 32 * i - camera.getCameraY(), Global.GAME_WIDTH, 32 * i - camera.getCameraY());
         }
 
         this.getHandler().render(camera, graphics);
