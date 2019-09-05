@@ -31,6 +31,8 @@ public class SoundManager {
     }
 
     public void playSound(String name) {
+        if (!sounds.containsKey(name))
+            sounds.put(name, this.instance.getHandler().getMain().getResourceHandler().get(name, Sound.class));
         sounds.get(name).play();
     }
 

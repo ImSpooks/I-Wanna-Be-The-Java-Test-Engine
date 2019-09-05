@@ -27,8 +27,8 @@ public class InitializeTextures {
         new InitializeTextures();
     }
 
-    public InitializeTextures() {
-        String resourcePath = "Resources" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "resources";
+    private InitializeTextures() {
+        String resourcePath = "Engine" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "resources";
 
         File resourceFolder = new File(dir + File.separator + resourcePath);
 
@@ -39,10 +39,11 @@ public class InitializeTextures {
                 String path = file.getPath();
                 path = path.substring(resourceFolder.getPath().length() + 1).replace(File.separator, "/");
 
-                System.out.println(path.split("/")[1]);
-                Resource resource = new Resource(path, ResourceType.getFromType(path.split("/")[1]));
+                System.out.println(path.split("/")[path.split("/").length - 2]);
 
-                if (resource.getResourceType().isEnabled())
+                Resource resource = new Resource(path, ResourceType.getFromType(path.split("/")[path.split("/").length - 2]));
+
+                if (resource.getResourceType() != null && resource.getResourceType().isEnabled())
                     resources.add(resource);
             }
         }
@@ -57,12 +58,12 @@ public class InitializeTextures {
 
         File file = new File(editorPath, "resources.js");
 
-        String typeArray = "[";
+        StringBuilder typeArray = new StringBuilder("[");
         for (int i = 0; i < ResourceType.CACHE.length; i++) {
             if (ResourceType.CACHE[i].isEnabled())
-                typeArray += "\"" + ResourceType.CACHE[i] + "\"" + (i + 1 < ResourceType.CACHE.length ? ", " : "");
+                typeArray.append("\"").append(ResourceType.CACHE[i]).append("\"").append(i + 1 < ResourceType.CACHE.length ? ", " : "");
         }
-        typeArray += "]";
+        typeArray.append("]");
 
         List<String> content = new ArrayList<>();
 

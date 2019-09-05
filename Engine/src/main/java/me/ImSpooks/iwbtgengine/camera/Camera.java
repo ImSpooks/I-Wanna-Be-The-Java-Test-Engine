@@ -9,8 +9,7 @@ import lombok.Setter;
  * Copyright © ImSpooks
  */
 public class Camera {
-    private float cameraX = 0f;
-    private float cameraY = 0f;
+    private float cameraX = 0f, cameraY = 0f;
 
     private float toX = 0f, toY = 0f;
 
@@ -18,12 +17,15 @@ public class Camera {
 
     public void update(float delta) {
         if (smoothTransition) {
-            this.cameraX += (toX - this.cameraX) * .125;
-            this.cameraY += (toY - this.cameraY) * .125;
+            if (Math.abs(this.toX - this.cameraX) < 1) this.cameraX = this.toX;
+            else this.cameraX += (this.toX - this.cameraX) * .125;
+
+            if (Math.abs(this.toY - this.cameraY) < 1) this.cameraY = this.toY;
+            else this.cameraY += (this.toY - this.cameraY) * .125;
         }
         else {
-            this.cameraX = toX;
-            this.cameraY = toY;
+            this.cameraX = this.toX;
+            this.cameraY = this.toY;
         }
     }
 

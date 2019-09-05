@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.collision;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.ImSpooks.iwbtgengine.camera.Camera;
 
 import java.awt.*;
 import java.util.List;
@@ -38,20 +39,15 @@ public abstract class Hitbox {
                 return false;
             }
 
-
-            int tx = x1;
-            int ty = y1;
-            int rx = x2;
-            int ry = y2;
-            rw += rx;
-            rh += ry;
-            tw += tx;
-            th += ty;
+            rw += x2;
+            rh += y2;
+            tw += x1;
+            th += y1;
             //      overflow || intersect
-            return ((rw < rx || rw > tx) &&
-                    (rh < ry || rh > ty) &&
-                    (tw < tx || tw > rx) &&
-                    (th < ty || th > ry));
+            return ((rw < x2 || rw > x1) &&
+                    (rh < y2 || rh > y1) &&
+                    (tw < x1 || tw > x2) &&
+                    (th < y1 || th > y2));
         }
         else {
             for (int[] integers : hitbox.getPixels()) {
@@ -65,20 +61,21 @@ public abstract class Hitbox {
         return false;
     }
 
-    public void renderHitbox(int x, int y, Graphics graphics) {
+    public void renderHitbox(Camera camera, int x, int y, Graphics graphics) {
         Color oldColor = graphics.getColor();
 
         graphics.setColor(new Color(200, 0, 220, 128));
 
         switch (hitboxType.getDataType()) {
             case 1: {
-                graphics.fillRect(x + this.pixels.get(0)[0], y + this.pixels.get(0)[1], this.pixels.get(this.pixels.size() - 1)[0], this.pixels.get(this.pixels.size() - 1)[1]);
+                graphics.fillRect(x + this.pixels.get(0)[0] - camera.getCameraX(), y + this.pixels.get(0)[1] - camera.getCameraY(), this.pixels.get(this.pixels.size() - 1)[0], this.pixels.get(this.pixels.size() - 1)[1]);
                 break;
             }
-            default: {
+            default:
+            case 2: {
                 if (this.pixels != null && !this.pixels.isEmpty()) {
                     for (int[] pixel : this.pixels) {
-                        graphics.fillRect(x + pixel[0], y + pixel[1], 1, 1);
+                        graphics.fillRect(x + pixel[0] - camera.getCameraX(), y + pixel[1] - camera.getCameraY(), 1, 1);
                     }
                 }
                 break;

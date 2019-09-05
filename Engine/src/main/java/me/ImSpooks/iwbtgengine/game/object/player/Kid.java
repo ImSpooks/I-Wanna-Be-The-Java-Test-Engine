@@ -8,7 +8,6 @@ import me.ImSpooks.iwbtgengine.game.object.sprite.GIFSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
-import me.ImSpooks.iwbtgengine.sound.Sound;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -65,9 +64,7 @@ public class Kid extends KidObject {
 
     @Override
     public void onJump(JumpType type) {
-        //getHandler().getMain().getSoundManager().playSound(null);
-
-        //getHandler().getMain().getResourceHandler().get("snd" + (getCanJump() == 2 ? "" : "D") + "Jump", Sound.class).play();
+        this.getHandler().getMain().getSoundManager().playSound("snd" + (getCanJump() == 2 ? "" : "D") + "Jump");
     }
 
 
@@ -78,7 +75,7 @@ public class Kid extends KidObject {
             Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceHandler().getResource("sprBullet")), this.getXScale());
             bullets.add(bullet);
 
-            getHandler().getMain().getResourceHandler().get("sndShoot", Sound.class).play();
+            this.getHandler().getMain().getSoundManager().playSound("sndShoot");
         }
     }
 

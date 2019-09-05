@@ -1,6 +1,5 @@
 package me.ImSpooks.iwbtgengine.handler;
 
-import com.sun.media.sound.RIFFInvalidDataException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.ImSpooks.iwbtgengine.Main;
@@ -8,9 +7,11 @@ import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 import me.ImSpooks.iwbtgengine.sound.Sound;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -39,18 +40,15 @@ public class ResourceHandler {
 
                     for (ResourceType resourceType : ResourceType.CACHE) {
                         for (String extension : resourceType.getExtensions()) {
-                            if (resourceFile.endsWith("." + extension)) {
-                                this.cacheResource("/" + resourceFile, resourceType);
+                            if (resourceFile.toLowerCase().endsWith("." + extension)) {
+                                this.cacheResource("/" + resourceFile, resourceType, extension);
 
                                 continue resourcesLoop;
                             }
                         }
                     }
 
-                } catch (UnsupportedAudioFileException | LineUnavailableException e) {
-                    main.getLogger().log(Level.WARNING, String.format("Unable to load resource '%s', thrown exception: '%s'", resourceFile, e.getClass().getSimpleName()));
-                    e.printStackTrace();
-                } catch (EOFException | RIFFInvalidDataException e) {
+                } catch (Exception e) {
                     main.getLogger().log(Level.WARNING, String.format("Unable to load resource '%s', thrown exception: '%s'", resourceFile, e.getClass().getSimpleName()));
                     e.printStackTrace();
                 }
@@ -85,7 +83,7 @@ public class ResourceHandler {
         return resources.get(value);
     }
 
-    private void cacheResource(String resource, ResourceType type) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    private void cacheResource(String resource, ResourceType type, String extension) throws IOException {
         String fileName = resource.split("/")[resource.split("/").length - 1].split("\\.")[0];
 
         switch (type) {
@@ -103,14 +101,7 @@ public class ResourceHandler {
                 break;
             }
             case SOUND: {
-                AudioInputStream stream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(resource)));
-
-                // load the sound into memory (a Clip)
-
-                Clip clip = AudioSystem.getClip();
-                clip.open(stream);
-
-                Sound sound = new Sound(fileName, clip);
+                Sound sound = new Sound(fileName, resource);
 
                 this.resources.put(fileName, Arrays.asList(sound, type.getClazz()));
 
@@ -125,7 +116,7 @@ public class ResourceHandler {
         IMAGE(new String[] {"png", "jpg", "jpeg", "bmp"}, BufferedImage.class),
         GIF(new String[] {"gif"}, GIFIcon.class),
         TXT(new String[] {"txt"}, null),
-        SOUND(new String[] {"wav"}, Sound.class);
+        SOUND(new String[] {"wav", "brtsm"}, Sound.class),
         ;
 
         public static ResourceType[] CACHE = values();

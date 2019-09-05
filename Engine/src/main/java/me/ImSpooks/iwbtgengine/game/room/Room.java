@@ -5,7 +5,6 @@ import lombok.Setter;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
-import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.room.readers.EngineReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.JToolReader;
@@ -78,7 +77,7 @@ public abstract class Room {
 
             int x = 0, y = 0;
 
-            if (this.getHandler().getKid() != null) {
+            if (this.getHandler().getKid() != null && (Math.abs(camera.getCameraX() - kidX) + Math.abs(camera.getCameraY() + kidY)) > 32) {
                 x = (int) Math.floor(kidX - Global.GAME_WIDTH / 2.0 + 16);
                 y = (int) Math.floor(kidY - Global.GAME_HEIGHT / 2.0 + 16);
             }
@@ -107,7 +106,7 @@ public abstract class Room {
         }
     }
 
-    public void readMap(ReaderType type) {
+    private void readMap(ReaderType type) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(this.path)));
 
         switch (type) {
@@ -149,8 +148,6 @@ public abstract class Room {
         List<GameObject> list = new ArrayList<>();
 
         for (GameObject gameObject : this.getObjects()) {
-            if (gameObject instanceof KillerObject) {
-            }
             if (x >= gameObject.getX() && x < gameObject.getX() + gameObject.getWidth()) {
                 if (y >= gameObject.getY() && y < gameObject.getY() + gameObject.getHeight()) {
                     list.add(gameObject);

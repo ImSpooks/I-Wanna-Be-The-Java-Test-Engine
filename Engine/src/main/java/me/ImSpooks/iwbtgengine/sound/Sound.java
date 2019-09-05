@@ -1,9 +1,12 @@
 package me.ImSpooks.iwbtgengine.sound;
 
 import lombok.Getter;
+import me.ImSpooks.iwbtgengine.Main;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Created by Nick on 04 sep. 2019.
@@ -12,16 +15,30 @@ import javax.sound.sampled.FloatControl;
  */
 public class Sound {
 
-    @Getter private final String name;
-    @Getter private final Clip audioClip;
+    //TODO create interface for wav, ogg and mp3 files
 
-    public Sound(String name, Clip audioClip) {
+    @Getter private final String name;
+    @Getter private final String resource;
+
+    private AudioInputStream audioStream;
+    @Getter private Clip audioClip;
+
+    public Sound(String name, String resource) {
         this.name = name;
-        this.audioClip = audioClip;
+        this.resource = resource;
     }
 
     public Sound play() {
-        new Thread(audioClip::start).start();
+        long now = System.currentTimeMillis();
+        if (this.audioClip != null) {
+            this.stop();
+        }
+        this.audioClip = this.getAudio();
+
+        new Thread(() -> {
+            audioClip.start();
+            System.out.println(String.format("Took %s milis to play sound '%s'", System.currentTimeMillis() - now, this.name));
+        }).start();
         return this;
     }
 
@@ -63,5 +80,24 @@ public class Sound {
         float dB = (float) (Math.log(volume) / Math.log(gain.getMaximum()) * 20);
         gain.setValue(dB);
         return this;
+    }
+
+
+    private Clip getAudio() {
+        try {
+            audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(resource)));
+
+            // load the sound into memory (a Clip)
+
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.setFramePosition(0);
+
+            return clip;
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            Main.getInstance().getLogger().log(Level.WARNING, String.format("1 Unable to load resource '%s', thrown exception: '%s'", resource, e.getClass().getSimpleName()));
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -6,6 +6,7 @@ import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.keycontroller.KeyListener;
 
 import java.awt.*;
@@ -55,11 +56,16 @@ public abstract class GameObject {
 
     public void render(Camera camera, Graphics graphics) {
         if (this.sprite != null) {
-            sprite.draw(camera, graphics, (int) this.x, (int) this.y);
+            // Make sure to render objects only in field of view of the camera, to avoid rendering objects off screen to reduce lag
+            if (!(this.x + this.getWidth() < camera.getCameraX() || this.x > camera.getCameraX() + Global.GAME_WIDTH
+                    || this.y + this.getHeight() < camera.getCameraY() || this.y > camera.getCameraY() + Global.GAME_HEIGHT)) {
+                sprite.draw(camera, graphics, (int) this.x, (int) this.y);
+
+                /*if (this.getHitbox() != null)
+                    this.getHitbox().renderHitbox(camera, (int) this.x, (int) this.y, graphics);//*/
+            }
         }
     }
 
-    public void onRemove() {
-
-    }
+    public void onRemove() {}
 }
