@@ -5,12 +5,11 @@ import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.global.Global;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,12 +25,12 @@ public class JToolReader extends MapReader {
 
     @Override
     public void readMap() {
+        this.setRoomWidth(Global.GAME_WIDTH);
+        this.setRoomHeight(Global.GAME_HEIGHT);
+
         int lastX = 0;
         int lastY = 0;
         int lastID = 0;
-
-        System.out.println("Initializing room " + this.getClass().getName());
-        long now = System.currentTimeMillis();
 
         List<Integer> ids = new ArrayList<>();
 
@@ -166,13 +165,9 @@ public class JToolReader extends MapReader {
                 }
             }
 
-            Collections.sort(ids);
-            System.out.println(Arrays.toString(ids.toArray(new Integer[ids.size()])));
-
         } catch (Exception e) {
             System.out.println("Something went wrong adding object at x = [" + lastX + "], y = [" + lastY + "], id = [" + lastID + "]");
             e.printStackTrace();
         }
-        System.out.println("Took " + (System.currentTimeMillis() - now) + " ms to initialize room " + this.getClass().getName());
     }
 }

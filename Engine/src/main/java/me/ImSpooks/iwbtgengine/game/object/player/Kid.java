@@ -7,6 +7,7 @@ import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
@@ -30,16 +31,29 @@ public class Kid extends KidObject {
         this.bullets = new ArrayList<>();
     }
 
+    private Sprite deathSprite;
+
     @Override
     public void render(Camera camera, Graphics graphics) {
         super.render(camera, graphics);
 
         bullets.forEach(bullet -> bullet.render(camera, graphics));
+
+
+        if (this.deathSprite != null) {
+            int width = this.deathSprite.getImage().getWidth();
+            int height = this.deathSprite.getImage().getHeight();
+
+            graphics.drawImage(this.deathSprite.getImage(), (int) ((Global.GAME_WIDTH / 2.0) - (width / 2.0)), (int) ((Global.GAME_HEIGHT / 2.0) - (height / 2.0)), null);
+        }
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+
+        if (this.deathSprite != null)
+            this.deathSprite.update(delta);
 
         List<Bullet> toRemove = new ArrayList<>();
 
@@ -55,6 +69,11 @@ public class Kid extends KidObject {
         }
 
         bullets.removeAll(toRemove);
+
+        //render death screen after 25 frames
+        if (this.getTicksDead() > Global.FRAME_RATE / 2 && this.deathSprite == null) {
+            this.deathSprite = Sprite.generateSprite(this.getHandler().getMain().getResourceHandler().getResource("sprGameOver"));
+        }
     }
 
     @Override
@@ -64,10 +83,24 @@ public class Kid extends KidObject {
 
     @Override
     public void onJump(JumpType type) {
-        this.getHandler().getMain().getSoundManager().playSound("snd" + (getCanJump() == 2 ? "" : "D") + "Jump");
+        this.getHandler().getSoundManager().playSound("snd" + (getCanJump() == 2 ? "" : "D") + "Jump");
     }
 
+    @Override
+    public boolean onDeath() {
+        this.getHandler().getSoundManager().playSound("sndDeath");
 
+        this.getHandler().getSoundManager().playSound("deathBgm", "musOnDeath");
+        this.getHandler().getSoundManager().getSound("bgm").pause();
+        return true;
+    }
+
+    @Override
+    public boolean onReset() {
+        this.getHandler().getSoundManager().stopSound("deathBgm");
+        this.deathSprite = null;
+        return true;
+    }
 
     @Override
     public void onShoot() {
@@ -75,7 +108,7 @@ public class Kid extends KidObject {
             Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceHandler().getResource("sprBullet")), this.getXScale());
             bullets.add(bullet);
 
-            this.getHandler().getMain().getSoundManager().playSound("sndShoot");
+            this.getHandler().getSoundManager().playSound("sndShoot");
         }
     }
 

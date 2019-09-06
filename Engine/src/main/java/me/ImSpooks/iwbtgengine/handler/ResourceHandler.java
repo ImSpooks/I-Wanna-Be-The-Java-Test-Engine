@@ -5,14 +5,18 @@ import lombok.RequiredArgsConstructor;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 import me.ImSpooks.iwbtgengine.sound.Sound;
+import me.ImSpooks.iwbtgengine.util.StringUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 
 /**
@@ -35,13 +39,15 @@ public class ResourceHandler {
 
     public void initialize() {
         try {
-            resourcesLoop: for (String resourceFile : getResourceFiles("resources/")) {
+            String directory = "/resources/";
+
+            resourcesLoop: for (String resourceFile : getResourceFiles(directory, this.getClass().getResource(directory))) {
                 try {
 
                     for (ResourceType resourceType : ResourceType.CACHE) {
                         for (String extension : resourceType.getExtensions()) {
                             if (resourceFile.toLowerCase().endsWith("." + extension)) {
-                                this.cacheResource("/" + resourceFile, resourceType, extension);
+                                this.cacheResource(resourceFile, resourceType, extension);
 
                                 continue resourcesLoop;
                             }
@@ -101,11 +107,12 @@ public class ResourceHandler {
                 break;
             }
             case SOUND: {
-                Sound sound = new Sound(fileName, resource);
-
-                this.resources.put(fileName, Arrays.asList(sound, type.getClazz()));
-
-                System.out.println(String.format("Audio file '%s' loaded succefully", fileName));
+                try {
+                    Sound sound = (Sound) Class.forName(Sound.class.getPackage().getName() + "." + StringUtils.capitalize(extension) + "Sound").getConstructor(String.class, String.class).newInstance(fileName, resource);
+                    this.resources.put(fileName, Arrays.asList(sound, type.getClazz()));
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
         }
@@ -125,34 +132,61 @@ public class ResourceHandler {
         @Getter private final Class clazz;
     }
 
-    private List<String> getResourceFiles(String path) throws IOException {
+    private List<String> getResourceFiles(String path, URL protocol) throws IOException {
         List<String> filenames = new ArrayList<>();
 
-        try (
-                InputStream in = getResourceAsStream(path);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-            String resource;
+        if (protocol.getProtocol().equalsIgnoreCase("jar")) {
+            path = path.substring(1);
+            String internalPath = protocol.getPath();
+            String jarPath = internalPath.substring(5, internalPath.indexOf("!"));
 
-            while ((resource = br.readLine()) != null) {
-                if (!resource.contains(".")) {
-                    filenames.addAll(getResourceFiles(path + resource + "/"));
+            try (JarFile jar = new JarFile(URLDecoder.decode(jarPath, StandardCharsets.UTF_8.name()))) {
+                Enumeration<JarEntry> entries = jar.entries();
+                while (entries.hasMoreElements()) {
+                    JarEntry entry = entries.nextElement();
+                    String name = "/" + entry.getName();
+
+                    if (name.startsWith("/" + path)) {
+                        if (!name.contains(".")) {
+                            filenames.add("");
+                            continue;
+                        }
+                        filenames.add(name);
+                    }
+
+                }
+            }
+        }
+        else {
+            for (String file : readLines(this.getClass().getResourceAsStream(path))) {
+                if (!file.contains(".")) {
+                    filenames.addAll(this.getResourceFiles(path + file + "/", protocol));
                     continue;
                 }
-                filenames.add(path + resource);
+                filenames.add(path + file);
             }
         }
 
         return filenames;
     }
 
-    private InputStream getResourceAsStream(String resource) {
-        final InputStream in
-                = getContextClassLoader().getResourceAsStream(resource);
-
-        return in == null ? getClass().getResourceAsStream(resource) : in;
+    private List<String> readLines(InputStream input) throws IOException {
+        InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
+        return readLines((Reader)reader);
     }
 
-    private ClassLoader getContextClassLoader() {
-        return Thread.currentThread().getContextClassLoader();
+    private List<String> readLines(Reader input) throws IOException {
+        BufferedReader reader = toBufferedReader(input);
+        List<String> list = new ArrayList<>();
+
+        for(String line = reader.readLine(); line != null; line = reader.readLine()) {
+            list.add(line);
+        }
+
+        return list;
+    }
+
+    private BufferedReader toBufferedReader(Reader reader) {
+        return reader instanceof BufferedReader ? (BufferedReader)reader : new BufferedReader(reader);
     }
 }

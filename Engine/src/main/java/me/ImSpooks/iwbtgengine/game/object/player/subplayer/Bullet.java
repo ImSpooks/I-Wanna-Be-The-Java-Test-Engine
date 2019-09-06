@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.game.object.player.subplayer;
 
 import lombok.Getter;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
+import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
@@ -24,6 +25,15 @@ public class Bullet extends GameObject {
     @Override
     public void update(float delta) {
         this.x += 12 * xScale;
+
+        for (GameObject gameObject : this.getParent().getObjectsAt((int) this.x, (int) this.y)) {
+            //TODO save blocker
+            if (gameObject instanceof Block) {
+                this.x = -1000;
+                this.y = -1000;
+                return;
+            }
+        }
 
         if (ticksAlive++ > Global.FRAME_RATE) {
             this.x = -1000;

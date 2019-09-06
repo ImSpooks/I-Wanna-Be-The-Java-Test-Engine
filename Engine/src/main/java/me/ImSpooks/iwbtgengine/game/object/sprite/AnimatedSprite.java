@@ -37,6 +37,8 @@ public class AnimatedSprite extends Sprite {
 
     public void update(float delta) {
         if (this.getFrameLength() > 0 && this.getFrameCount() > 0) {
+            int old = renderedFrame;
+
             if (renderedFrame >= getFrameCount())
                 renderedFrame = 0;
 
@@ -53,6 +55,10 @@ public class AnimatedSprite extends Sprite {
                 renderedFrame++;
             }
 
+
+            if (renderedFrame != old)
+                if (this.getOnUpdate() != null)
+                    this.getOnUpdate().onUpdate(delta);
         }
     }
 

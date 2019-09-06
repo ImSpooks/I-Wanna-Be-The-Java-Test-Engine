@@ -1,7 +1,9 @@
 package me.ImSpooks.iwbtgengine.game.object.sprite;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
+import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.util.ImageUtils;
 
 import java.awt.*;
@@ -15,7 +17,8 @@ import java.util.List;
  */
 public class Sprite {
 
-    @Getter protected BufferedImage image;
+    @Getter @Setter protected BufferedImage image;
+    @Getter private SpriteUpdate onUpdate;
 
     public Sprite(BufferedImage image) {
         this.image = image;
@@ -26,7 +29,6 @@ public class Sprite {
     }
 
     public static Sprite generateSprite(List<Object> value) {
-
         switch (((Class) value.get(1)).getSimpleName()) {
             case "BufferedImage": return new Sprite((BufferedImage) value.get(0));
             case "GIFIcon":   return new GIFSprite((GIFIcon) value.get(0));
@@ -47,5 +49,10 @@ public class Sprite {
             image = ImageUtils.getInstance().flipImage(image, false);
 
         graphics.drawImage(image, x - camera.getCameraX(), y - camera.getCameraY(), null);
+    }
+
+    public void setOnUpdate(SpriteUpdate onUpdate) {
+        this.onUpdate = onUpdate;
+        this.onUpdate.onUpdate(Global.FRAME_RATE / 1000);
     }
 }

@@ -24,10 +24,6 @@ public class GameScreen extends AbstractScreen {
         super(game, handler);
 
         this.eventHandler = new EventHandler();
-
-        //TODO REMOVE
-        this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom("stage1_room1").setHandler(this.getHandler()));
-        this.getHandler().setKid(new Kid(null, 32, 32, this.getHandler()));
     }
 
     @Override
@@ -58,6 +54,10 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void preLoad() {
         this.setCamera(new Camera());
+
+        //TODO REMOVE
+        this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom(this.getHandler(), "stage1_room1"));
+        this.getHandler().setKid(new Kid(null, 32, 32, this.getHandler()));
     }
 
     @Override

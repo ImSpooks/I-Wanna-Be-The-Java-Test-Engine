@@ -16,7 +16,7 @@ public class GIFSprite extends Sprite {
     @Getter private final GIFIcon icon;
 
     public GIFSprite(GIFIcon icon) {
-        super(null);
+        super((BufferedImage) icon.getImage());
         this.icon = icon;
     }
 
@@ -29,6 +29,8 @@ public class GIFSprite extends Sprite {
 
     @Override
     public void update(float delta) {
+        int old = renderedFrame;
+
         if (++tick >= this.getIcon().getDuration(this.renderedFrame) / (100.0 / Global.FRAME_RATE)) {
             tick = 0;
             renderedFrame++;
@@ -37,10 +39,24 @@ public class GIFSprite extends Sprite {
         if (renderedFrame >= this.icon.getFrameCount()) {
             this.renderedFrame = 0;
         }
+
+        if (renderedFrame != old)
+            if (this.getOnUpdate() != null)
+                this.getOnUpdate().onUpdate(delta);
     }
 
     @Override
     public BufferedImage getImage() {
         return (BufferedImage) this.icon.getImage(renderedFrame);
+    }
+
+    @Override
+    public void setImage(BufferedImage image) {
+        super.setImage(image);
+        this.icon.setImage(this.getImage());
+    }
+
+    public BufferedImage getOriginalImage() {
+        return this.image;
     }
 }

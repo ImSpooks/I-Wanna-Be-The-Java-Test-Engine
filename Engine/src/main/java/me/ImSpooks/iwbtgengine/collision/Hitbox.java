@@ -13,7 +13,7 @@ import java.util.List;
  * Copyright © ImSpooks
  */
 public abstract class Hitbox {
-    @Getter private List<int[]> pixels;
+    private List<int[]> pixels;
 
     @Getter private HitboxType hitboxType;
 
@@ -27,14 +27,18 @@ public abstract class Hitbox {
         this.pixels = this.getPixels();
     }
 
+    public List<int[]> getCachedPixels() {
+        return this.pixels;
+    }
+
     public abstract List<int[]> getPixels();
 
     public boolean intersects(Hitbox hitbox, int x1, int y1, int x2, int y2) {
         if (this.getHitboxType().getDataType() == hitbox.getHitboxType().getDataType()) {
             int tw = this.pixels.get(this.pixels.size() - 1)[0];
             int th = this.pixels.get(this.pixels.size() - 1)[1];
-            int rw = hitbox.getPixels().get(hitbox.getPixels().size() - 1)[0];
-            int rh = hitbox.getPixels().get(hitbox.getPixels().size() - 1)[1];
+            int rw = hitbox.getCachedPixels().get(hitbox.getCachedPixels().size() - 1)[0];
+            int rh = hitbox.getCachedPixels().get(hitbox.getCachedPixels().size() - 1)[1];
             if (rw <= 0 || rh <= 0 || tw <= 0 || th <= 0) {
                 return false;
             }
@@ -50,7 +54,7 @@ public abstract class Hitbox {
                     (th < y1 || th > y2));
         }
         else {
-            for (int[] integers : hitbox.getPixels()) {
+            for (int[] integers : hitbox.getCachedPixels()) {
                 for (int[] pixel : this.pixels) {
                     if (integers[0] + x1 == pixel[0] + x2 && integers[1] + y1 == pixel[1] + y2) {
                         return true;

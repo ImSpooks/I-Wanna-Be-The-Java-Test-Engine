@@ -2,7 +2,9 @@ package me.ImSpooks.iwbtgengine.game.room;
 
 import lombok.Getter;
 import me.ImSpooks.iwbtgengine.game.room.init.TestRoom;
+import me.ImSpooks.iwbtgengine.game.room.init.TestRoom2;
 import me.ImSpooks.iwbtgengine.global.ErrorCodes;
+import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,7 +25,8 @@ public class RoomManager {
 
         Map<String, Room> cache = new LinkedHashMap<>();
 
-        cache.put("stage1_room1", new TestRoom());
+        cache.put("stage1_room1", new TestRoom(null));
+        cache.put("stage1_room2", new TestRoom2(null));
 
         for (Map.Entry<String, Room> entry : cache.entrySet()) {
             Room room = entry.getValue();
@@ -36,19 +39,43 @@ public class RoomManager {
         cache.clear();
     }
 
-    public Room getRoom(String name) {
+    public Room getRoom(GameHandler handler, String name) {
         if (!this.rooms.containsKey(name)) {
             System.exit(ErrorCodes.ROOM_NOT_FOUND);
             throw new NullPointerException(String.format("Room with name \"%s\" not found.", name));
         }
+        this.setHandlerForRoom(handler, name);
         return this.rooms.get(name);
     }
 
-    public Room getRoom(int id) {
+    public Room getRoom(GameHandler handler, int id) {
         if (!this.roomsById.containsKey(id)) {
             System.exit(ErrorCodes.ROOM_NOT_FOUND);
             throw new NullPointerException(String.format("Room with id \"%s\" not found.", id));
         }
+        this.setHandlerForRoom(handler, id);
         return this.roomsById.get(id);
+    }
+
+    private void setHandlerForRoom(GameHandler handler, String name) {
+        if (this.rooms.containsKey(name)) {
+            try {
+                if (rooms.get(name).getHandler() == null)
+                    rooms.put(name, rooms.get(name).getClass().getConstructor(GameHandler.class).newInstance(handler));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void setHandlerForRoom(GameHandler handler, int id) {
+        if (this.roomsById.containsKey(id)) {
+            try {
+                if (roomsById.get(id).getHandler() == null)
+                    roomsById.put(id, roomsById.get(id).getClass().getConstructor(GameHandler.class).newInstance(handler));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

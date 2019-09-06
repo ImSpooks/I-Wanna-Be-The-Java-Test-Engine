@@ -29,25 +29,29 @@ public class KeyController extends KeyAdapter {
         if (main.getHandler() == null)
             return;
 
-        HashMap<Integer, Long> keysCopy = new HashMap<Integer, Long>((HashMap<Integer, Long>) keys.clone()); // keysCopy is to remove the java.util.ConcurrentModificationException crash
+        try {
+            HashMap<Integer, Long> keysCopy = new HashMap<Integer, Long>((HashMap<Integer, Long>) keys.clone()); // keysCopy is to remove the java.util.ConcurrentModificationException crash
 
-        keysCopy.keySet().forEach(keycode -> {
-            try {
-                for (GameObject gameObject : main.getHandler().getRoom().getObjects()) {
-                    if (!gameObject.getKeyListener().isEmpty()) {
-                        gameObject.getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keycode));
+            keysCopy.keySet().forEach(keycode -> {
+                try {
+                    for (GameObject gameObject : main.getHandler().getRoom().getObjects()) {
+                        if (!gameObject.getKeyListener().isEmpty()) {
+                            gameObject.getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keycode));
+                        }
                     }
-                }
 
-                if (main.getHandler().getKid() != null) {
-                    if (!main.getHandler().getKid().getKeyListener().isEmpty()) {
-                        main.getHandler().getKid().getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keycode));
+                    if (main.getHandler().getKid() != null) {
+                        if (!main.getHandler().getKid().getKeyListener().isEmpty()) {
+                            main.getHandler().getKid().getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keycode));
+                        }
                     }
+                } catch (ConcurrentModificationException e) {
+                    // do nothing
                 }
-            } catch (ConcurrentModificationException e) {
-                // do nothing
-            }
-        });
+            });
+        } catch (ConcurrentModificationException e) {
+            // do nothing
+        }
     }
 
     @Override

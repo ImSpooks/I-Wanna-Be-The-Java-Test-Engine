@@ -2,8 +2,11 @@ package me.ImSpooks.iwbtgengine.game.room.readers;
 
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
+import me.ImSpooks.iwbtgengine.game.object.objects.killer.Cherry;
+import me.ImSpooks.iwbtgengine.game.object.objects.killer.ColoredCherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
+import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.game.room.RoomType;
@@ -12,6 +15,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.awt.*;
 import java.io.BufferedReader;
 
 /**
@@ -94,7 +98,10 @@ public class EngineReader extends MapReader {
 
                     case "killers": {
                         if (tile.startsWith("sprCherry")) {
-                            // Cherry / Apple
+                            if (tile.endsWith("White"))
+                                gameObject = new ColoredCherry(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)), Color.GREEN);
+                            else
+                                gameObject = new Cherry(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
                         else if (tile.startsWith("sprSpike") || tile.startsWith("sprMini")) {
                             gameObject = new Spike(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
@@ -106,6 +113,13 @@ public class EngineReader extends MapReader {
                     case "triggers": {
                         if (tile.equalsIgnoreCase("sprTriggerMask")) {
                             gameObject = new Trigger(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                        }
+                        break;
+                    }
+
+                    case "warps": {
+                        if (tile.equalsIgnoreCase("sprWarp")) {
+                            gameObject = new Warp(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
                         break;
                     }

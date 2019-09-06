@@ -55,17 +55,22 @@ public abstract class GameObject {
     }
 
     public void render(Camera camera, Graphics graphics) {
-        if (this.sprite != null) {
-            // Make sure to render objects only in field of view of the camera, to avoid rendering objects off screen to reduce lag
-            if (!(this.x + this.getWidth() < camera.getCameraX() || this.x > camera.getCameraX() + Global.GAME_WIDTH
-                    || this.y + this.getHeight() < camera.getCameraY() || this.y > camera.getCameraY() + Global.GAME_HEIGHT)) {
-                sprite.draw(camera, graphics, (int) this.x, (int) this.y);
+        if (this.canRender(camera)) {
+            sprite.draw(camera, graphics, (int) this.x, (int) this.y);
 
-                /*if (this.getHitbox() != null)
-                    this.getHitbox().renderHitbox(camera, (int) this.x, (int) this.y, graphics);//*/
-            }
+            //if (this.getHitbox() != null) this.getHitbox().renderHitbox(camera, (int) this.x, (int) this.y, graphics);
         }
     }
 
+    public boolean canRender(Camera camera) {
+        return this.sprite != null && !(this.x + this.getWidth() < camera.getCameraX() || this.x > camera.getCameraX() + Global.GAME_WIDTH
+                    || this.y + this.getHeight() < camera.getCameraY() || this.y > camera.getCameraY() + Global.GAME_HEIGHT);
+    }
+
     public void onRemove() {}
+
+    public void setPosition(int x, int y) {
+        this.setX(x);
+        this.setY(y);
+    }
 }

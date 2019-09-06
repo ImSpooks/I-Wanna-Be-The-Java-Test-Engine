@@ -9,6 +9,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
+import me.ImSpooks.iwbtgengine.game.object.player.subplayer.Blood;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
@@ -20,6 +21,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Nick on 04 May 2019.
@@ -42,6 +44,9 @@ public abstract class KidObject extends GameObject {
     @Getter private Map<String, Sprite> sprites;
 
     @Getter private final GameHandler handler;
+
+    @Getter private int ticksLived = 0, ticksDead = 0;
+
 
     public KidObject(Room parent, double x, double y, GameHandler handler) {
         super(parent, x, y, null);
@@ -73,8 +78,11 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public void update(float delta) {
-        if (this.isDeath())
+        if (this.isDeath()) {
+            this.ticksDead++;
             return;
+        }
+        this.ticksLived++;
 
         super.update(delta);
 
@@ -175,24 +183,48 @@ public abstract class KidObject extends GameObject {
 
     public abstract void onShoot();
 
+    public abstract boolean onDeath();
+
+    public abstract boolean onReset();
+
     public abstract Map<String, Sprite> getSpriteMap();
 
     private void reset() {
-        getHandler().getRoom().reset();
-        x = getHandler().getRoom().getMap().getStartX();
-        y = getHandler().getRoom().getMap().getStartY();
+        if (this.onReset()) {
+            this.ticksDead = 0;
 
-        this.setDeath(false);
-        canJump = 1;
-        velY = 0;
+            getHandler().getRoom().reset();
+            x = getHandler().getRoom().getMap().getStartX();
+            y = getHandler().getRoom().getMap().getStartY();
+
+            this.setDeath(false);
+            canJump = 1;
+            velY = 0;
+        }
     }
 
     private void kill() {
-        //TODO kill, blood + effect
+        if (this.onDeath()) {
+            this.ticksLived = 0;
+            this.setDeath(true);
 
-        this.setDeath(true);
-        this.x = -32;
-        this.y = -32;
+            Random random = new Random();
+            for (int i = 0; i < 150; i++) {
+                Blood blood = new Blood(this.handler.getRoom(), this.x + 16, this.y + 16, new Sprite(this.handler.getMain().getResourceHandler().get("sprBlood" + (random.nextInt(3) + 1))));
+
+                blood.setVelX((random.nextDouble() * 2 - 1) * 8);
+                blood.setVelY((random.nextDouble() * 10 - 2) * -1);
+                while (Math.sqrt(blood.getVelX() * blood.getVelX() + blood.getVelY() * blood.getVelY()) > 8) {
+                    blood.setVelX((random.nextDouble() * 2 - 1) * 8);
+                    blood.setVelY((random.nextDouble() * 10 - 2) * -1);
+                }
+
+                this.handler.getRoom().addObject(blood);
+            }
+
+            this.x = -32;
+            this.y = -32;
+        }
     }
 
     private boolean floorCollision(boolean falling) {
@@ -280,9 +312,9 @@ public abstract class KidObject extends GameObject {
                 if (!frozen) {
                     if (getHandler().getMain().isDebugging()) { // change alignment - only in debug mode
                         if (keycode == KeyEvent.VK_A) {
-                            setX(getX() - 1);
+                            velX -= 1;
                         } else if (keycode == KeyEvent.VK_D) {
-                            setX(getX() + 1);
+                            velX += 1;
                         }
                     }
 
@@ -298,9 +330,9 @@ public abstract class KidObject extends GameObject {
 
                         // cancel jump
                         if (time >= 20 && time < 40 && canJump > 0) {
-                            velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
-
                             onJump(JumpType.CANCEL_JUMP);
+
+                            velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
                         }
 
                         else if (canJump == 2) { //main jump

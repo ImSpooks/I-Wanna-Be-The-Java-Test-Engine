@@ -40,12 +40,11 @@ public abstract class Room {
 
     @Getter protected boolean shiftBackroundImage = true;
 
-    public Room(ReaderType type, String path) {
+    public Room(ReaderType type, String path, GameHandler handler) {
         this.path = path;
+        this.handler = handler;
 
         this.readMap(type);
-
-        this.onLoad();
     }
 
     public void render(Camera camera, Graphics graphics) {
@@ -97,12 +96,15 @@ public abstract class Room {
             int x = 0, y = 0;
 
             if (this.getHandler().getKid() != null) {
-                x = (int) Math.floor((kidX + 16.0) / Global.GAME_WIDTH) * Global.GAME_WIDTH;
-                y = (int) Math.floor((kidY + 16.0) / Global.GAME_HEIGHT) * Global.GAME_HEIGHT;
+                x = (int) Math.floor((kidX + 16.0) / Global.GAME_WIDTH);
+                y = (int) Math.floor((kidY + 16.0) / Global.GAME_HEIGHT);
+
+                x = -x + x * Global.GAME_WIDTH;
+                y = -y + y * Global.GAME_HEIGHT;
             }
 
             if (!this.getHandler().getKid().isDeath())
-                camera.setCameraPosition(Math.max(Math.min(x, this.map.getRoomWidth()), 0), Math.max(Math.min(y, this.map.getRoomHeight()), 0));
+                camera.setCameraPosition(Math.max(Math.min(x, this.map.getRoomWidth() - Global.GAME_WIDTH), 0), Math.max(Math.min(y, this.map.getRoomHeight() - Global.GAME_HEIGHT), 0));
         }
     }
 
@@ -144,6 +146,13 @@ public abstract class Room {
         return this.map.getObjects();
     }
 
+    public GameObject addObject(GameObject object) {
+        List<GameObject> objects = this.map.getObjects();
+        objects.add(object);
+        this.map.setObjects(objects);
+        return object;
+    }
+
     public List<GameObject> getObjectsAt(int x, int y) {
         List<GameObject> list = new ArrayList<>();
 
@@ -168,24 +177,23 @@ public abstract class Room {
         return objects;
     }
 
-    public void reset() {
+    public Room reset() {
         try {
             long now = System.nanoTime();
-            Main.getInstance().getHandler().setRoom(this.getClass().newInstance().setHandler(this.getHandler()));
+
+            Room room = this.getClass().getConstructor(GameHandler.class).newInstance(this.getHandler());
+            Main.getInstance().getHandler().setRoom(room);
             long time = System.nanoTime() - now;
 
             if (time > TimeUnit.MILLISECONDS.toNanos(20)) {
                 System.out.println(String.format("Reloading room took more than a single frame (%s ns, %s ms)", time, time / 1000000L));
             }
+            return room;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public abstract void onLoad();
-
-    public Room setHandler(GameHandler handler) {
-        this.handler = handler;
-        return this;
-    }
 }

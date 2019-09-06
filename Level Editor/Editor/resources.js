@@ -46,12 +46,12 @@ var Resources = {
        subtype: "ITEMS"
    },
    sprCherry: {
-       path: "sprites/killers/sprCherry.png",
+       path: "sprites/killers/sprCherry.gif",
        type: "SPRITES",
        subtype: "KILLERS"
    },
    sprCherryWhite: {
-       path: "sprites/killers/sprCherryWhite.png",
+       path: "sprites/killers/sprCherryWhite.gif",
        type: "SPRITES",
        subtype: "KILLERS"
    },

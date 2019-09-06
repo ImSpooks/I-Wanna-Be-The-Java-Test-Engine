@@ -27,7 +27,7 @@ function initialize() {
                     image.alt = key;
                     image.id = key;
                     image.classList.add(Types[i]);
-                    image.src = "../../Resources/src/main/resources/resources/" + value.path;
+                    image.src = "../../Engine/src/main/resources/resources/" + value.path;
 
                     image.onclick = function(event) {
                         selectedObject = key;

@@ -6,7 +6,7 @@ import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.room.Room;
-import me.ImSpooks.iwbtgengine.sound.Sound;
+import me.ImSpooks.iwbtgengine.sound.SoundManager;
 
 import java.awt.*;
 
@@ -25,8 +25,6 @@ public class GameHandler {
 
     public GameHandler(Main main) {
         this.main = main;
-
-        this.getMain().getResourceHandler().get("Test", Sound.class).play();
     }
 
     public void render(Camera camera, Graphics graphics) {
@@ -49,6 +47,10 @@ public class GameHandler {
 
     public void setRoom(Room room) {
         this.room = room;
-        //room.reset();
+        room.onLoad();
+    }
+
+    public SoundManager getSoundManager() {
+        return this.getMain().getSoundManager();
     }
 }
