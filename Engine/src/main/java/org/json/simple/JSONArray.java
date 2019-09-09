@@ -378,4 +378,9 @@ public class JSONArray extends ArrayList implements JSONAware, JSONStreamAware {
 	public String toString() {
 		return toJSONString();
 	}
+
+
+	public <T> T get(int key, Class<T> clazz) {
+		return clazz.cast(this.get(key));
+	}
 }

@@ -35,14 +35,14 @@ public class RenderManager implements Runnable {
                     update((float)delta / 1000.0f);
                     render();
 
-                    delta--;
+                    delta = 0;
                     frames++;
 
                 }
 
                 if (System.currentTimeMillis() - timer > 1000) {
                     timer += 1000;
-                    //System.out.println("frames = " + frames);
+                    System.out.println("frames per second = " + frames);
                     frames = 0;
 
                     /*if (SaveSelection.selected != null) {

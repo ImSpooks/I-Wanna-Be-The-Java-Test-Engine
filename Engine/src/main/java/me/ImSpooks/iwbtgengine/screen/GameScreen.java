@@ -1,9 +1,7 @@
 package me.ImSpooks.iwbtgengine.screen;
 
-import lombok.Getter;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
-import me.ImSpooks.iwbtgengine.event.EventHandler;
 import me.ImSpooks.iwbtgengine.game.object.player.Kid;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
@@ -17,13 +15,9 @@ import java.awt.*;
  */
 public class GameScreen extends AbstractScreen {
 
-    @Getter
-    private final EventHandler eventHandler;
 
     public GameScreen(Main game, GameHandler handler) {
         super(game, handler);
-
-        this.eventHandler = new EventHandler();
     }
 
     @Override
@@ -47,7 +41,6 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void update(Camera camera, float delta) {
         this.getCamera().update(delta);
-        this.eventHandler.update(delta);
         this.getHandler().update(camera, delta);
     }
 
@@ -57,7 +50,9 @@ public class GameScreen extends AbstractScreen {
 
         //TODO REMOVE
         this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom(this.getHandler(), "stage1_room1"));
+
         this.getHandler().setKid(new Kid(null, 32, 32, this.getHandler()));
+        this.getHandler().getKid().reset();
     }
 
     @Override

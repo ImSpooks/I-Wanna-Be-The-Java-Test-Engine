@@ -49,7 +49,7 @@ public class Kid extends KidObject {
     }
 
     @Override
-    public void update(float delta) {
+    public boolean update(float delta) {
         super.update(delta);
 
         if (this.deathSprite != null)
@@ -74,6 +74,8 @@ public class Kid extends KidObject {
         if (this.getTicksDead() > Global.FRAME_RATE / 2 && this.deathSprite == null) {
             this.deathSprite = Sprite.generateSprite(this.getHandler().getMain().getResourceHandler().getResource("sprGameOver"));
         }
+
+        return true;
     }
 
     @Override

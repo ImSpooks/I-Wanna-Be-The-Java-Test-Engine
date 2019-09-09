@@ -1,5 +1,7 @@
 package me.ImSpooks.iwbtgengine.global;
 
+import java.util.Random;
+
 /**
  * Created by Nick on 01 May 2019.
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
@@ -12,4 +14,6 @@ public class Global {
     public static final int FRAME_RATE = 50;
 
     public static final double GRAVITY = 1.0;
+
+    public static final Random RANDOM = new Random();
 }

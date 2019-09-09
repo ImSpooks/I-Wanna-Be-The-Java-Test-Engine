@@ -2,7 +2,6 @@ package me.ImSpooks.iwbtgengine.game.object.sprite;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.ImSpooks.iwbtgengine.util.ImageUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public class AnimatedSprite extends Sprite {
         this.frameCount = frameCount;
         this.frameLength = frameLength;
 
-        this.update(1000 / 50);
+        this.update(1000.0f / 50.0f);
     }
 
     private int tick;
@@ -43,7 +42,7 @@ public class AnimatedSprite extends Sprite {
                 renderedFrame = 0;
 
             if (!cache.containsKey(renderedFrame)) {
-                cache.put(renderedFrame, ImageUtils.getInstance().getSubImage(this.getOriginalImage(), renderedFrame, 0, width, height));
+                cache.put(renderedFrame, this.getImageUtils().getSubImage(this.getOriginalImage(), renderedFrame, 0, width, height));
             }
 
             renderedImage = cache.get(renderedFrame);

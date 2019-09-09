@@ -129,4 +129,8 @@ public class JSONObject extends HashMap implements Map, JSONAware, JSONStreamAwa
 	public static String escape(String s){
 		return JSONValue.escape(s);
 	}
+
+	public <T> T get(Object key, Class<T> clazz) {
+		return clazz.cast(this.get(key));
+	}
 }

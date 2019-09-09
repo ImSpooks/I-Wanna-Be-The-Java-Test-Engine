@@ -29,28 +29,22 @@ public class KeyController extends KeyAdapter {
         if (main.getHandler() == null)
             return;
 
-        try {
-            HashMap<Integer, Long> keysCopy = new HashMap<Integer, Long>((HashMap<Integer, Long>) keys.clone()); // keysCopy is to remove the java.util.ConcurrentModificationException crash
-
-            keysCopy.keySet().forEach(keycode -> {
-                try {
-                    for (GameObject gameObject : main.getHandler().getRoom().getObjects()) {
-                        if (!gameObject.getKeyListener().isEmpty()) {
-                            gameObject.getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keycode));
-                        }
+        for (int keyCode : keys.keySet()) {
+            try {
+                for (GameObject gameObject : main.getHandler().getRoom().getObjects()) {
+                    if (!gameObject.getKeyListener().isEmpty()) {
+                        gameObject.getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keyCode));
                     }
-
-                    if (main.getHandler().getKid() != null) {
-                        if (!main.getHandler().getKid().getKeyListener().isEmpty()) {
-                            main.getHandler().getKid().getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keycode));
-                        }
-                    }
-                } catch (ConcurrentModificationException e) {
-                    // do nothing
                 }
-            });
-        } catch (ConcurrentModificationException e) {
-            // do nothing
+
+                if (main.getHandler().getKid() != null) {
+                    if (!main.getHandler().getKid().getKeyListener().isEmpty()) {
+                        main.getHandler().getKid().getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keyCode));
+                    }
+                }
+            } catch (ConcurrentModificationException e) {
+                // do nothing
+            }
         }
     }
 

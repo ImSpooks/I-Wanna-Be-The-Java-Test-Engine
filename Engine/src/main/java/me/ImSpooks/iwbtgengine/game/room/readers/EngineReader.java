@@ -5,6 +5,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Cherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.ColoredCherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
+import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
@@ -42,9 +43,9 @@ public class EngineReader extends MapReader {
             JSONObject map = (JSONObject) jsonParser.parse(reader);
 
 
-            JSONObject mapType = (JSONObject) map.get("map_type");
+            JSONObject mapType = map.get("map_type", JSONObject.class);
 
-            this.setRoomType(RoomType.valueOf(((String) mapType.get("type")).toUpperCase()));
+            this.setRoomType(RoomType.valueOf(mapType.get("type", String.class).toUpperCase()));
 
             switch (this.getRoomType()) {
                 default:
@@ -54,18 +55,18 @@ public class EngineReader extends MapReader {
                     break;
                 }
                 case SCROLLING: {
-                    this.setRoomWidth(Math.toIntExact((long) mapType.get("width")));
-                    this.setRoomHeight(Math.toIntExact((long) mapType.get("height")));
+                    this.setRoomWidth(Math.toIntExact(mapType.get("width", Long.class)));
+                    this.setRoomHeight(Math.toIntExact(mapType.get("height", Long.class)));
                     break;
                 }
                 case SHIFT: {
-                    this.setRoomWidth(Math.toIntExact((long) mapType.get("rooms_horizontal")) * Global.GAME_WIDTH);
-                    this.setRoomHeight(Math.toIntExact((long) mapType.get("rooms_vertical")) * Global.GAME_HEIGHT);
+                    this.setRoomWidth(Math.toIntExact(mapType.get("rooms_horizontal", Long.class) * Global.GAME_WIDTH));
+                    this.setRoomHeight(Math.toIntExact(mapType.get("rooms_vertical", Long.class) * Global.GAME_HEIGHT));
                     break;
                 }
             }
 
-            JSONArray objects = (JSONArray) map.get("objects");
+            JSONArray objects = map.get("objects", JSONArray.class);
 
             //Iterate over employee array
 
@@ -74,11 +75,11 @@ public class EngineReader extends MapReader {
 
                 JSONObject object = (JSONObject) obj;
 
-                String tile = (String) object.get("tile");
-                String type = (String) object.get("type");
+                String tile = object.get("tile", String.class);
+                String type = object.get("type", String.class);
 
-                int x = Math.toIntExact((long) object.get("x"));
-                int y = Math.toIntExact((long) object.get("y"));
+                int x = Math.toIntExact(object.get("x", Long.class));
+                int y = Math.toIntExact(object.get("y", Long.class));
 
                 switch (type.toLowerCase()) {
                     default: break;
@@ -87,6 +88,9 @@ public class EngineReader extends MapReader {
                         if (tile.startsWith("playerstart")) {
                             this.setStartX(x);
                             this.setStartY(y);
+                        }
+                        else if (tile.startsWith("sprJumpRefresher")) {
+                            gameObject = new JumpRefresher(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
                         break;
                     }

@@ -3,8 +3,8 @@ package me.ImSpooks.iwbtgengine.game.object.objects.blocks;
 import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
+import me.ImSpooks.iwbtgengine.event.events.init.PerformAction;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
-import me.ImSpooks.iwbtgengine.game.object.objects.events.TouchObject;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
@@ -18,13 +18,10 @@ import java.util.List;
  */
 public class Block extends GameObject {
 
-    @Getter @Setter private TouchObject onTouch = () -> {};
+    @Getter @Setter private PerformAction onTouch = () -> {};
 
     public Block(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
-
-        this.setWidth(sprite.getImage().getWidth());
-        this.setHeight(sprite.getImage().getHeight());
 
 
         this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
@@ -38,11 +35,6 @@ public class Block extends GameObject {
                         // only adding outline to reduce lag
 
                         pixels.add(new int[] {x, y});
-                        if ((x == 0 || x == sprite.getImage().getWidth() - 1) || (y == 0 || y == sprite.getImage().getHeight() - 1)) {
-
-                            if (parent.getObjects().size() == 0) {
-                            }
-                        }
                     }
                 }
 
@@ -52,10 +44,12 @@ public class Block extends GameObject {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
-
-        this.x += this.velX;
-        this.y += this.velY;
+    public boolean update(float delta) {
+        if (super.update(delta)) {
+            this.x += this.velX;
+            this.y += this.velY;
+            return true;
+        }
+        return false;
     }
 }

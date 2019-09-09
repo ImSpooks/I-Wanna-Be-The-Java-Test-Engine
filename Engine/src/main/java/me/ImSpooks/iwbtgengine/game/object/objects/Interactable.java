@@ -1,5 +1,8 @@
 package me.ImSpooks.iwbtgengine.game.object.objects;
 
+import lombok.Getter;
+import lombok.Setter;
+import me.ImSpooks.iwbtgengine.event.events.init.PerformAction;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
@@ -10,6 +13,8 @@ import me.ImSpooks.iwbtgengine.game.room.Room;
  * Copyright © ImSpooks
  */
 public abstract class Interactable extends GameObject {
+
+    @Getter @Setter private PerformAction onTouch = () -> {};
 
     public Interactable(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);

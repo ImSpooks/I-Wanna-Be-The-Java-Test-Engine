@@ -17,29 +17,24 @@ public class Cherry extends KillerObject {
     public Cherry(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
 
-        this.setWidth(sprite.getImage().getWidth());
-        this.setHeight(sprite.getImage().getHeight());
+        sprite.setOnUpdate(delta -> setHitbox(new Hitbox() {
+            @Override
+            public List<int[]> getPixels() {
 
-        sprite.setOnUpdate(delta -> {
-            setHitbox(new Hitbox() {
-                @Override
-                public List<int[]> getPixels() {
+                List<int[]> pixels = new ArrayList<>();
 
-                    List<int[]> pixels = new ArrayList<>();
+                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
+                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
 
-                    for (int x = 0; x < sprite.getImage().getWidth(); x++) {
-                        for (int y = 0; y < sprite.getImage().getHeight(); y++) {
+                        if ((sprite.getImage().getRGB(x,y) >>24) == 0x00)
+                            continue;
 
-                            if ((sprite.getImage().getRGB(x,y) >>24) == 0x00)
-                                continue;
-
-                            pixels.add(new int[] {x, y});
-                        }
+                        pixels.add(new int[] {x, y});
                     }
-
-                    return pixels;
                 }
-            });
-        });
+
+                return pixels;
+            }
+        }));
     }
 }

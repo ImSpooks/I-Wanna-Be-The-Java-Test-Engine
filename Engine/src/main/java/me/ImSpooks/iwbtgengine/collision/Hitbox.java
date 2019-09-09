@@ -65,21 +65,21 @@ public abstract class Hitbox {
         return false;
     }
 
-    public void renderHitbox(Camera camera, int x, int y, Graphics graphics) {
+    public void renderHitbox(Camera camera, double x, double y, Graphics graphics) {
         Color oldColor = graphics.getColor();
 
         graphics.setColor(new Color(200, 0, 220, 128));
 
         switch (hitboxType.getDataType()) {
             case 1: {
-                graphics.fillRect(x + this.pixels.get(0)[0] - camera.getCameraX(), y + this.pixels.get(0)[1] - camera.getCameraY(), this.pixels.get(this.pixels.size() - 1)[0], this.pixels.get(this.pixels.size() - 1)[1]);
+                graphics.fillRect((int) x + this.pixels.get(0)[0] - camera.getCameraX(), (int) y + this.pixels.get(0)[1] - camera.getCameraY(), this.pixels.get(this.pixels.size() - 1)[0], this.pixels.get(this.pixels.size() - 1)[1]);
                 break;
             }
             default:
             case 2: {
                 if (this.pixels != null && !this.pixels.isEmpty()) {
                     for (int[] pixel : this.pixels) {
-                        graphics.fillRect(x + pixel[0] - camera.getCameraX(), y + pixel[1] - camera.getCameraY(), 1, 1);
+                        graphics.fillRect((int) x + pixel[0] - camera.getCameraX(), (int) y + pixel[1] - camera.getCameraY(), 1, 1);
                     }
                 }
                 break;

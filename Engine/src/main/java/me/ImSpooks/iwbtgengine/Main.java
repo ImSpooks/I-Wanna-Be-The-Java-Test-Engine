@@ -1,6 +1,7 @@
 package me.ImSpooks.iwbtgengine;
 
 import lombok.Getter;
+import me.ImSpooks.iwbtgengine.filemanager.FileManager;
 import me.ImSpooks.iwbtgengine.game.room.RoomManager;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
@@ -45,6 +46,8 @@ public class Main extends Canvas {
     // Render manager
     @Getter private RenderManager renderManager;
 
+    @Getter private FileManager fileManager;
+
     // Room manager + cached rooms
     @Getter private RoomManager roomManager;
 
@@ -65,6 +68,8 @@ public class Main extends Canvas {
         this.addKeyListener(this.keyController = new KeyController(this));
 
         this.resourceHandler.initialize();
+
+        this.fileManager = new FileManager(this);
 
         this.roomManager = new RoomManager();
 

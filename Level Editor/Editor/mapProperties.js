@@ -28,6 +28,70 @@ map_type.onchange = function (event) {
 
 map_type.onchange();
 
+function importMap() {
+    let x = document.getElementById("file");
+
+    if ('files' in x) {
+        if (x.files.length === 1) {
+            let file = x.files[0];
+            let name = file.name;
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                objects = {};
+
+                let loaded = selectedCategory;
+
+                let result = event.target.result;
+
+                let json = JSON.parse(result);
+
+                let array = json["objects"];
+
+                for (let i = 0; i < array.length; i++) {
+                    let object = array[i];
+
+                    let selectedObject = object["tile"];
+                    let type = object["type"];
+                    let x = object["x"];
+                    let y = object["y"];
+                    let customId = object["custom_id"];
+
+                    document.getElementById(type).onclick();
+
+                    objects["x" + x + "_y" + y] = [selectedObject, type, x, y, Resources[selectedObject].path, document.getElementById(selectedObject), customId];
+                }
+
+                document.getElementById(loaded).onclick();
+
+
+                let map_type_json = json["map_type"];
+
+                map_type.value = map_type_json["type"];
+                map_type.onchange();
+
+                if (map_type.value == "scrolling") {
+                    document.getElementById("room_width").value = map_type_json["width"];
+                    document.getElementById("room_height").value = map_type_json["width"];
+
+                    document.getElementById("room_height").onchange();
+                }
+                else if (map_type.value == "shift") {
+                    document.getElementById("rooms_h").value = map_type_json["rooms_horizontal"];
+                    document.getElementById("rooms_v").value = map_type_json["rooms_vertical"];
+
+                    document.getElementById("rooms_v").onchange();
+                }
+
+                x.value = "";
+            };
+
+            reader.readAsText(file);
+        }
+    }
+}
+
 
 function exportMap() {
     let data = {};

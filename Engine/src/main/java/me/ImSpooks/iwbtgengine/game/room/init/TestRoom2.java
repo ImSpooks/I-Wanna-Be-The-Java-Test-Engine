@@ -16,7 +16,7 @@ public class TestRoom2 extends Room {
         super(ReaderType.JTOOL, "/room/level/stage1/room1.jmap", handler);
 
         //this.background = Main.getInstance().getResourceHandler().get("test background");
-        this.shiftBackroundImage = true;
+        this.shiftBackgroundImage = true;
     }
 
     @Override

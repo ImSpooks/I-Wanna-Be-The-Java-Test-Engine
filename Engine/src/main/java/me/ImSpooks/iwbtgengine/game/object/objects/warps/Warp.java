@@ -1,9 +1,6 @@
 package me.ImSpooks.iwbtgengine.game.object.objects.warps;
 
-import lombok.Getter;
-import lombok.Setter;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
-import me.ImSpooks.iwbtgengine.game.object.objects.events.TouchObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
@@ -18,10 +15,10 @@ import java.util.List;
  */
 public class Warp extends Trigger {
 
-    @Getter @Setter private TouchObject onTouch = () -> {};
-
     public Warp(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
+
+        this.setVisible(true);
 
         this.setHitbox(new Hitbox() {
             @Override

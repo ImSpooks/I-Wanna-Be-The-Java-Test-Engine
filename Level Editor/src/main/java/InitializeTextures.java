@@ -175,7 +175,7 @@ public class InitializeTextures {
         @Getter private final String subtype;
         @Getter private final boolean enabled;
 
-        private static ResourceType[] CACHE = ResourceType.values();
+        private static final ResourceType[] CACHE = ResourceType.values();
 
         public static ResourceType getFromType(String folder) {
             for (ResourceType resourceType : CACHE) {

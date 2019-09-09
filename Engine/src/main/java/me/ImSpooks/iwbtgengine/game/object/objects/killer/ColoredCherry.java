@@ -6,7 +6,6 @@ import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
-import me.ImSpooks.iwbtgengine.util.ImageUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -27,30 +26,25 @@ public class ColoredCherry extends KillerObject {
 
         this.color = color;
 
-        this.setWidth(sprite.getImage().getWidth());
-        this.setHeight(sprite.getImage().getHeight());
+        sprite.setOnUpdate(delta -> setHitbox(new Hitbox() {
+            @Override
+            public List<int[]> getPixels() {
 
-        sprite.setOnUpdate(delta -> {
-            setHitbox(new Hitbox() {
-                @Override
-                public List<int[]> getPixels() {
+                List<int[]> pixels = new ArrayList<>();
 
-                    List<int[]> pixels = new ArrayList<>();
+                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
+                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
 
-                    for (int x = 0; x < sprite.getImage().getWidth(); x++) {
-                        for (int y = 0; y < sprite.getImage().getHeight(); y++) {
+                        if ((sprite.getImage().getRGB(x,y) >>24) == 0x00)
+                            continue;
 
-                            if ((sprite.getImage().getRGB(x,y) >>24) == 0x00)
-                                continue;
-
-                            pixels.add(new int[] {x, y});
-                        }
+                        pixels.add(new int[] {x, y});
                     }
-
-                    return pixels;
                 }
-            });
-        });
+
+                return pixels;
+            }
+        }));
     }
 
     @Override
@@ -65,7 +59,7 @@ public class ColoredCherry extends KillerObject {
             float riprobbierotton = 5000;
             Color color = new Color(Color.HSBtoRGB(System.currentTimeMillis() % (long) riprobbierotton / riprobbierotton, 1, 1));
 
-            BufferedImage toDraw = ImageUtils.getInstance().addColor(image, color, 0.4f);
+            BufferedImage toDraw = this.getImageUtils().getColoringUtils().addColor(image, color, 0.4f);
 
             graphics.setColor(Color.GREEN);
             graphics.drawImage(toDraw, (int) x - camera.getCameraX(), (int) y - camera.getCameraY(), null);

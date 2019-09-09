@@ -17,9 +17,6 @@ public class Spike extends KillerObject {
     public Spike(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
 
-        this.setWidth(sprite.getImage().getWidth());
-        this.setHeight(sprite.getImage().getHeight());
-
         this.setHitbox(new Hitbox() {
             @Override
             public List<int[]> getPixels() {

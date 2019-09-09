@@ -1,5 +1,8 @@
 package me.ImSpooks.iwbtgengine.event;
 
+import lombok.Getter;
+import me.ImSpooks.iwbtgengine.handler.GameHandler;
+
 import java.util.ArrayDeque;
 import java.util.Queue;
 
@@ -10,26 +13,35 @@ import java.util.Queue;
  */
 public class EventHandler {
 
+    @Getter private final GameHandler gameHandler;
+
+    public EventHandler(GameHandler gameHandler) {
+        this.gameHandler = gameHandler;
+    }
+
     private final Queue<Event> eventQueue = new ArrayDeque<>();
-    private Event currentEvent;
+    @Getter private Event currentEvent;
 
     public void update(float delta) {
-        while (currentEvent == null || currentEvent.isFinished()) { // no active event
+        while (currentEvent == null || currentEvent.isFinished(this.gameHandler)) { // no active event
+            if (currentEvent != null) {
+                currentEvent.onFinish(this.gameHandler);
+            }
             if (eventQueue.peek() == null) { // no event queued up
                 currentEvent = null;
                 break;
             } else {                    // event queued up
                 currentEvent = eventQueue.poll();
-                currentEvent.begin();
+                currentEvent.begin(this.gameHandler);
             }
         }
 
         if (currentEvent != null) {
-            currentEvent.update(delta);
+            currentEvent.update(this.gameHandler, delta);
         }
     }
 
-    public void addEvent(Event event) {
+    public void queueEvent(Event event) {
         this.eventQueue.add(event);
     }
 }

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
-import me.ImSpooks.iwbtgengine.game.object.objects.events.TouchObject;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
@@ -18,13 +17,10 @@ import java.util.List;
  */
 public class Trigger extends Interactable {
 
-    @Getter @Setter private TouchObject onTouch = () -> {};
+    @Getter @Setter private boolean visible = false;
 
     public Trigger(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
-
-        this.setWidth(sprite.getImage().getWidth());
-        this.setHeight(sprite.getImage().getHeight());
 
 
         this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
@@ -34,15 +30,7 @@ public class Trigger extends Interactable {
 
                 for (int x = 0; x < sprite.getImage().getWidth(); x++) {
                     for (int y = 0; y < sprite.getImage().getHeight(); y++) {
-
-                        // only adding outline to reduce lag
-
                         pixels.add(new int[]{x, y});
-                        if ((x == 0 || x == sprite.getImage().getWidth() - 1) || (y == 0 || y == sprite.getImage().getHeight() - 1)) {
-
-                            if (parent.getObjects().size() == 0) {
-                            }
-                        }
                     }
                 }
 
@@ -52,10 +40,14 @@ public class Trigger extends Interactable {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    public boolean update(float delta) {
+        if (super.update(delta)) {
+            this.x += this.velX;
+            this.y += this.velY;
 
-        this.x += this.velX;
-        this.y += this.velY;
+            return true;
+        }
+
+        return false;
     }
 }

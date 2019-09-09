@@ -1,9 +1,7 @@
 package me.ImSpooks.iwbtgengine.screen;
 
-import lombok.Getter;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
-import me.ImSpooks.iwbtgengine.event.EventHandler;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
@@ -15,12 +13,8 @@ import java.awt.*;
  */
 public class TitleScreen extends AbstractScreen {
 
-    @Getter private final EventHandler eventHandler;
-
     public TitleScreen(Main game, GameHandler handler) {
         super(game, handler);
-
-        this.eventHandler = new EventHandler();
     }
 
     @Override
@@ -31,7 +25,6 @@ public class TitleScreen extends AbstractScreen {
 
     @Override
     public void update(Camera camera, float delta) {
-        this.eventHandler.update(delta);
         this.getHandler().update(camera, delta);
     }
 

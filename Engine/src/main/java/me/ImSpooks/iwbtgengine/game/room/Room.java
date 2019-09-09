@@ -38,7 +38,7 @@ public abstract class Room {
 
     @Getter protected BufferedImage background = null;
 
-    @Getter protected boolean shiftBackroundImage = true;
+    @Getter protected boolean shiftBackgroundImage = true;
 
     public Room(ReaderType type, String path, GameHandler handler) {
         this.path = path;
@@ -49,11 +49,11 @@ public abstract class Room {
 
     public void render(Camera camera, Graphics graphics) {
         if (this.background != null) {
-            if (this.map.getRoomType() == RoomType.SHIFT && shiftBackroundImage) graphics.drawImage(this.background, 0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT, null);
+            if (this.map.getRoomType() == RoomType.SHIFT && shiftBackgroundImage) graphics.drawImage(this.background, 0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT, null);
             else graphics.drawImage(this.background, 0 - camera.getCameraX(), 0 - camera.getCameraY(), map.getRoomWidth(), map.getRoomHeight(), null);
         }
 
-        this.getObjects().stream().filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger)).forEach(object -> object.render(camera, graphics));
+        this.getObjects().stream().filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger && !((Trigger) object).isVisible())).forEach(object -> object.render(camera, graphics));
     }
 
     public void update(Camera camera, float delta) {
@@ -182,7 +182,11 @@ public abstract class Room {
             long now = System.nanoTime();
 
             Room room = this.getClass().getConstructor(GameHandler.class).newInstance(this.getHandler());
+            room.setInternalId(this.getInternalId());
             Main.getInstance().getHandler().setRoom(room);
+
+            this.getHandler().getParticleManager().clear();
+
             long time = System.nanoTime() - now;
 
             if (time > TimeUnit.MILLISECONDS.toNanos(20)) {

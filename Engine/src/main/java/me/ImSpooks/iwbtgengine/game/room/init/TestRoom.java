@@ -21,7 +21,7 @@ public class TestRoom extends Room {
         super(ReaderType.ENGINE, "/room/level/stage1/DefaultRoom.json", handler);
 
         //this.background = Main.getInstance().getResourceHandler().get("test background");
-        this.shiftBackroundImage = true;
+        this.shiftBackgroundImage = true;
     }
 
     @Override

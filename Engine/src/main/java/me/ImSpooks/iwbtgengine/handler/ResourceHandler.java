@@ -126,7 +126,7 @@ public class ResourceHandler {
         SOUND(new String[] {"wav", "brtsm"}, Sound.class),
         ;
 
-        public static ResourceType[] CACHE = values();
+        public static final ResourceType[] CACHE = values();
 
         @Getter private final String[] extensions;
         @Getter private final Class clazz;
@@ -171,8 +171,7 @@ public class ResourceHandler {
     }
 
     private List<String> readLines(InputStream input) throws IOException {
-        InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
-        return readLines((Reader)reader);
+        return readLines(new InputStreamReader(input, StandardCharsets.UTF_8));
     }
 
     private List<String> readLines(Reader input) throws IOException {

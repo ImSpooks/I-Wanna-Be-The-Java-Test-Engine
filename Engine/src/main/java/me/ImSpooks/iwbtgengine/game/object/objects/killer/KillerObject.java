@@ -16,10 +16,14 @@ public abstract class KillerObject extends Interactable {
     }
 
     @Override
-    public void update(float delta) {
-        super.update(delta);
+    public boolean update(float delta) {
+        if (super.update(delta)) {
+            this.x += this.velX;
+            this.y += this.velY;
 
-        this.x += this.velX;
-        this.y += this.velY;
+            return true;
+        }
+
+        return false;
     }
 }
