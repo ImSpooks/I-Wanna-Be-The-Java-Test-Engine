@@ -240,7 +240,7 @@ public abstract class KidObject extends GameObject {
     }
 
     private boolean floorCollision(boolean falling) {
-        for (int i = 12; i <= 12 + 1; i++) {
+        for (int i = 12; i <= 12 + 12; i++) {
             int x = (int) this.x + i;
 
             for (GameObject gameObject : this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? 32 : 10))) {
@@ -277,7 +277,7 @@ public abstract class KidObject extends GameObject {
 
     private boolean wallCollision(int xScale) {
 
-        for (int i = 12; i <= 12 + 20; i++) {
+        for (int i = 12; i < 12 + 20; i++) {
             int y = (int) this.y + i;
 
             for (GameObject gameObject : this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? 13 + 10 : 10), y)) {
