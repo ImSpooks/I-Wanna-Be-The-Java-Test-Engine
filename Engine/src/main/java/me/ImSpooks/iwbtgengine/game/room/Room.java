@@ -6,6 +6,7 @@ import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
+import me.ImSpooks.iwbtgengine.game.object.player.KidState;
 import me.ImSpooks.iwbtgengine.game.room.readers.EngineReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.JToolReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.MapReader;
@@ -81,7 +82,7 @@ public abstract class Room {
                 y = (int) Math.floor(kidY - Global.GAME_HEIGHT / 2.0 + 16);
             }
 
-            if (!this.getHandler().getKid().isDeath())
+            if (this.getHandler().getKid().getKidState() != KidState.DEAD)
                 camera.setCameraPosition(Math.max(Math.min(x, this.map.getRoomWidth() - Global.GAME_WIDTH), 0), Math.max(Math.min(y, this.map.getRoomHeight() - Global.GAME_HEIGHT - 2), 0));
         }
 
@@ -103,7 +104,7 @@ public abstract class Room {
                 y = -y + y * Global.GAME_HEIGHT;
             }
 
-            if (!this.getHandler().getKid().isDeath())
+            if (this.getHandler().getKid().getKidState() != KidState.DEAD)
                 camera.setCameraPosition(Math.max(Math.min(x, this.map.getRoomWidth() - Global.GAME_WIDTH), 0), Math.max(Math.min(y, this.map.getRoomHeight() - Global.GAME_HEIGHT), 0));
         }
     }
@@ -153,7 +154,7 @@ public abstract class Room {
         return object;
     }
 
-    public List<GameObject> getObjectsAt(int x, int y) {
+    public List<GameObject> getObjectsAt(double x, double y) {
         List<GameObject> list = new ArrayList<>();
 
         for (GameObject gameObject : this.getObjects()) {

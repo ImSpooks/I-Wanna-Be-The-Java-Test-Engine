@@ -23,13 +23,14 @@ public class Trigger extends Interactable {
         super(parent, x, y, sprite);
 
 
+
         this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();
 
-                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
-                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
+                for (int x = 0; x <= sprite.getImage().getWidth(); x++) {
+                    for (int y = 0; y <= sprite.getImage().getHeight(); y++) {
                         pixels.add(new int[]{x, y});
                     }
                 }

@@ -1,3 +1,5 @@
+document.addEventListener('contextmenu', event => event.preventDefault());
+
 var canvas = document.getElementById("canvas");
 
 var selectedCategory = Types[0];

@@ -2,8 +2,6 @@ package me.ImSpooks.iwbtgengine.game.object.particles;
 
 import lombok.Getter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
-import me.ImSpooks.iwbtgengine.game.object.GameObject;
-import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.particles.init.Particle;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
@@ -56,7 +54,7 @@ public class BloodParticle extends Particle {
                     this.velX *= 0.99;
                     this.velY += 0.275;
 
-                    for (GameObject gameObject : room.getObjectsAt((int) this.x, (int) this.y)) {
+                    /*for (GameObject gameObject : room.getObjectsAt((int) this.x, (int) this.y)) {
                         if (gameObject instanceof Block) {
                             this.velX = 0;
                             this.velY = 0;
@@ -64,7 +62,7 @@ public class BloodParticle extends Particle {
                             this.onBlock = true;
                             break;
                         }
-                    }
+                    }*/
                 }
             }
         }

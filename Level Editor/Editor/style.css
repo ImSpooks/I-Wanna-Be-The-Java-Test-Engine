@@ -19,3 +19,7 @@ div {
     border: 1px solid black;
 }
 
+#exportTextOutput {
+    width: 500px;
+}
+

@@ -2,7 +2,10 @@ package me.ImSpooks.iwbtgengine.game.room.readers;
 
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
+import me.ImSpooks.iwbtgengine.game.object.objects.blocks.SaveBlocker;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
+import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
+import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
@@ -67,15 +70,12 @@ public class JToolReader extends MapReader {
                             }
 
                             else if (id == 21) { // warp
-
+                                object = new Warp(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprWarp", BufferedImage.class)));
                             }
 
-                            /*else if (id == 22) { // jump refresher
-                                object = new JumpRefresher(x, y, ID.MISC, handler);
-                                object.setSprite(getSprites().getJumpRefresher());
-                                object.setX(object.getX() - object.getSpriteWidth() / 2);
-                                object.setY(object.getY() - object.getSpriteHeight() / 2);
-                            }*/
+                            else if (id == 22) { // jump refresher
+                                object = new JumpRefresher(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprJumpRefresher", BufferedImage.class)));
+                            }
 
                             else if (id == 1) { // block
                                 object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprBlock", BufferedImage.class)));
@@ -104,13 +104,12 @@ public class JToolReader extends MapReader {
                                 object = new Spike(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("spr" + (!isMini ? "Spike" : "Mini") + direction, BufferedImage.class)));
                             }
 
-                            /*else if (id == 19) { // save blocker
-                                object = new SaveBlocker(x, y, ID.MISC, handler);
-                                object.setSprite(getSprites().getSaveBlocker());
+                            else if (id == 19) { // save blocker
+                                object = new SaveBlocker(this.getRoom(), x, y, null);
                             }
 
 
-                            else if (id == 18) { // killer blocker blockers
+                            /*else if (id == 18) { // killer blocker blockers
                                 object = new KillerBlock(x, y, ID.KILLER_BLOCK, handler);
                                 object.setSprite(getSprites().getKillerblockSprite());
                             }

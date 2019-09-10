@@ -2,10 +2,12 @@ package me.ImSpooks.iwbtgengine.game.room.readers;
 
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
+import me.ImSpooks.iwbtgengine.game.object.objects.blocks.SaveBlocker;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Cherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.ColoredCherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
+import me.ImSpooks.iwbtgengine.game.object.objects.misc.Walljump;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
@@ -81,48 +83,58 @@ public class EngineReader extends MapReader {
                 int x = Math.toIntExact(object.get("x", Long.class));
                 int y = Math.toIntExact(object.get("y", Long.class));
 
+                String objType = tile.replace("spr", "");
+
                 switch (type.toLowerCase()) {
                     default: break;
 
-                    case "misc": {
-                        if (tile.startsWith("playerstart")) {
-                            this.setStartX(x);
-                            this.setStartY(y);
-                        }
-                        else if (tile.startsWith("sprJumpRefresher")) {
-                            gameObject = new JumpRefresher(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
-                        }
-                        break;
-                    }
-
                     case "blocks": {
-                        gameObject = new Block(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                        if (objType.startsWith("SaveBlocker")) {
+                            gameObject = new SaveBlocker(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                        }
+                        else {
+                            gameObject = new Block(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                        }
                         break;
                     }
 
                     case "killers": {
-                        if (tile.startsWith("sprCherry")) {
-                            if (tile.endsWith("White"))
+                        if (objType.startsWith("Cherry")) {
+                            if (objType.endsWith("White"))
                                 gameObject = new ColoredCherry(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)), Color.GREEN);
                             else
                                 gameObject = new Cherry(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
-                        else if (tile.startsWith("sprSpike") || tile.startsWith("sprMini")) {
+                        else if (objType.startsWith("Spike") || objType.startsWith("Mini")) {
                             gameObject = new Spike(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
 
                         }
                         break;
                     }
 
+                    case "misc": {
+                        if (objType.startsWith("playerstart")) {
+                            this.setStartX(x);
+                            this.setStartY(y);
+                        }
+                        else if (objType.startsWith("JumpRefresher")) {
+                            gameObject = new JumpRefresher(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                        }
+                        else if (objType.startsWith("Walljump")) {
+                            gameObject = new Walljump(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)), tile.endsWith("L") || tile.endsWith("Left"));
+                        }
+                        break;
+                    }
+
                     case "triggers": {
-                        if (tile.equalsIgnoreCase("sprTriggerMask")) {
+                        if (objType.equalsIgnoreCase("TriggerMask")) {
                             gameObject = new Trigger(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
                         break;
                     }
 
                     case "warps": {
-                        if (tile.equalsIgnoreCase("sprWarp")) {
+                        if (objType.equalsIgnoreCase("Warp")) {
                             gameObject = new Warp(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
                         break;

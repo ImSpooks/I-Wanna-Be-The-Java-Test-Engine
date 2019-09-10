@@ -102,15 +102,36 @@ function loop(time){
         let y = Math.floor(mousePosition.y / gridSize) * gridSize;
 
         if (selectedObject != null) {
-            if (leftClickDown && objects["x" + x + "_y" + y] == null)
-                objects["x" + x + "_y" + y] = [selectedObject, Resources[selectedObject].subtype, x, y, Resources[selectedObject].path, objectImage, document.getElementById("custom_id").value];
+            if (leftClickDown) {
+                if (objects["x" + x + "_y" + y] == null)
+                    objects["x" + x + "_y" + y] = [];
+
+                let add = true;
+                for (let i = 0; i < objects["x" + x + "_y" + y].length; i++) {
+                    let value = objects["x" + x + "_y" + y][i];
+
+                    if (value[4] === Resources[selectedObject].path) {
+                        add = false;
+                        break;
+                    }
+                }
+                if (add)
+                    objects["x" + x + "_y" + y].push([selectedObject, Resources[selectedObject].subtype, x, y, Resources[selectedObject].path, objectImage, document.getElementById("custom_id").value]);
+
+            }
+
             else if (rightClickDown && objects["x" + x + "_y" + y] != null)
                 delete objects["x" + x + "_y" + y];
         }
 
         Object.keys(objects).forEach(function (key, index, array) {
             let value = objects[key];
-            graphics.drawImage(value[5], value[2], value[3]);
+
+            for (let i = 0; i < value.length; i++) {
+                let tileInfo = value[i];
+                graphics.drawImage(tileInfo[5], tileInfo[2], tileInfo[3]);
+
+            }
         });
 
 

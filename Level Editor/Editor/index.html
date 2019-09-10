@@ -39,6 +39,12 @@
 
                 <button id="export" onclick="exportMap()">Export</button>
 
+                <br>
+                <button id="exportText" onclick="exportText()">Export Text</button>
+                <button id="hideOutput" onclick="hideOutput()">Hide output</button>
+                <button id="copy" onclick="copyToClipboard()">Copy to clipboard</button>
+                <textarea id="exportTextOutput" style="display: none" readonly></textarea>
+
                 <hr>
 
                 <p>Import map: <input type="file" id="file"></p>

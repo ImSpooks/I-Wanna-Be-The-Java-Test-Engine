@@ -9,5 +9,6 @@ public enum JumpType {
     FULL_JUMP,
     DOUBLE_JUMP,
     CANCEL_JUMP,
+    VINE_JUMP,
     ;
 }

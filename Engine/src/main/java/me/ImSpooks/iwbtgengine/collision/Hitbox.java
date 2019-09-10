@@ -34,24 +34,47 @@ public abstract class Hitbox {
     public abstract List<int[]> getPixels();
 
     public boolean intersects(Hitbox hitbox, int x1, int y1, int x2, int y2) {
-        if (this.getHitboxType().getDataType() == hitbox.getHitboxType().getDataType()) {
-            int tw = this.pixels.get(this.pixels.size() - 1)[0];
-            int th = this.pixels.get(this.pixels.size() - 1)[1];
-            int rw = hitbox.getCachedPixels().get(hitbox.getCachedPixels().size() - 1)[0];
-            int rh = hitbox.getCachedPixels().get(hitbox.getCachedPixels().size() - 1)[1];
+        if (this.getHitboxType().getDataType() == 1 && hitbox.getHitboxType().getDataType() == 1) {
+            Rectangle r1 = this.getRectIfPossible();
+            Rectangle r2 = hitbox.getRectIfPossible();
+
+            return r1.intersects(r2);
+
+
+            /*int tw = this.pixels.get(this.pixels.size() - 1)[0] - this.pixels.get(0)[0];
+            int th = this.pixels.get(this.pixels.size() - 1)[1] - this.pixels.get(0)[1];
+
+            List<int[]> other = hitbox.getCachedPixels();
+            int rw = other.get(other.size() - 1)[0] - other.get(0)[0];
+            int rh = other.get(other.size() - 1)[1] - other.get(0)[1];
+
+
             if (rw <= 0 || rh <= 0 || tw <= 0 || th <= 0) {
                 return false;
             }
 
-            rw += x2;
-            rh += y2;
-            tw += x1;
-            th += y1;
+            int tx = this.pixels.get(0)[0] + x1;
+            int ty = this.pixels.get(0)[1] + y1;
+            int rx = other.get(0)[0] + x2;
+            int ry = other.get(0)[1] + y2;
+
+            rw += rx;
+            rh += ry;
+            tw += tx;
+            th += ty;
+
+            System.out.println();
+            System.out.println("(" + rw + " < " + rx + " || " + rw + " > " + tx + ") = " + (rw < rx || rw > tx));
+            System.out.println("(" + rh + " < " + ry + " || " + rh + " > " + ty + ") = " + (rh < ry || rh > ty));
+            System.out.println("(" + tw + " < " + tx + " || " + tw + " > " + rx + ") = " + (tw < tx || tw > rx));
+            System.out.println("(" + th + " < " + ty + " || " + th + " > " + ry + ") = " + (th < ty || th > ry));
+
             //      overflow || intersect
-            return ((rw < x2 || rw > x1) &&
-                    (rh < y2 || rh > y1) &&
-                    (tw < x1 || tw > x2) &&
-                    (th < y1 || th > y2));
+            return (rw < rx || rw > tx) &&
+                    (rh < ry || rh > ty) &&
+                    (tw < tx || tw > rx) &&
+                    (th < ty || th > ry);*/
+
         }
         else {
             for (int[] integers : hitbox.getCachedPixels()) {
@@ -72,7 +95,9 @@ public abstract class Hitbox {
 
         switch (hitboxType.getDataType()) {
             case 1: {
-                graphics.fillRect((int) x + this.pixels.get(0)[0] - camera.getCameraX(), (int) y + this.pixels.get(0)[1] - camera.getCameraY(), this.pixels.get(this.pixels.size() - 1)[0], this.pixels.get(this.pixels.size() - 1)[1]);
+                int px = this.pixels.get(0)[0];
+                int py = this.pixels.get(0)[1];
+                graphics.fillRect((int) x + px - camera.getCameraX(), (int) y + py - camera.getCameraY(), this.pixels.get(this.pixels.size() - 1)[0] - px, this.pixels.get(this.pixels.size() - 1)[1] - py);
                 break;
             }
             default:
@@ -87,6 +112,20 @@ public abstract class Hitbox {
         }
 
         graphics.setColor(oldColor);
+    }
+
+    private Rectangle cachedRectangle;
+    public Rectangle getRectIfPossible() {
+        if (this.getHitboxType().getDataType() != 1)
+            return null;
+
+        if (cachedRectangle == null) {
+            int px = this.pixels.get(0)[0];
+            int py = this.pixels.get(0)[1];
+
+            return cachedRectangle = new Rectangle(px, py, this.pixels.get(this.pixels.size() - 1)[0] - px, this.pixels.get(this.pixels.size() - 1)[1] - py);
+        }
+        return cachedRectangle;
     }
 
     @RequiredArgsConstructor

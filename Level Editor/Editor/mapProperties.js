@@ -54,13 +54,16 @@ function importMap() {
 
                     let selectedObject = object["tile"];
                     let type = object["type"];
-                    let x = object["x"];
-                    let y = object["y"];
+                    let x = object["x"] + 32;
+                    let y = object["y"] + 32;
                     let customId = object["custom_id"];
 
                     document.getElementById(type).onclick();
 
-                    objects["x" + x + "_y" + y] = [selectedObject, type, x, y, Resources[selectedObject].path, document.getElementById(selectedObject), customId];
+                    if (objects["x" + x + "_y" + y] == null)
+                        objects["x" + x + "_y" + y] = [];
+
+                    objects["x" + x + "_y" + y].push([selectedObject, type, x, y, Resources[selectedObject].path, document.getElementById(selectedObject), customId]);
                 }
 
                 document.getElementById(loaded).onclick();
@@ -94,6 +97,48 @@ function importMap() {
 
 
 function exportMap() {
+    let json = exportJson();
+    let blob = new Blob([json], {type: "octet/stream"});
+    let url = window.URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.href = url;
+    a.download = document.getElementById("internalName").value + ".json";
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+}
+
+function set() {
+    document.getElementById("exportTextOutput").removeAttribute("readonly");
+    document.getElementById("exportTextOutput").value = exportJson();
+    document.getElementById("exportTextOutput").setAttribute("readonly", true);
+}
+
+function exportText() {
+    document.getElementById("exportTextOutput").style.display = "block";
+    set();
+}
+
+function hideOutput() {
+    document.getElementById("exportTextOutput").style.display = "none";
+}
+
+
+function copyToClipboard() {
+    set();
+
+    let element = document.getElementById("exportTextOutput");
+
+    element.select();
+    element.setSelectionRange(0, 99999);
+
+    document.execCommand("copy");
+}
+
+function exportJson() {
     let data = {};
 
     switch (map_type.value) {
@@ -123,29 +168,22 @@ function exportMap() {
     Object.keys(objects).forEach(function (key, index, array) {
         let value = objects[key];
 
-        let tile = {
-            tile: value[0],
-            type: value[1],
-            x: value[2] - 32,
-            y: value[3] - 32,
-            custom_id: value[6]
-        };
+        for (let i = 0; i < value.length; i++) {
+            let tileInfo = value[i];
 
-        data["objects"].push(tile);
+            let tile = {
+                tile: tileInfo[0],
+                type: tileInfo[1],
+                x: tileInfo[2] - 32,
+                y: tileInfo[3] - 32,
+                custom_id: tileInfo[6]
+            };
+
+            data["objects"].push(tile);
+        }
     });
 
-    let json = JSON.stringify(data);
-    let blob = new Blob([json], {type: "octet/stream"});
-    let url = window.URL.createObjectURL(blob);
-
-    let a = document.createElement("a");
-    a.style.display = "none";
-    document.body.appendChild(a);
-    a.href = url;
-    a.download = document.getElementById("internalName").value + ".json";
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
+    return JSON.stringify(data);
 }
 
 function resetMap() {

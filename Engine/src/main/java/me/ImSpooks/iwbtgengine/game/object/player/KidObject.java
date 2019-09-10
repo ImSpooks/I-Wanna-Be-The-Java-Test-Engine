@@ -34,11 +34,11 @@ import java.util.Random;
  */
 public abstract class KidObject extends GameObject {
 
-    @Getter @Setter private boolean death = false;
     @Getter @Setter private boolean frozen = false;
 
     @Getter @Setter private int xScale = 1;
 
+    @Getter @Setter private int maxJumps = 2;
     @Getter @Setter private int canJump;
 
     @Getter @Setter private double gravity = 0.4;
@@ -53,6 +53,8 @@ public abstract class KidObject extends GameObject {
 
     @Getter private KeyListener kidController;
 
+    @Getter @Setter private KidState kidState;
+
     public KidObject(Room parent, double x, double y, GameHandler handler) {
         super(parent, x, y, null);
         this.handler = handler;
@@ -66,8 +68,8 @@ public abstract class KidObject extends GameObject {
 
                 Rectangle rectangle = new Rectangle(12, 11, 11, 21);//21
 
-                for (int xx = 0; xx < rectangle.width; xx++) {
-                    for (int yy = 0; yy < rectangle.height; yy++) {
+                for (int xx = 0; xx <= rectangle.width; xx++) {
+                    for (int yy = 0; yy <= rectangle.height; yy++) {
                         list.add(new int[] {(int) rectangle.getX() + xx, (int) rectangle.getY() + yy});
                     }
                 }
@@ -83,7 +85,7 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public boolean update(float delta) {
-        if (this.isDeath()) {
+        if (this.kidState == KidState.DEAD) {
             this.ticksDead++;
             return false;
         }
@@ -92,37 +94,24 @@ public abstract class KidObject extends GameObject {
         if (this.sprite != null)
             this.sprite.update(delta);
 
-        velY = velY + (gravity * Global.GRAVITY);
-        if (velY > 9) {
-            velY = 9;
+        // Change velocity if player is in a state that is able to fall
+        if (this.kidState.canFall()) {
+            velY = velY + (gravity * Global.GRAVITY);
+            if (velY > 9) {
+                velY = 9;
+            }
         }
 
         // Collision stuff
 
-        if (velY != 0) {
-            //floor
-            boolean falling = velY * Global.GRAVITY > 0;
-
-            if (Math.abs(velY) < 1) {
-                if (floorCollision(falling) || !falling) {
-                    this.y += velY;
-                }
-            }
-            else {
-                for (double yvel = 0; yvel < Math.ceil(Math.abs(velY)); yvel++) {
-                    if (floorCollision(falling) || !falling) {
-                        if (falling) {
-                            this.y++;
-                        }
-                        else {
-                            this.y--;
-                        }
-                    }
-                }
-            }
-        }
+        // Return kid state to IDLE
+        KidState previousState = this.kidState;
+        this.kidState = KidState.IDLE;
 
         if (velX != 0) {
+            if (this.kidState.canFall())
+                this.setKidState(KidState.MOVING);
+
             boolean left = velX < 0;
             for (int i = 0; i < Math.ceil(Math.abs(velX)); i++) {
                 if (wallCollision(left ? -1 : 1)) {
@@ -141,29 +130,86 @@ public abstract class KidObject extends GameObject {
             onMove();
         }
 
+        if (velY != 0) {
+            boolean falling = velY * Global.GRAVITY > 0;
+
+            boolean canChangeY = false;
+            if (previousState.canFall())
+                canChangeY = floorCollision(falling);
+            else
+                canChangeY = floorCollision(false) | floorCollision(true);
+
+            if (Math.abs(velY) < 1) {
+                if (floorCollision(falling)) {
+
+                    this.y += velY;
+
+                    if (this.kidState.canFall()) {
+                        if (falling)
+                            this.kidState = KidState.FALLING;
+                        else
+                            this.kidState = KidState.JUMPING;
+                    }
+                }
+            }
+            else {
+                for (double yvel = 0; yvel < Math.ceil(Math.abs(velY)); yvel++) {
+                    if (floorCollision(falling) || !falling) {
+                        if (falling) {
+                            this.y++;
+
+                            if (this.kidState.canFall())
+                                this.kidState = KidState.FALLING;
+                        }
+                        else {
+                            this.y--;
+
+                            if (this.kidState.canFall())
+                                this.kidState = KidState.JUMPING;
+                        }
+                    }
+                }
+            }
+        }
+
         //wall
 
 
-        if (velY > 0 && canJump == 2) {
-            canJump = 1;
+        if (velY > 0 && canJump == maxJumps) {
+            canJump--;
         }
 
-        if (velX == 0 && velY == 0) {
+        if (this.kidState == KidState.IDLE) {
             this.setSprite(this.getSprites().get("idle"));
         }
-        else if (velY != 0) {
-            if (velY < 0) {
-                this.setSprite(this.getSprites().get("jump"));
-            }
-            else {
-                this.setSprite(this.getSprites().get("fall"));
-            }
-        }
-        else {
+        else if (this.kidState == KidState.MOVING) {
             this.setSprite(this.getSprites().get("running"));
         }
-
-
+        else if (this.kidState == KidState.JUMPING) {
+            this.setSprite(this.getSprites().get("jump"));
+        }
+        else if (this.kidState == KidState.FALLING) {
+            this.setSprite(this.getSprites().get("fall"));
+        }
+        else if (this.kidState.name().startsWith("SLIDING")) {
+            this.setSprite(this.getSprites().get("sliding"));
+        }
+        else {
+            if (velX == 0 && velY == 0) {
+                this.setSprite(this.getSprites().get("idle"));
+            }
+            else if (velY != 0) {
+                if (velY < 0) {
+                    this.setSprite(this.getSprites().get("jump"));
+                }
+                else {
+                    this.setSprite(this.getSprites().get("fall"));
+                }
+            }
+            else {
+                this.setSprite(this.getSprites().get("running"));
+            }
+        }
         velX = 0;
 
         return true;
@@ -171,9 +217,9 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public void render(Camera camera, Graphics graphics) {
-        sprite.draw(camera, graphics, this.x, this.y, xScale == -1, Global.GRAVITY != 1);
+        sprite.draw(camera, graphics, this.x + (xScale == -1 ? 3 : 0), this.y, xScale == -1, Global.GRAVITY != 1);
 
-        //this.getHitbox().renderHitbox((int) x, (int) y, graphics);
+        this.getHitbox().renderHitbox(camera, x, y, graphics);
 
         /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
             if (gameObject instanceof Block)
@@ -209,7 +255,7 @@ public abstract class KidObject extends GameObject {
             this.x = data.getX();
             this.y = data.getY();
 
-            this.setDeath(false);
+            this.kidState = KidState.IDLE;
             canJump = 1;
             velY = 0;
         }
@@ -218,7 +264,7 @@ public abstract class KidObject extends GameObject {
     public void kill() {
         if (this.onDeath()) {
             this.ticksLived = 0;
-            this.setDeath(true);
+            this.kidState = KidState.DEAD;
 
             Random random = Global.RANDOM;
             for (int i = 0; i < 150; i++) {
@@ -240,10 +286,12 @@ public abstract class KidObject extends GameObject {
     }
 
     private boolean floorCollision(boolean falling) {
-        for (int i = 12; i <= 12 + 12; i++) {
+        Rectangle rectangle = this.getHitbox().getRectIfPossible();
+        
+        for (int i = (int) rectangle.getX(); i < rectangle.getX() + rectangle.getWidth(); i++) {
             int x = (int) this.x + i;
 
-            for (GameObject gameObject : this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? 32 : 10))) {
+            for (GameObject gameObject : this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? rectangle.getY() + rectangle.getHeight() : rectangle.getY()))) {
                 if (gameObject instanceof Block) {
                     velY = 0;
 
@@ -264,8 +312,6 @@ public abstract class KidObject extends GameObject {
                                 break;
                             }
 
-
-
                             ((Interactable) gameObject).getOnTouch().run();
                         }
                     }
@@ -276,17 +322,18 @@ public abstract class KidObject extends GameObject {
     }
 
     private boolean wallCollision(int xScale) {
-
-        for (int i = 12; i < 12 + 20; i++) {
+        Rectangle rectangle = this.getHitbox().getRectIfPossible();
+        
+        for (int i = (int) rectangle.getY(); i < rectangle.getY() + rectangle.getHeight(); i++) {
             int y = (int) this.y + i;
 
-            for (GameObject gameObject : this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? 13 + 10 : 10), y)) {
+            for (GameObject gameObject : this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? rectangle.getX() + rectangle.getWidth() : rectangle.getWidth()), y)) {
                 if (gameObject instanceof Block) {
                     return false;
                 }
                 else if (gameObject instanceof Interactable) {
                     if (gameObject.getHitbox() != null) {
-                        if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
+                        if (this.getHitbox().intersects(gameObject.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
 
                             if (gameObject instanceof KillerObject) {
                                 this.kill();
@@ -306,6 +353,40 @@ public abstract class KidObject extends GameObject {
         this.getKeyListener().add(this.kidController = new KeyListener() {
             private boolean pressedShift = false;
             long lastRelease = 0;
+
+            private void jump(JumpType type) {
+                long time = System.currentTimeMillis() - lastRelease;
+
+                if (type != JumpType.VINE_JUMP)
+                    System.out.println("Normal jump");
+
+                // cancel jump
+                if (((time >= 20 && time < 40)&& canJump > 0) || (type != null && type == JumpType.CANCEL_JUMP)) {
+                    onJump(JumpType.CANCEL_JUMP);
+                    velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
+
+                    kidState = KidState.JUMPING;
+                }
+                else if (canJump == maxJumps || (type != null && type == JumpType.FULL_JUMP)) { //main jump
+                    onJump(JumpType.FULL_JUMP);
+                    canJump = 1;
+                    velY = -jump;
+                    pressedShift = true;
+
+                    kidState = KidState.JUMPING;
+                } else if ((canJump > 0 && canJump < maxJumps) || (type != null && type == JumpType.DOUBLE_JUMP)) { //double jump
+                    onJump(JumpType.DOUBLE_JUMP);
+                    canJump = 0;
+                    velY = -jump2;
+                    pressedShift = true;
+
+                    kidState = KidState.JUMPING;
+                }
+                else if (type != null && type == JumpType.VINE_JUMP) {
+                    onJump(JumpType.VINE_JUMP);
+                    velY = -jump;
+                }
+            }
 
             @Override
             public void onKeyPress(int keycode) {
@@ -338,24 +419,7 @@ public abstract class KidObject extends GameObject {
 
                     //jump
                     if (keycode == Keybinds.JUMP) {
-                        long time = System.currentTimeMillis() - lastRelease;
-
-                        // cancel jump
-                        if (time >= 20 && time < 40 && canJump > 0) {
-                            onJump(JumpType.CANCEL_JUMP);
-                            velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
-                        }
-                        else if (canJump == 2) { //main jump
-                            onJump(JumpType.FULL_JUMP);
-                            canJump = 1;
-                            velY = -jump;
-                            pressedShift = true;
-                        } else if (canJump == 1) { //double jump
-                            onJump(JumpType.DOUBLE_JUMP);
-                            canJump = 0;
-                            velY = -jump2;
-                            pressedShift = true;
-                        }
+                        jump(null);
                     }
                     //shoot
                     else if (keycode == Keybinds.SHOOT) {
@@ -376,22 +440,39 @@ public abstract class KidObject extends GameObject {
             }
 
             @Override
-            public void onKeyHold(int keycode) {
-                if (keycode != KeyEvent.VK_LEFT && keycode != Keybinds.RIGHT) {
+            public void onKeyHold(List<Integer> keyCodes) {
+                if (!keyCodes.contains(Keybinds.LEFT) && !keyCodes.contains(Keybinds.RIGHT)) {
                     return;
                 }
 
-                if (getHandler().getMain().getKeyController().getKeys().containsKey(Keybinds.LEFT)) {
-                    if (getHandler().getMain().getKeyController().getKeys().containsKey(Keybinds.RIGHT)) {
+                if (keyCodes.contains(Keybinds.LEFT)) {
+                    KidState direction = KidState.SLIDING_LEFT;
+                    if (keyCodes.contains(Keybinds.RIGHT)) {
                         velX = 3;
                         xScale = 1;
                     } else {
                         velX = -3;
                         xScale = -1;
+                        direction = KidState.SLIDING_RIGHT;
                     }
-                } else if (getHandler().getMain().getKeyController().getKeys().containsKey(Keybinds.RIGHT)) {
+
+                    if (kidState == direction && keyCodes.contains(Keybinds.JUMP)) {
+                        x = x + velX * 5;
+                        velX = 0;
+                        jump(JumpType.VINE_JUMP);
+                        System.out.println("Vine jump 2");
+                    }
+
+                } else if (keyCodes.contains(Keybinds.RIGHT)) {
                     velX = 3;
                     xScale = 1;
+
+                    if (kidState == KidState.SLIDING_LEFT && keyCodes.contains(Keybinds.JUMP)) {
+                        x = x + velX * 5;
+                        velX = 0;
+                        jump(JumpType.VINE_JUMP);
+                        System.out.println("Vine jump 1");
+                    }
                 }
             }
 

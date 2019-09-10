@@ -85,7 +85,7 @@ public class Kid extends KidObject {
 
     @Override
     public void onJump(JumpType type) {
-        this.getHandler().getSoundManager().playSound("snd" + (getCanJump() == 2 ? "" : "D") + "Jump");
+        this.getHandler().getSoundManager().playSound("snd" + (type == JumpType.VINE_JUMP || getCanJump() == getMaxJumps() ? "" : "D") + "Jump");
     }
 
     @Override
