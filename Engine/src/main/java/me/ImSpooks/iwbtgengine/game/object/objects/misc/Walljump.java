@@ -62,8 +62,6 @@ public class Walljump extends Interactable {
                 return pixels;
             }
         });
-
-        System.out.println("this.getHitbox() = " + this.getHitbox());
         
         this.setOnTouch(() -> {
             //TODO cant jump on vine without having a vine itself under it
@@ -83,8 +81,6 @@ public class Walljump extends Interactable {
     public void render(Camera camera, Graphics graphics) {
         if (this.canRender(camera)) {
             sprite.draw(camera, graphics, this.x + shift, this.y);
-
-            this.getHitbox().renderHitbox(camera, (int) this.x, (int) this.y, graphics);
         }
     }
 

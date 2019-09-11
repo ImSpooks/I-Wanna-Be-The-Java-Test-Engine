@@ -33,57 +33,48 @@ public abstract class Hitbox {
 
     public abstract List<int[]> getPixels();
 
-    public boolean intersects(Hitbox hitbox, int x1, int y1, int x2, int y2) {
+    public boolean intersects(Hitbox hitbox, double x1, double y1, double x2, double y2) {
         if (this.getHitboxType().getDataType() == 1 && hitbox.getHitboxType().getDataType() == 1) {
-            Rectangle r1 = this.getRectIfPossible();
-            Rectangle r2 = hitbox.getRectIfPossible();
+            Rectangle r1 = this.getRectIfPossible(x1, y1);
+            Rectangle r2 = hitbox.getRectIfPossible(x2, y2);
 
-            return r1.intersects(r2);
-
-
-            /*int tw = this.pixels.get(this.pixels.size() - 1)[0] - this.pixels.get(0)[0];
-            int th = this.pixels.get(this.pixels.size() - 1)[1] - this.pixels.get(0)[1];
-
-            List<int[]> other = hitbox.getCachedPixels();
-            int rw = other.get(other.size() - 1)[0] - other.get(0)[0];
-            int rh = other.get(other.size() - 1)[1] - other.get(0)[1];
-
-
+            int tw = r1.width;
+            int th = r1.height;
+            int rw = r2.width;
+            int rh = r2.height;
             if (rw <= 0 || rh <= 0 || tw <= 0 || th <= 0) {
                 return false;
             }
-
-            int tx = this.pixels.get(0)[0] + x1;
-            int ty = this.pixels.get(0)[1] + y1;
-            int rx = other.get(0)[0] + x2;
-            int ry = other.get(0)[1] + y2;
-
+            int tx = r1.x;
+            int ty = r1.y;
+            int rx = r2.x;
+            int ry = r2.y;
             rw += rx;
             rh += ry;
             tw += tx;
             th += ty;
-
-            System.out.println();
-            System.out.println("(" + rw + " < " + rx + " || " + rw + " > " + tx + ") = " + (rw < rx || rw > tx));
-            System.out.println("(" + rh + " < " + ry + " || " + rh + " > " + ty + ") = " + (rh < ry || rh > ty));
-            System.out.println("(" + tw + " < " + tx + " || " + tw + " > " + rx + ") = " + (tw < tx || tw > rx));
-            System.out.println("(" + th + " < " + ty + " || " + th + " > " + ry + ") = " + (th < ty || th > ry));
-
             //      overflow || intersect
-            return (rw < rx || rw > tx) &&
-                    (rh < ry || rh > ty) &&
-                    (tw < tx || tw > rx) &&
-                    (th < ty || th > ry);*/
-
+            return ((rw <= rx || rw >= tx) &&
+                    (rh <= ry || rh >= ty) &&
+                    (tw <= tx || tw >= rx) &&
+                    (th <= ty || th >= ry));
         }
         else {
-            for (int[] integers : hitbox.getCachedPixels()) {
-                for (int[] pixel : this.pixels) {
-                    if (integers[0] + x1 == pixel[0] + x2 && integers[1] + y1 == pixel[1] + y2) {
+            for (int[] pixel : this.pixels) {
+                for (int[] cachedPixel : hitbox.getCachedPixels()) {
+                    if ((int)Math.round(pixel[0] + x1) == (int)Math.round(cachedPixel[0] + x2)
+                            && (int)Math.round(pixel[1] + y1) == (int)Math.round(cachedPixel[1] + y2)) {
                         return true;
                     }
                 }
             }
+            /*for (int[] integers : hitbox.getCachedPixels()) {
+                for (int[] pixel : this.pixels) {
+                    if (integers[0] + x2 == pixel[0] + x1 && integers[1] + y2 == pixel[1] + y1) {
+                        return true;
+                    }
+                }
+            }*/
         }
         return false;
     }
@@ -126,6 +117,18 @@ public abstract class Hitbox {
             return cachedRectangle = new Rectangle(px, py, this.pixels.get(this.pixels.size() - 1)[0] - px, this.pixels.get(this.pixels.size() - 1)[1] - py);
         }
         return cachedRectangle;
+    }
+
+    public Rectangle getRectIfPossible(double x, double y) {
+        Rectangle rectangle = this.getRectIfPossible();
+        if (rectangle == null)
+            return null;
+
+        Rectangle clone = (Rectangle) rectangle.clone();
+        clone.setLocation((int) (rectangle.getX() + x), (int) (rectangle.getY() + y));
+        //System.out.println("rectangle 1 = " + rectangle.toString());
+        //System.out.println("rectangle 2 = " + clone.toString() + String.format(" {%s + %s = %s}", x, rectangle.getX(), rectangle.getX() + x));
+        return clone;
     }
 
     @RequiredArgsConstructor

@@ -53,6 +53,7 @@ public abstract class KidObject extends GameObject {
 
     @Getter private KeyListener kidController;
 
+    @Getter private KidState previousState;
     @Getter @Setter private KidState kidState;
 
     public KidObject(Room parent, double x, double y, GameHandler handler) {
@@ -105,7 +106,7 @@ public abstract class KidObject extends GameObject {
         // Collision stuff
 
         // Return kid state to IDLE
-        KidState previousState = this.kidState;
+        this.previousState = this.kidState;
         this.kidState = KidState.IDLE;
 
         if (velX != 0) {
@@ -217,9 +218,15 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public void render(Camera camera, Graphics graphics) {
-        sprite.draw(camera, graphics, this.x + (xScale == -1 ? 3 : 0), this.y, xScale == -1, Global.GRAVITY != 1);
+        if (this.kidState.name().startsWith("SLIDING")) {
+            sprite.draw(camera, graphics, this.x + (xScale == -1 ? 3 : 0) + (7 * -xScale), this.y, xScale == -1, Global.GRAVITY != 1);
+        }
+        else {
 
-        this.getHitbox().renderHitbox(camera, x, y, graphics);
+            sprite.draw(camera, graphics, this.x + (xScale == -1 ? 3 : 0), this.y, xScale == -1, Global.GRAVITY != 1);
+        }
+
+        //this.getHitbox().renderHitbox(camera, x, y, graphics);
 
         /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
             if (gameObject instanceof Block)
@@ -267,7 +274,9 @@ public abstract class KidObject extends GameObject {
             this.kidState = KidState.DEAD;
 
             Random random = Global.RANDOM;
+            long now2 = System.nanoTime();
             for (int i = 0; i < 150; i++) {
+                long now = System.nanoTime();
                 double velX = (random.nextDouble() * 2 - 1) * 8;
                 double velY = (random.nextDouble() * 10 - 2) * -1;
 
@@ -305,7 +314,7 @@ public abstract class KidObject extends GameObject {
                 }
                 else if (gameObject instanceof Interactable) {
                     if (gameObject.getHitbox() != null) {
-                        if (gameObject.getHitbox().intersects(this.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
+                        if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
 
                             if (gameObject instanceof KillerObject) {
                                 this.kill();
@@ -333,7 +342,7 @@ public abstract class KidObject extends GameObject {
                 }
                 else if (gameObject instanceof Interactable) {
                     if (gameObject.getHitbox() != null) {
-                        if (this.getHitbox().intersects(gameObject.getHitbox(), (int) this.x, (int) this.y, (int) gameObject.getX(), (int) gameObject.getY())) {
+                        if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
 
                             if (gameObject instanceof KillerObject) {
                                 this.kill();
@@ -357,34 +366,32 @@ public abstract class KidObject extends GameObject {
             private void jump(JumpType type) {
                 long time = System.currentTimeMillis() - lastRelease;
 
-                if (type != JumpType.VINE_JUMP)
-                    System.out.println("Normal jump");
-
                 // cancel jump
-                if (((time >= 20 && time < 40)&& canJump > 0) || (type != null && type == JumpType.CANCEL_JUMP)) {
-                    onJump(JumpType.CANCEL_JUMP);
+                if (type != null && type == JumpType.VINE_JUMP) {
+                    onJump(type = JumpType.VINE_JUMP);
+                    velY = -jump;
+                    pressedShift = true;
+                }
+                else if (((time >= 20 && time < 40)&& canJump > 0) || (type != null && type == JumpType.CANCEL_JUMP)) {
+                    onJump(type = JumpType.CANCEL_JUMP);
                     velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
 
                     kidState = KidState.JUMPING;
                 }
                 else if (canJump == maxJumps || (type != null && type == JumpType.FULL_JUMP)) { //main jump
-                    onJump(JumpType.FULL_JUMP);
+                    onJump(type = JumpType.FULL_JUMP);
                     canJump = 1;
                     velY = -jump;
                     pressedShift = true;
 
                     kidState = KidState.JUMPING;
                 } else if ((canJump > 0 && canJump < maxJumps) || (type != null && type == JumpType.DOUBLE_JUMP)) { //double jump
-                    onJump(JumpType.DOUBLE_JUMP);
+                    onJump(type = JumpType.DOUBLE_JUMP);
                     canJump = 0;
                     velY = -jump2;
                     pressedShift = true;
 
                     kidState = KidState.JUMPING;
-                }
-                else if (type != null && type == JumpType.VINE_JUMP) {
-                    onJump(JumpType.VINE_JUMP);
-                    velY = -jump;
                 }
             }
 
@@ -456,22 +463,20 @@ public abstract class KidObject extends GameObject {
                         direction = KidState.SLIDING_RIGHT;
                     }
 
-                    if (kidState == direction && keyCodes.contains(Keybinds.JUMP)) {
+                    if (kidState == direction && keyCodes.contains(Keybinds.JUMP) && previousState != KidState.IDLE && previousState != KidState.MOVING) {
                         x = x + velX * 5;
                         velX = 0;
                         jump(JumpType.VINE_JUMP);
-                        System.out.println("Vine jump 2");
                     }
 
                 } else if (keyCodes.contains(Keybinds.RIGHT)) {
                     velX = 3;
                     xScale = 1;
 
-                    if (kidState == KidState.SLIDING_LEFT && keyCodes.contains(Keybinds.JUMP)) {
+                    if (kidState == KidState.SLIDING_LEFT && keyCodes.contains(Keybinds.JUMP) && previousState != KidState.IDLE && previousState != KidState.MOVING) {
                         x = x + velX * 5;
                         velX = 0;
                         jump(JumpType.VINE_JUMP);
-                        System.out.println("Vine jump 1");
                     }
                 }
             }

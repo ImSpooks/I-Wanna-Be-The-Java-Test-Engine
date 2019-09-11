@@ -48,9 +48,6 @@ public class BloodParticle extends Particle {
 
             if (this.velX != 0 || this.velY != 0) {
                 if (!onBlock) {
-                    this.x += this.velX;
-                    this.y += this.velY;
-
                     this.velX *= 0.99;
                     this.velY += 0.275;
 
@@ -62,7 +59,7 @@ public class BloodParticle extends Particle {
                             this.onBlock = true;
                             break;
                         }
-                    }*/
+                    }//*/
                 }
             }
         }

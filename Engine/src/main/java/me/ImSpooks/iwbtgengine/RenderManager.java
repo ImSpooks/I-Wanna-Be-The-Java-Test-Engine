@@ -1,5 +1,7 @@
 package me.ImSpooks.iwbtgengine;
 
+import me.ImSpooks.iwbtgengine.global.Global;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -18,7 +20,7 @@ public class RenderManager implements Runnable {
 
     @Override
     public void run() {
-        double tps = 50.0;
+        double tps = Global.FRAME_RATE;
         long lastRender = System.nanoTime();
         double ns = 1000000000.0 / tps;
         double delta = 0;
