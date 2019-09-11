@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
+import me.ImSpooks.iwbtgengine.game.object.init.TouchAction;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
@@ -43,16 +44,19 @@ public class JumpRefresher extends Interactable {
                 return pixels;
             }
         });
+    }
 
-        this.setOnTouch(() -> {
+    @Override
+    public TouchAction onTouch() {
+        return kid -> {
             if (deactivatedTicks > 0)
                 return;
 
-            if (parent.getHandler().getKid().getCanJump() < 1)
-                parent.getHandler().getKid().setCanJump(1);
+            if (kid.getCanJump() < kid.getMaxJumps() - 1)
+                kid.setCanJump(kid.getCanJump() + 1);
 
             deactivatedTicks = 100;
-        });
+        };
     }
 
     @Override

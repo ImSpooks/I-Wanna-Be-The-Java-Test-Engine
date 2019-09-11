@@ -127,7 +127,7 @@ public class EngineReader extends MapReader {
                     }
 
                     case "triggers": {
-                        if (objType.equalsIgnoreCase("TriggerMask")) {
+                        if (objType.startsWith("TriggeMaskr")) {
                             gameObject = new Trigger(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
                         break;

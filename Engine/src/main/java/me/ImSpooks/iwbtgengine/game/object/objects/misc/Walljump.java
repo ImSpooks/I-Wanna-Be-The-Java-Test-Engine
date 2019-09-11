@@ -3,6 +3,7 @@ package me.ImSpooks.iwbtgengine.game.object.objects.misc;
 import lombok.Getter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
+import me.ImSpooks.iwbtgengine.game.object.init.TouchAction;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.object.player.KidState;
@@ -62,19 +63,6 @@ public class Walljump extends Interactable {
                 return pixels;
             }
         });
-        
-        this.setOnTouch(() -> {
-            //TODO cant jump on vine without having a vine itself under it
-
-            KidObject kid = this.getParent().getHandler().getKid();
-
-            if (kid != null) {
-                kid.setKidState(left ? KidState.SLIDING_LEFT : KidState.SLIDING_RIGHT);
-
-                this.onSlide(kid, this.getParent().getHandler());
-                kid.setXScale(left ? -1 : 1);
-            }
-        });
     }
 
     @Override
@@ -86,5 +74,19 @@ public class Walljump extends Interactable {
 
     public void onSlide(KidObject kid, GameHandler handler) {
         kid.setVelY(2);
+    }
+
+    @Override
+    public TouchAction onTouch() {
+        return kid -> {
+            // Everything is 'Vine'
+
+            if (kid != null) {
+                kid.setKidState(left ? KidState.SLIDING_LEFT : KidState.SLIDING_RIGHT);
+
+                this.onSlide(kid, this.getParent().getHandler());
+                kid.setXScale(left ? -1 : 1);
+            }
+        };
     }
 }

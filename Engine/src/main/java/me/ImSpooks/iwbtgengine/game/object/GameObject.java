@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
+import me.ImSpooks.iwbtgengine.game.object.init.ObjectPriority;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
@@ -20,6 +21,7 @@ import java.util.List;
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
+@ObjectPriority
 public abstract class GameObject {
 
     @Getter @Setter private Room parent;

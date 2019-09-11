@@ -1,6 +1,8 @@
 package me.ImSpooks.iwbtgengine.game.object.objects.killer;
 
+import me.ImSpooks.iwbtgengine.game.object.init.TouchAction;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
+import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
@@ -25,5 +27,11 @@ public abstract class KillerObject extends Interactable {
         }
 
         return false;
+    }
+
+
+    @Override
+    public TouchAction onTouch() {
+        return KidObject::kill;
     }
 }

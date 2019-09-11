@@ -39,7 +39,7 @@ public class TestRoom extends Room {
             Trigger trigger = (Trigger) gameObject;
 
 
-            trigger.setOnTouch(() -> {
+            trigger.setOnTouch(kid -> {
                 if (!touched.get()) {
                     touched.set(true);
 
@@ -55,7 +55,7 @@ public class TestRoom extends Room {
 
         for (GameObject gameObject : this.getObjectsById("warp1")) {
             Warp warp = (Warp) gameObject;
-            warp.setOnTouch(() -> {
+            warp.setOnTouch(kid -> {
                 Room room = this.getHandler().getMain().getRoomManager().getRoom(this.getHandler(), "stage1_room2");
                 this.getHandler().setRoom(room);
 

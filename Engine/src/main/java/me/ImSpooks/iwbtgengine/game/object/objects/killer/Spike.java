@@ -1,6 +1,8 @@
 package me.ImSpooks.iwbtgengine.game.object.objects.killer;
 
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
+import me.ImSpooks.iwbtgengine.game.object.init.ObjectPriority;
+import me.ImSpooks.iwbtgengine.game.object.init.RenderPriority;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
@@ -12,6 +14,7 @@ import java.util.List;
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
+@ObjectPriority(renderPriority = RenderPriority.LOWEST)
 public class Spike extends KillerObject {
 
     public Spike(Room parent, double x, double y, Sprite sprite) {

@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
+import me.ImSpooks.iwbtgengine.game.object.init.ObjectPriority;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.player.KidState;
 import me.ImSpooks.iwbtgengine.game.room.readers.EngineReader;
@@ -132,6 +133,14 @@ public abstract class Room {
 
         if (map != null) {
             map.readMap();
+
+            List<GameObject> objects = map.getObjects();
+
+            objects.sort((a, b) -> {
+                return a.getClass().getAnnotation(ObjectPriority.class).renderPriority().getPriority() - b.getClass().getAnnotation(ObjectPriority.class).renderPriority().getPriority();
+            });
+
+            map.setObjects(objects);
         }
         else {
             System.exit(ErrorCodes.ROOM_ERROR);

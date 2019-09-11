@@ -12,6 +12,7 @@ import java.awt.*;
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
+
 public class SaveBlocker extends GameObject {
 
     public SaveBlocker(Room parent, double x, double y, Sprite sprite) {
