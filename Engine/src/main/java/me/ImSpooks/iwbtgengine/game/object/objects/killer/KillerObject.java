@@ -1,5 +1,7 @@
 package me.ImSpooks.iwbtgengine.game.object.objects.killer;
 
+import me.ImSpooks.iwbtgengine.game.object.init.ObjectPriority;
+import me.ImSpooks.iwbtgengine.game.object.init.ObjectsPriority;
 import me.ImSpooks.iwbtgengine.game.object.init.TouchAction;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
@@ -11,6 +13,7 @@ import me.ImSpooks.iwbtgengine.game.room.Room;
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
+@ObjectPriority(colisionPriority = ObjectsPriority.LOWEST)
 public abstract class KillerObject extends Interactable {
 
     public KillerObject(Room parent, double x, double y, Sprite sprite) {

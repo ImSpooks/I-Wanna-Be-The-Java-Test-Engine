@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.init.ObjectPriority;
-import me.ImSpooks.iwbtgengine.game.object.init.RenderPriority;
+import me.ImSpooks.iwbtgengine.game.object.init.ObjectsPriority;
 import me.ImSpooks.iwbtgengine.game.object.init.TouchAction;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
@@ -14,7 +14,7 @@ import me.ImSpooks.iwbtgengine.game.room.Room;
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
-@ObjectPriority(renderPriority = RenderPriority.HIGH)
+@ObjectPriority(renderPriority = ObjectsPriority.HIGH)
 public abstract class Interactable extends GameObject {
 
     @Getter @Setter private TouchAction onTouch = (kid) -> {};

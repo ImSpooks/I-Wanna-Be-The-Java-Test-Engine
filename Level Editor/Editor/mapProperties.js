@@ -128,7 +128,7 @@ function hideOutput() {
 
 
 function copyToClipboard() {
-    set();
+    exportText();
 
     let element = document.getElementById("exportTextOutput");
 
@@ -136,6 +136,8 @@ function copyToClipboard() {
     element.setSelectionRange(0, 99999);
 
     document.execCommand("copy");
+
+    hideOutput();
 }
 
 function exportJson() {

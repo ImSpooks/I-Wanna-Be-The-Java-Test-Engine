@@ -129,14 +129,25 @@ function loop(time){
 
             for (let i = 0; i < value.length; i++) {
                 let tileInfo = value[i];
-                graphics.drawImage(tileInfo[5], tileInfo[2], tileInfo[3]);
+                if (tileInfo[1] == "SAVES") {
+                    graphics.drawImage(tileInfo[5], 0, 0, 32, 32, tileInfo[2], tileInfo[3], 32, 32);
+                }
+                else {
+                    graphics.drawImage(tileInfo[5], tileInfo[2], tileInfo[3]);
+                }
 
             }
         });
 
 
         if (objectImage != null) {
-            graphics.drawImage(objectImage, x, y);
+            if (Resources[selectedObject].subtype == "SAVES") {
+                graphics.drawImage(objectImage, 0, 0, 32, 32, x, y, 32, 32);
+            }
+            else {
+                graphics.drawImage(objectImage, x, y);
+            }
+
         }
 
         frames++;

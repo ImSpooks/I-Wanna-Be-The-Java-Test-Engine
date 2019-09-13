@@ -62,8 +62,9 @@ public abstract class Hitbox {
         else {
             for (int[] pixel : this.pixels) {
                 for (int[] cachedPixel : hitbox.getCachedPixels()) {
-                    if ((int)Math.round(pixel[0] + x1) == (int)Math.round(cachedPixel[0] + x2)
-                            && (int)Math.round(pixel[1] + y1) == (int)Math.round(cachedPixel[1] + y2)) {
+
+                    if ((int)Math.round(Math.floor(pixel[0] + x1)) == (int)Math.round(Math.ceil(cachedPixel[0] + x2))
+                            && (int)Math.round(Math.floor(pixel[1] + y1)) == (int)Math.round(Math.ceil(cachedPixel[1] + y2))) {
                         return true;
                     }
                 }

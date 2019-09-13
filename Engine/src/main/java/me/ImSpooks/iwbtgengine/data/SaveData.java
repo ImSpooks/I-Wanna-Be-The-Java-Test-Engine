@@ -3,6 +3,7 @@ package me.ImSpooks.iwbtgengine.data;
 import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.game.item.GameItems;
+import me.ImSpooks.iwbtgengine.global.Difficulty;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -25,7 +26,10 @@ public class SaveData {
     @Getter @Setter private long time;
     @Getter @Setter private int deaths;
 
+    @Getter @Setter private final Difficulty difficulty;
+
     @Getter @Setter private List<GameItems> items;
+
 
     public SaveData() {
         this.items = new ArrayList<>();
@@ -35,9 +39,10 @@ public class SaveData {
         this.flippedGravity = false;
         this.time = 0L;
         this.deaths = 0;
+        this.difficulty = Difficulty.HARD;
     }
 
-    public SaveData(String roomId, int x, int y, boolean flippedGravity, long time, int deaths, List<GameItems> items) {
+    public SaveData(String roomId, int x, int y, boolean flippedGravity, long time, int deaths, Difficulty difficulty, List<GameItems> items) {
         this.items = items;
         this.roomId = roomId;
         this.x = x;
@@ -45,6 +50,11 @@ public class SaveData {
         this.flippedGravity = flippedGravity;
         this.time = time;
         this.deaths = deaths;
+        this.difficulty = difficulty;
+    }
+
+    public void save() {
+
     }
 
     @SuppressWarnings("unchecked")
@@ -64,6 +74,8 @@ public class SaveData {
             itemIds.add(item.getId());
         }
 
+        jsonObject.put("difficulty", difficulty.getId());
+
         jsonObject.put("items", itemIds.toArray(new Integer[0]));
 
         return jsonObject.toString();
@@ -81,6 +93,7 @@ public class SaveData {
             boolean flippedGravity = map.get("flippedGravity", Boolean.class);
             int time =  Math.toIntExact(map.get("time", Long.class));
             int deaths =  Math.toIntExact(map.get("deaths", Long.class));
+            Difficulty difficulty = Difficulty.getFromId(Math.toIntExact(map.get("difficulty", Long.class)));
 
             List<GameItems> items = new ArrayList<>();
 
@@ -91,7 +104,7 @@ public class SaveData {
                 items.add(GameItems.getFromId(id));
             }
 
-            return new SaveData(roomId, x, y, flippedGravity, time, deaths, items);
+            return new SaveData(roomId, x, y, flippedGravity, time, deaths, difficulty, items);
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -31,6 +31,12 @@ function initialize() {
                     image.classList.add(Types[i]);
                     image.src = "../../Engine/src/main/resources/resources/" + value.path;
 
+                    image.height = 32;
+                    image.style.maxHeight = "32px";
+                    image.style.maxWidth = "32px";
+                    image.style.objectFit  = "cover";
+                    image.style.objectPosition  = "left 50%";
+
                     image.onclick = function(event) {
                         selectedObject = key;
                         objectImage = image;

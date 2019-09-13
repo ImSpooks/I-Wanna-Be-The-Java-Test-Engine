@@ -107,7 +107,7 @@ public class Kid extends KidObject {
     @Override
     public void onShoot() {
         if (bullets.size() < maxBullets) {
-            Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceHandler().getResource("sprBullet")), this.getXScale());
+            Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceHandler().getResource("sprBullet")), this.getXScale(), this);
             bullets.add(bullet);
 
             this.getHandler().getSoundManager().playSound("sndShoot");

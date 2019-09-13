@@ -1,5 +1,6 @@
 package me.ImSpooks.iwbtgengine.global;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -9,15 +10,40 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public enum Difficulty {
-    NULL(-1, ""),
-    MEDIUM(0, "Medium"),
-    HARD(1, "Hard"),
-    VERY_HARD(2, "Very Hard"),
-    IMPOSSIBLE(3, "Impossible")
+    NULL(-1, "", "NULL"),
+    MEDIUM(0, "Medium", "Medium"),
+    HARD(1, "Hard", "Hard"),
+    VERY_HARD(2, "Very Hard", "VHard"),
+    IMPOSSIBLE(3, "Impossible", "Impossible")
     ;
 
-    private final int id;
-    private final String name;
+    @Getter private final int id;
+    @Getter private final String name;
+    @Getter private final String internalName;
 
-    private static final Difficulty[] CACHE = values();
+    public static final Difficulty[] CACHE = values();
+
+    public static Difficulty getFromId(int id) {
+        for (Difficulty difficulty : CACHE) {
+            if (difficulty.getId() == id)
+                return difficulty;
+        }
+        return null;
+    }
+
+    public static Difficulty getFromName(String name) {
+        for (Difficulty difficulty : CACHE) {
+            if (difficulty.getName().equalsIgnoreCase(name))
+                return difficulty;
+        }
+        return null;
+    }
+
+    public static Difficulty getFromInternalName(String internalName) {
+        for (Difficulty difficulty : CACHE) {
+            if (difficulty.getInternalName().equalsIgnoreCase(internalName))
+                return difficulty;
+        }
+        return null;
+    }
 }

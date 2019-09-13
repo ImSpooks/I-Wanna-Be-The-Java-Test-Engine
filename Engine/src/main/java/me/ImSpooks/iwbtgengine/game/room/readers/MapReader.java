@@ -20,6 +20,7 @@ import java.util.List;
  */
 public abstract class MapReader {
     @Getter @Setter private List<GameObject> objects;
+
     @Getter @Setter private int startX = 32, startY = 32;
     @Getter @Setter private RoomType roomType = RoomType.NORMAL;
 
@@ -44,5 +45,9 @@ public abstract class MapReader {
 
     public ResourceHandler getResourceHandler() {
         return Main.getInstance().getResourceHandler();
+    }
+
+    protected void addObject(GameObject object) {
+        this.objects.add(object);
     }
 }

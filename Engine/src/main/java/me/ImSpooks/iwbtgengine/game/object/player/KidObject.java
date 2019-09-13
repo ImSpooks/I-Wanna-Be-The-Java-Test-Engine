@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nick on 04 May 2019.
@@ -295,34 +296,40 @@ public abstract class KidObject extends GameObject {
     }
 
     private boolean floorCollision(boolean falling) {
+        List<GameObject> objects = new ArrayList<>();
+
         Rectangle rectangle = this.getHitbox().getRectIfPossible();
-        
         for (int i = (int) rectangle.getX(); i < rectangle.getX() + rectangle.getWidth(); i++) {
             int x = (int) this.x + i;
 
-            for (GameObject gameObject : this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? rectangle.getY() + rectangle.getHeight() : rectangle.getY()))) {
-                if (gameObject instanceof Block) {
-                    velY = 0;
+            objects.addAll(this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? rectangle.getY() + rectangle.getHeight() : rectangle.getY())));
+        }
 
-                    if (falling) {
-                        canJump = 2;
-                        ((Block) gameObject).getOnTouch().run(this);
-                        return false;
-                    }
+        objects = objects.stream().distinct().collect(Collectors.toList());
+        // check for blocks FIRST
+        for (GameObject gameObject : objects) {
+            if (gameObject instanceof Block) {
+                velY = 0;
 
-                    break;
+                if (falling) {
+                    canJump = 2;
+                    ((Block) gameObject).getOnTouch().run(this);
                 }
-                else if (gameObject instanceof Interactable) {
-                    if (gameObject.getHitbox() != null) {
-                        if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
+                return false;
+            }
+        }
 
-                            if (gameObject instanceof KillerObject) {
-                                ((KillerObject) gameObject).onTouch().run(this);
-                                break;
-                            }
+        for (GameObject gameObject : objects) {
+            if (gameObject instanceof Interactable) {
+                if (gameObject.getHitbox() != null) {
+                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
 
-                            ((Interactable) gameObject).getOnTouch().run(this);
+                        if (gameObject instanceof KillerObject) {
+                            ((KillerObject) gameObject).onTouch().run(this);
+                            break;
                         }
+
+                        ((Interactable) gameObject).getOnTouch().run(this);
                     }
                 }
             }
@@ -331,26 +338,34 @@ public abstract class KidObject extends GameObject {
     }
 
     private boolean wallCollision(int xScale) {
+        List<GameObject> objects = new ArrayList<>();
+
         Rectangle rectangle = this.getHitbox().getRectIfPossible();
-        
         for (int i = (int) rectangle.getY() + 1; i < rectangle.getY() + rectangle.getHeight(); i++) {
             int y = (int) this.y + i;
+            objects.addAll(this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? rectangle.getX() + rectangle.getWidth() : rectangle.getWidth()), y));
+        }
 
-            for (GameObject gameObject : this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? rectangle.getX() + rectangle.getWidth() : rectangle.getWidth()), y)) {
-                if (gameObject instanceof Block) {
-                    return false;
-                }
-                else if (gameObject instanceof Interactable) {
-                    if (gameObject.getHitbox() != null) {
-                        if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
+        objects = objects.stream().distinct().collect(Collectors.toList());
 
-                            if (gameObject instanceof KillerObject) {
-                                ((KillerObject) gameObject).onTouch().run(this);
-                                break;
-                            }
+        // check for blocks FIRST
+        for (GameObject gameObject : objects) {
+            if (gameObject instanceof Block) {
+                System.out.println("found block");
+                return false;
+            }
+        }
+        for (GameObject gameObject : objects) {
+            if (gameObject instanceof Interactable) {
+                if (gameObject.getHitbox() != null) {
+                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
 
-                            ((Interactable) gameObject).getOnTouch().run(this);
+                        if (gameObject instanceof KillerObject) {
+                            ((KillerObject) gameObject).onTouch().run(this);
+                            break;
                         }
+
+                        ((Interactable) gameObject).getOnTouch().run(this);
                     }
                 }
             }

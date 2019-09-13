@@ -5,9 +5,11 @@ import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.SaveBlocker;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
+import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.global.Difficulty;
 import me.ImSpooks.iwbtgengine.global.Global;
 
 import java.awt.image.BufferedImage;
@@ -122,16 +124,15 @@ public class JToolReader extends MapReader {
                                 object.setSprite(getSprites().getCherrySprite());
                                 object.setX(object.getX() - object.getSpriteWidth() / 2);
                                 object.setY(object.getY() - object.getSpriteHeight() / 2);
-                            }
+                            }*/
 
                             else if (id == 12) { // save point
-                                object = new Save(x, y, ID.SPIKE, handler);
-                                object.setSprite(getSprites().getSaveSprite(SaveFile.Difficulty.HARD, ObjectDirection.DOWN));
+                                object = new Save(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprSave", BufferedImage.class)), Difficulty.MEDIUM, false);
                             }
 
 
 
-                            else if (id == 13) { // platforms
+                            /*else if (id == 13) { // platforms
 
                             }
                             else if (id == 14) { // water
@@ -152,7 +153,7 @@ public class JToolReader extends MapReader {
                             }
 
                             if (object != null)
-                                this.getObjects().add(object);
+                                this.addObject(object);
 
                         } catch (NumberFormatException e) {
                             System.out.println("Something went wrong adding object at x = [" + splittedString[objects] + "], y = [" + splittedString[objects + 1] + "], id = [" + splittedString[objects + 2] + "]");

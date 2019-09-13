@@ -8,11 +8,13 @@ import me.ImSpooks.iwbtgengine.game.object.objects.killer.ColoredCherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.Walljump;
+import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.game.room.RoomType;
+import me.ImSpooks.iwbtgengine.global.Difficulty;
 import me.ImSpooks.iwbtgengine.global.Global;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -126,6 +128,26 @@ public class EngineReader extends MapReader {
                         break;
                     }
 
+                    case "saves": {
+                        if (this.getRoom().getHandler().getSaveData().getDifficulty() == Difficulty.IMPOSSIBLE)
+                            continue;
+
+                        boolean flip = objType.endsWith("Flip");
+                        Difficulty difficulty = Difficulty.HARD;
+
+                        if (objType.contains(Difficulty.MEDIUM.getInternalName())) difficulty = Difficulty.MEDIUM;
+                        if (objType.contains(Difficulty.VERY_HARD.getInternalName())) difficulty = Difficulty.VERY_HARD;
+
+                        if (difficulty != Difficulty.HARD)
+                            tile = tile.replace(difficulty.getInternalName(), "");
+
+                        if (difficulty.getId() < this.getRoom().getHandler().getSaveData().getDifficulty().getId())
+                            continue;
+
+                        gameObject = new Save(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)), difficulty, flip);
+                        break;
+                    }
+
                     case "triggers": {
                         if (objType.startsWith("TriggeMaskr")) {
                             gameObject = new Trigger(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
@@ -134,7 +156,7 @@ public class EngineReader extends MapReader {
                     }
 
                     case "warps": {
-                        if (objType.equalsIgnoreCase("Warp")) {
+                        if (objType.endsWith("Warp")) {
                             gameObject = new Warp(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
                         }
                         break;
@@ -144,7 +166,7 @@ public class EngineReader extends MapReader {
 
                 if (gameObject != null) {
                     gameObject.setCustomId((String) object.get("custom_id"));
-                    this.getObjects().add(gameObject);
+                    this.addObject(gameObject);
                 }
             }
 

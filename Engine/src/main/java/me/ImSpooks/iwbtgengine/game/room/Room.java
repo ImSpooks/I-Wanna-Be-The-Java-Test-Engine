@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -46,7 +47,8 @@ public abstract class Room {
         this.path = path;
         this.handler = handler;
 
-        this.readMap(type);
+        if (this.handler != null)
+            this.readMap(type);
     }
 
     public void render(Camera camera, Graphics graphics) {
@@ -55,7 +57,9 @@ public abstract class Room {
             else graphics.drawImage(this.background, 0 - camera.getCameraX(), 0 - camera.getCameraY(), map.getRoomWidth(), map.getRoomHeight(), null);
         }
 
-        this.getObjects().stream().filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger && !((Trigger) object).isVisible())).forEach(object -> object.render(camera, graphics));
+        this.getMap().getObjects().stream()
+                .filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger && !((Trigger) object).isVisible()))
+                .forEach(object -> object.render(camera, graphics));
     }
 
     public void update(Camera camera, float delta) {
@@ -101,7 +105,7 @@ public abstract class Room {
                 x = (int) Math.floor((kidX + 16.0) / Global.GAME_WIDTH);
                 y = (int) Math.floor((kidY + 16.0) / Global.GAME_HEIGHT);
 
-                x = -x + x * Global.GAME_WIDTH;
+                x = x * Global.GAME_WIDTH;
                 y = -y + y * Global.GAME_HEIGHT;
             }
 
@@ -134,13 +138,9 @@ public abstract class Room {
         if (map != null) {
             map.readMap();
 
-            List<GameObject> objects = map.getObjects();
-
-            objects.sort((a, b) -> {
-                return a.getClass().getAnnotation(ObjectPriority.class).renderPriority().getPriority() - b.getClass().getAnnotation(ObjectPriority.class).renderPriority().getPriority();
-            });
-
-            map.setObjects(objects);
+            List<GameObject> renderedObjects = map.getObjects();
+            renderedObjects.sort(Comparator.comparingInt(a -> a.getClass().getAnnotation(ObjectPriority.class).renderPriority().getPriority()));
+            map.setObjects(renderedObjects);
         }
         else {
             System.exit(ErrorCodes.ROOM_ERROR);
@@ -153,7 +153,7 @@ public abstract class Room {
     }
 
     public List<GameObject> getObjects() {
-        return this.map.getObjects();
+        return this.getMap().getObjects();
     }
 
     public GameObject addObject(GameObject object) {
@@ -180,10 +180,11 @@ public abstract class Room {
     public List<GameObject> getObjectsById(String id) {
         List<GameObject> objects = new ArrayList<>();
 
-        for (GameObject object : this.map.getObjects())
+        for (GameObject object : this.getObjects())
             if (object.getCustomId().equalsIgnoreCase(id))
                 objects.add(object);
 
+        objects.sort((o1, o2) -> o2.getClass().getAnnotation(ObjectPriority.class).colisionPriority().getPriority() - o1.getClass().getAnnotation(ObjectPriority.class).colisionPriority().getPriority());
         return objects;
     }
 

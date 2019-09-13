@@ -11,5 +11,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ObjectPriority {
-    RenderPriority renderPriority() default RenderPriority.NORMAL;
+    ObjectsPriority renderPriority() default ObjectsPriority.NORMAL;
+    ObjectsPriority colisionPriority() default ObjectsPriority.NORMAL;
 }

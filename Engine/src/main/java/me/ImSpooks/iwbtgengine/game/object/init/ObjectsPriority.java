@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
  * Copyright © ImSpooks
  */
 @RequiredArgsConstructor
-public enum RenderPriority {
+public enum ObjectsPriority {
     LOWEST(1, "Lowest"),
     LOW(2, "Low"),
     NORMAL(3, "Normal"),

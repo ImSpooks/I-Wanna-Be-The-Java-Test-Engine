@@ -4,6 +4,8 @@ import lombok.Getter;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.SaveBlocker;
+import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
+import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
@@ -17,10 +19,12 @@ public class Bullet extends GameObject {
 
     @Getter private int xScale;
     @Getter private int ticksAlive = 0;
+    @Getter private final KidObject shooter;
 
-    public Bullet(Room parent, double x, double y, Sprite sprite, int xScale) {
+    public Bullet(Room parent, double x, double y, Sprite sprite, int xScale, KidObject shooter) {
         super(parent, x, y, sprite);
         this.xScale = xScale;
+        this.shooter = shooter;
     }
 
     @Override
@@ -33,6 +37,11 @@ public class Bullet extends GameObject {
                     this.x = -1000;
                     this.y = -1000;
                     break;
+                }
+                else if (gameObject instanceof Save) {
+                    if (((Save) gameObject).canSave()) {
+                        ((Save) gameObject).save(this.getParent().getHandler(), this.shooter);
+                    }
                 }
             }
 
