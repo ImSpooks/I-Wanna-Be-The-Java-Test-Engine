@@ -22,6 +22,7 @@ public class BloodParticle extends Particle {
 
     public BloodParticle(double x, double y, double velX, double velY, Room room) {
         super(x, y, velX, velY, Integer.MAX_VALUE);
+        this.velY *= Global.GRAVITY;
 
         BufferedImage image = room.getHandler().getMain().getResourceHandler().get("sprBlood" + (Global.RANDOM.nextInt(3) + 1), BufferedImage.class);
         this.room = room;
@@ -49,7 +50,7 @@ public class BloodParticle extends Particle {
             if (this.velX != 0 || this.velY != 0) {
                 if (!onBlock) {
                     this.velX *= 0.99;
-                    this.velY += 0.275;
+                    this.velY += 0.275 * Global.GRAVITY;
 
                     /*for (GameObject gameObject : room.getObjectsAt((int) this.x, (int) this.y)) {
                         if (gameObject instanceof Block) {

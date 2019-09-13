@@ -9,6 +9,7 @@ import me.ImSpooks.iwbtgengine.event.EventHandler;
 import me.ImSpooks.iwbtgengine.game.object.particles.init.ParticleManager;
 import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.sound.SoundManager;
 
 import java.awt.*;
@@ -41,6 +42,8 @@ public class GameHandler {
         this.saveData.setRoomId("stage1_room1");
         this.saveData.setX(736);
         this.saveData.setY(512);
+
+        Global.GRAVITY = !this.saveData.flippedGravity ? 1.0 : -1.0;
     }
 
     public void render(Camera camera, Graphics graphics) {

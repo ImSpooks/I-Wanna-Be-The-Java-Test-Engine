@@ -57,13 +57,16 @@ public abstract class KidObject extends GameObject {
     @Getter private KidState previousState;
     @Getter @Setter private KidState kidState;
 
+    @Getter private final Hitbox normalHitbox;
+    @Getter private final Hitbox flippedHitbox;
+
     public KidObject(Room parent, double x, double y, GameHandler handler) {
         super(parent, x, y, null);
         this.handler = handler;
 
         this.sprites = this.getSpriteMap();
 
-        this.setHitbox(new Hitbox(Hitbox.HitboxType.RECTANGLE) {
+        this.setHitbox(normalHitbox = new Hitbox(Hitbox.HitboxType.RECTANGLE) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> list = new ArrayList<>();
@@ -79,6 +82,23 @@ public abstract class KidObject extends GameObject {
                 return list;
             }
         });
+
+        this.flippedHitbox = new Hitbox(Hitbox.HitboxType.RECTANGLE) {
+            @Override
+            public List<int[]> getPixels() {
+                List<int[]> list = new ArrayList<>();
+
+                Rectangle rectangle = new Rectangle(12, 0, 11, 21);//21
+
+                for (int xx = 0; xx <= rectangle.width; xx++) {
+                    for (int yy = 0; yy <= rectangle.height; yy++) {
+                        list.add(new int[] {(int) rectangle.getX() + xx, (int) rectangle.getY() + yy});
+                    }
+                }
+
+                return list;
+            }
+        };
 
         this.setSprite(this.getSprites().get("idle"));
 
@@ -98,9 +118,12 @@ public abstract class KidObject extends GameObject {
 
         // Change velocity if player is in a state that is able to fall
         if (this.kidState.canFall()) {
-            velY = velY + (gravity * Global.GRAVITY);
-            if (velY > 9) {
+            velY = velY + gravity * Global.GRAVITY;
+            if (Global.GRAVITY > 0 && velY > 9) {
                 velY = 9;
+            }
+            else if (Global.GRAVITY < 0 && velY < -9) {
+                velY = -9;
             }
         }
 
@@ -144,7 +167,7 @@ public abstract class KidObject extends GameObject {
             if (Math.abs(velY) < 1) {
                 if (floorCollision(falling)) {
 
-                    this.y += velY;
+                    this.y += velY * Global.GRAVITY;
 
                     if (this.kidState.canFall()) {
                         if (falling)
@@ -158,13 +181,13 @@ public abstract class KidObject extends GameObject {
                 for (double yvel = 0; yvel < Math.ceil(Math.abs(velY)); yvel++) {
                     if (floorCollision(falling) || !falling) {
                         if (falling) {
-                            this.y++;
+                            this.y += 1 * Global.GRAVITY;
 
                             if (this.kidState.canFall())
                                 this.kidState = KidState.FALLING;
                         }
                         else {
-                            this.y--;
+                            this.y -= 1 * Global.GRAVITY;
 
                             if (this.kidState.canFall())
                                 this.kidState = KidState.JUMPING;
@@ -227,7 +250,7 @@ public abstract class KidObject extends GameObject {
             sprite.draw(camera, graphics, this.x + (xScale == -1 ? 3 : 0), this.y, xScale == -1, Global.GRAVITY != 1);
         }
 
-        //this.getHitbox().renderHitbox(camera, x, y, graphics);
+        this.getHitbox().renderHitbox(camera, x, y, graphics);
 
         /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
             if (gameObject instanceof Block)
@@ -302,7 +325,10 @@ public abstract class KidObject extends GameObject {
         for (int i = (int) rectangle.getX(); i < rectangle.getX() + rectangle.getWidth(); i++) {
             int x = (int) this.x + i;
 
-            objects.addAll(this.handler.getRoom().getObjectsAt(x, (int) this.y + (falling ? rectangle.getY() + rectangle.getHeight() : rectangle.getY())));
+            double addedY = (falling && Global.GRAVITY > 0 ? rectangle.getY() + rectangle.getHeight() : rectangle.getY());
+            if (Global.GRAVITY < 0) addedY--;
+
+            objects.addAll(this.handler.getRoom().getObjectsAt(x, (int) this.y + addedY, objects));
         }
 
         objects = objects.stream().distinct().collect(Collectors.toList());
@@ -312,7 +338,7 @@ public abstract class KidObject extends GameObject {
                 velY = 0;
 
                 if (falling) {
-                    canJump = 2;
+                    canJump = maxJumps;
                     ((Block) gameObject).getOnTouch().run(this);
                 }
                 return false;
@@ -343,7 +369,7 @@ public abstract class KidObject extends GameObject {
         Rectangle rectangle = this.getHitbox().getRectIfPossible();
         for (int i = (int) rectangle.getY() + 1; i < rectangle.getY() + rectangle.getHeight(); i++) {
             int y = (int) this.y + i;
-            objects.addAll(this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? rectangle.getX() + rectangle.getWidth() : rectangle.getWidth()), y));
+            objects.addAll(this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? rectangle.getX() + rectangle.getWidth() : rectangle.getWidth()), y, objects));
         }
 
         objects = objects.stream().distinct().collect(Collectors.toList());
@@ -351,7 +377,6 @@ public abstract class KidObject extends GameObject {
         // check for blocks FIRST
         for (GameObject gameObject : objects) {
             if (gameObject instanceof Block) {
-                System.out.println("found block");
                 return false;
             }
         }
@@ -409,6 +434,8 @@ public abstract class KidObject extends GameObject {
 
                     kidState = KidState.JUMPING;
                 }
+
+                velY *= Global.GRAVITY;
             }
 
             @Override

@@ -13,7 +13,7 @@ public class Global {
     public static final int GAME_HEIGHT = 610; // 610
     public static final int FRAME_RATE = 50;
 
-    public static final double GRAVITY = 1.0;
+    public static double GRAVITY = 1.0;
 
     public static final Random RANDOM = new Random();
 }

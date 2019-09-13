@@ -6,6 +6,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.blocks.SaveBlocker;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Cherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.ColoredCherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
+import me.ImSpooks.iwbtgengine.game.object.objects.misc.Gravity;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.Walljump;
 import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
@@ -92,10 +93,10 @@ public class EngineReader extends MapReader {
 
                     case "blocks": {
                         if (objType.startsWith("SaveBlocker")) {
-                            gameObject = new SaveBlocker(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                            gameObject = new SaveBlocker(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         else {
-                            gameObject = new Block(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                            gameObject = new Block(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         break;
                     }
@@ -103,12 +104,12 @@ public class EngineReader extends MapReader {
                     case "killers": {
                         if (objType.startsWith("Cherry")) {
                             if (objType.endsWith("White"))
-                                gameObject = new ColoredCherry(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)), Color.GREEN);
+                                gameObject = new ColoredCherry(this.getRoom(), x, y, this.getSprite(tile), Color.GREEN);
                             else
-                                gameObject = new Cherry(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                                gameObject = new Cherry(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         else if (objType.startsWith("Spike") || objType.startsWith("Mini")) {
-                            gameObject = new Spike(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                            gameObject = new Spike(this.getRoom(), x, y, this.getSprite(tile));
 
                         }
                         break;
@@ -120,10 +121,15 @@ public class EngineReader extends MapReader {
                             this.setStartY(y);
                         }
                         else if (objType.startsWith("JumpRefresher")) {
-                            gameObject = new JumpRefresher(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                            gameObject = new JumpRefresher(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         else if (objType.startsWith("Walljump")) {
-                            gameObject = new Walljump(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)), tile.endsWith("L") || tile.endsWith("Left"));
+                            gameObject = new Walljump(this.getRoom(), x, y, this.getSprite(tile), tile.endsWith("L") || tile.endsWith("Left"));
+                        }
+
+                        else if (objType.startsWith("Gravity")) {
+                            boolean up = objType.endsWith("Up");
+                            gameObject = new Gravity(this.getRoom(), x, y, this.getSprite(tile), up);
                         }
                         break;
                     }
@@ -144,20 +150,20 @@ public class EngineReader extends MapReader {
                         if (difficulty.getId() < this.getRoom().getHandler().getSaveData().getDifficulty().getId())
                             continue;
 
-                        gameObject = new Save(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)), difficulty, flip);
+                        gameObject = new Save(this.getRoom(), x, y, this.getSprite(tile), difficulty, flip);
                         break;
                     }
 
                     case "triggers": {
                         if (objType.startsWith("TriggeMaskr")) {
-                            gameObject = new Trigger(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                            gameObject = new Trigger(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         break;
                     }
 
                     case "warps": {
                         if (objType.endsWith("Warp")) {
-                            gameObject = new Warp(this.getRoom(), x, y, Sprite.generateSprite(this.getResourceHandler().getResource(tile)));
+                            gameObject = new Warp(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         break;
                     }
@@ -173,5 +179,9 @@ public class EngineReader extends MapReader {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected Sprite getSprite(String tile) {
+        return Sprite.generateSprite(this.getResourceHandler().getResource(tile));
     }
 }

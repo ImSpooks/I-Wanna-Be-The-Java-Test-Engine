@@ -60,6 +60,7 @@ public abstract class Room {
         this.getMap().getObjects().stream()
                 .filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger && !((Trigger) object).isVisible()))
                 .forEach(object -> object.render(camera, graphics));
+
     }
 
     public void update(Camera camera, float delta) {
@@ -163,6 +164,21 @@ public abstract class Room {
         return object;
     }
 
+    public List<GameObject> getObjectsAt(double x, double y, List<GameObject> existingObjects) {
+        List<GameObject> list = new ArrayList<>();
+
+        for (GameObject gameObject : this.getObjects()) {
+            if (existingObjects.contains(gameObject)) continue;
+            if (x >= gameObject.getX() && x < gameObject.getX() + gameObject.getWidth()) {
+                if (y >= gameObject.getY() && y < gameObject.getY() + gameObject.getHeight()) {
+                    list.add(gameObject);
+                }
+            }
+        }
+
+        return list;
+    }
+
     public List<GameObject> getObjectsAt(double x, double y) {
         List<GameObject> list = new ArrayList<>();
 
@@ -182,10 +198,7 @@ public abstract class Room {
 
         for (GameObject object : this.getObjects())
             if (object.getCustomId().equalsIgnoreCase(id))
-                objects.add(object);
-
-        objects.sort((o1, o2) -> o2.getClass().getAnnotation(ObjectPriority.class).colisionPriority().getPriority() - o1.getClass().getAnnotation(ObjectPriority.class).colisionPriority().getPriority());
-        return objects;
+                objects.add(object); return objects;
     }
 
     public Room reset() {

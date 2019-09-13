@@ -23,10 +23,6 @@ div {
     width: 500px;
 }
 
-/*
 img {
-    max-height: 32px;
-    max-width: 32px;
-    object-fit: cover;
-    object-position: left 50%;
-}*/
+    image-rendering: pixelated;
+}
