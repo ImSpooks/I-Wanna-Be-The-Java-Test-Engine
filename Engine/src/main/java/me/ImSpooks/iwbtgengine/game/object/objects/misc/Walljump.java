@@ -9,6 +9,7 @@ import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.object.player.KidState;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
+import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
@@ -73,7 +74,7 @@ public class Walljump extends Interactable {
     }
 
     public void onSlide(KidObject kid, GameHandler handler) {
-        kid.setVelY(2);
+        kid.setVelY(2 * Global.GRAVITY);
     }
 
     @Override

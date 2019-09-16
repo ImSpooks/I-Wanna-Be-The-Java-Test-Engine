@@ -169,8 +169,8 @@ public abstract class Room {
 
         for (GameObject gameObject : this.getObjects()) {
             if (existingObjects.contains(gameObject)) continue;
-            if (x >= gameObject.getX() && x < gameObject.getX() + gameObject.getWidth()) {
-                if (y >= gameObject.getY() && y < gameObject.getY() + gameObject.getHeight()) {
+            if (x >= gameObject.getX() && x <= gameObject.getX() + gameObject.getWidth()) {
+                if (y >= gameObject.getY() && y <= gameObject.getY() + gameObject.getHeight()) {
                     list.add(gameObject);
                 }
             }

@@ -78,7 +78,7 @@ public class RenderManager implements Runnable {
         this.main.requestFocus();
         BufferStrategy bs = this.main.getBufferStrategy();
         if (bs == null){
-            this.main.createBufferStrategy(2);
+            this.main.createBufferStrategy(3);
             return;
         }
 
