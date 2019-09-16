@@ -10,7 +10,9 @@ import me.ImSpooks.iwbtgengine.event.events.CutsceneEvent;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
+import me.ImSpooks.iwbtgengine.game.object.objects.blocks.InvisibleBlock;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerObject;
+import me.ImSpooks.iwbtgengine.game.object.objects.platforms.Platform;
 import me.ImSpooks.iwbtgengine.game.object.particles.BloodParticle;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.EventRoom;
@@ -22,11 +24,8 @@ import me.ImSpooks.iwbtgengine.keycontroller.KeyListener;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Created by Nick on 04 May 2019.
@@ -107,8 +106,26 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public boolean update(float delta) {
+        this.getHandler().getRoom().resetObjects();
+
         if (this.kidState == KidState.DEAD) {
             this.ticksDead++;
+
+            if (this.bloodTicks-- > 0) {
+                Random random = Global.RANDOM;
+                for (int i = 0; i < this.bloodParticles / this.maxBloodTicks; i++) {
+                    double velX = (random.nextDouble() * 2 - 1) * 8;
+                    double velY = (random.nextDouble() * 10 - 2) * -1;
+
+                    while (Math.sqrt(velX * velX + velY * velY) > 8) {
+                        velX = (random.nextDouble() * 2 - 1) * 8;
+                        velY = (random.nextDouble() * 10 - 2) * -1;
+                    }
+
+                    BloodParticle particle = new BloodParticle(this.x + 16, this.y + 16, velX, velY, this.getHandler().getRoom());
+                    this.getHandler().getParticleManager().addParticle(particle);
+                }
+            }
             return false;
         }
         this.ticksLived++;
@@ -139,7 +156,7 @@ public abstract class KidObject extends GameObject {
 
             boolean left = velX < 0;
             for (int i = 0; i < Math.ceil(Math.abs(velX)); i++) {
-                if (wallCollision(left ? -1 : 1)) {
+                if (wallCollision(left ? -1 : 1, null, null)) {
                     if (left) {
                         this.x--;
                     }
@@ -249,12 +266,15 @@ public abstract class KidObject extends GameObject {
             }
         }
         velX = 0;
-
+        tryJumping = false;
         return true;
     }
 
     @Override
     public void render(Camera camera, Graphics graphics) {
+        if (this.kidState == KidState.DEAD)
+            return;
+
         if (this.kidState.name().startsWith("SLIDING")) {
             sprite.draw(camera, graphics, this.x + (xScale == -1 ? 3 : 0) + (7 * -xScale), this.y, xScale == -1, Global.GRAVITY != 1);
         }
@@ -265,13 +285,14 @@ public abstract class KidObject extends GameObject {
 
         this.getHitbox().renderHitbox(camera, x, y, graphics);
 
-        for (GameObject gameObject : toRender) {
-            gameObject.getHitbox().renderHitbox(camera, gameObject.getX(), gameObject.getY(), graphics);
-        }
+        graphics.setColor(Color.RED);
+        graphics.fillRect(721, 433, 1, 1);
+
+        wallCollision(xScale, graphics, camera);
 
         /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
             if (gameObject instanceof Block)
-                gameObject.getHitbox().renderHitbox((int)gameObject.getX(), (int)gameObject.getY(), graphics);
+                gameObject.getHitbox().renderHitbox(camera, (int)gameObject.getX(), (int)gameObject.getY(), graphics);
         }//*/
     }
 
@@ -312,33 +333,18 @@ public abstract class KidObject extends GameObject {
         }
     }
 
+    @Getter private int bloodTicks = 0;
+    @Getter @Setter private int maxBloodTicks = 5;
+    @Getter @Setter private int bloodParticles = 150;
     public void kill() {
         if (this.onDeath()) {
             this.ticksLived = 0;
             this.kidState = KidState.DEAD;
 
-            Random random = Global.RANDOM;
-            long now2 = System.nanoTime();
-            for (int i = 0; i < 150; i++) {
-                long now = System.nanoTime();
-                double velX = (random.nextDouble() * 2 - 1) * 8;
-                double velY = (random.nextDouble() * 10 - 2) * -1;
-
-                while (Math.sqrt(velX * velX + velY * velY) > 8) {
-                    velX = (random.nextDouble() * 2 - 1) * 8;
-                    velY = (random.nextDouble() * 10 - 2) * -1;
-                }
-
-                BloodParticle particle = new BloodParticle(this.x + 16, this.y + 16, velX, velY, this.getHandler().getRoom());
-                this.getHandler().getParticleManager().addParticle(particle);
-            }
-
-            this.x = -32;
-            this.y = -32;
+            this.bloodTicks = this.maxBloodTicks;
         }
     }
 
-    List<GameObject> toRender = new ArrayList<>();
     private boolean floorCollision(boolean falling) {
         List<GameObject> objects = new ArrayList<>();
 
@@ -356,12 +362,11 @@ public abstract class KidObject extends GameObject {
             objects.addAll(this.handler.getRoom().getObjectsAt(x, (int) this.y + addedY, objects));
         }
 
-        objects = objects.stream().distinct().collect(Collectors.toList());
         // check for blocks FIRST
-        toRender.clear();
+        List<Class> classList = new ArrayList<>(Arrays.asList(Block.class, InvisibleBlock.class));
+
         for (GameObject gameObject : objects) {
-            if (gameObject instanceof Block) {
-                toRender.add(gameObject);
+            if (classList.contains(gameObject.getClass()) && gameObject instanceof Block) {
                 velY = 0;
 
                 if (falling) {
@@ -370,6 +375,18 @@ public abstract class KidObject extends GameObject {
                 }
                 return false;
             }
+            else if (gameObject instanceof Platform) {
+                ((Platform) gameObject).onTouch().run(this);
+
+                if (falling) {
+                    Rectangle hitbox = this.hitbox.getRectIfPossible();
+                    if ((Global.GRAVITY > 0 && this.y + hitbox.getY() + hitbox.getHeight() <= gameObject.getY() + 1) || Global.GRAVITY < 0 && this.y + hitbox.getY() >= gameObject.getY() + gameObject.getHeight()) {
+                        canJump = maxJumps;
+                        velY = 0;
+                        return false;
+                    }
+                }
+            }
         }
 
         for (GameObject gameObject : objects) {
@@ -390,20 +407,21 @@ public abstract class KidObject extends GameObject {
         return true;
     }
 
-    private boolean wallCollision(int xScale) {
+    private boolean wallCollision(int xScale, Graphics graphics, Camera camera) {
+
         List<GameObject> objects = new ArrayList<>();
 
         Rectangle rectangle = this.getHitbox().getRectIfPossible();
-        for (int i = (int) rectangle.getY() + 1 + (Global.GRAVITY > 0 ? 1 : 0); i < rectangle.getY() + rectangle.getHeight(); i++) {
+        for (int i = (int) rectangle.getY() + (Global.GRAVITY > 0 ? 1 : 0); i < rectangle.getY() + rectangle.getHeight(); i++) {
             int y = (int) this.y + i;
             objects.addAll(this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? rectangle.getX() + rectangle.getWidth() : rectangle.getX()), y, objects));
         }
 
-        objects = objects.stream().distinct().collect(Collectors.toList());
-
         // check for blocks FIRST
+        List<Class> classList = new ArrayList<>(Arrays.asList(Block.class, InvisibleBlock.class));
+
         for (GameObject gameObject : objects) {
-            if (gameObject instanceof Block) {
+            if (classList.contains(gameObject.getClass()) && gameObject instanceof Block) {
                 return false;
             }
         }
@@ -425,52 +443,57 @@ public abstract class KidObject extends GameObject {
         return true;
     }
 
-    public void addDefaultKeys() {
+
+
+    private long lastRelease = 0;
+    private boolean pressedShift = false;
+    public void jump(JumpType type) {
+        long time = System.currentTimeMillis() - lastRelease;
+
+        boolean jumped = false;
+
+        tryJumping = true;
+
+        // cancel jump
+        if (type == JumpType.VINE_JUMP) {
+            onJump(JumpType.VINE_JUMP);
+            velY = -jump;
+            pressedShift = true;
+
+            jumped = true;
+        }
+        else if (((time >= 20 && time < 40)&& canJump > 0) || type == JumpType.CANCEL_JUMP) {
+            onJump(type = JumpType.CANCEL_JUMP);
+            velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
+
+            jumped = true;
+        }
+        else if (canJump == maxJumps || type == JumpType.FULL_JUMP) { //main jump
+            onJump(type = JumpType.FULL_JUMP);
+            canJump = maxJumps - 1;
+            velY = -jump;
+            pressedShift = true;
+
+            jumped = true;
+        } else if ((canJump > 0 && canJump < maxJumps) || type == JumpType.DOUBLE_JUMP) { //double jump
+            onJump(type = JumpType.DOUBLE_JUMP);
+            canJump--;
+            velY = -jump2;
+            pressedShift = true;
+
+            jumped = true;
+        }
+
+        if (jumped) {
+            kidState = KidState.JUMPING;
+            velY = velY * Global.GRAVITY;
+        }
+    }
+
+    @Getter @Setter private boolean tryJumping = false;
+    private void addDefaultKeys() {
         this.getKeyListener().add(this.kidController = new KeyListener() {
-            private boolean pressedShift = false;
             private boolean pressedLeftOnVine = false;
-            long lastRelease = 0;
-
-            private void jump(JumpType type) {
-                long time = System.currentTimeMillis() - lastRelease;
-
-                boolean jumped = false;
-
-                // cancel jump
-                if (type != null && type == JumpType.VINE_JUMP) {
-                    onJump(type = JumpType.VINE_JUMP);
-                    velY = -jump;
-                    pressedShift = true;
-
-                    jumped = true;
-                }
-                else if (((time >= 20 && time < 40)&& canJump > 0) || (type != null && type == JumpType.CANCEL_JUMP)) {
-                    onJump(type = JumpType.CANCEL_JUMP);
-                    velY = -(canJump-- == 1 ? jump2 : jump) * gravity;
-
-                    jumped = true;
-                }
-                else if (canJump == maxJumps || (type != null && type == JumpType.FULL_JUMP)) { //main jump
-                    onJump(type = JumpType.FULL_JUMP);
-                    canJump = maxJumps - 1;
-                    velY = -jump;
-                    pressedShift = true;
-
-                    jumped = true;
-                } else if ((canJump > 0 && canJump < maxJumps) || (type != null && type == JumpType.DOUBLE_JUMP)) { //double jump
-                    onJump(type = JumpType.DOUBLE_JUMP);
-                    canJump--;
-                    velY = -jump2;
-                    pressedShift = true;
-
-                    jumped = true;
-                }
-
-                if (jumped) {
-                    kidState = KidState.JUMPING;
-                    velY = velY * Global.GRAVITY;
-                }
-            }
 
             @Override
             public void onKeyPress(int keycode) {

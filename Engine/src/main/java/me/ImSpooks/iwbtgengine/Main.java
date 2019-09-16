@@ -25,9 +25,6 @@ public class Main extends Canvas {
     // Instance of the main class
     @Getter private static Main instance;
 
-    // Location of the base folder (must be empty when building)
-    @Getter private static final String baseFolder = "src/main/resources/";
-
     // Resource Handler
     @Getter private final ResourceHandler resourceHandler = new ResourceHandler(this);
 

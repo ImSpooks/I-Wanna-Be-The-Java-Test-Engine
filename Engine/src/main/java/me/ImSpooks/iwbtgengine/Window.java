@@ -15,7 +15,8 @@ public class Window {
     @Getter private JFrame frame;
 
     public Window(Main main, String title, int width, int height) {
-        System.setProperty("sun.java2d.opengl", "true");
+
+        this.initialize();
 
         this.frame = new JFrame(title);
         frame.setPreferredSize(new Dimension(width, height));
@@ -28,5 +29,9 @@ public class Window {
         frame.setVisible(true);
 
         frame.add(main);
+    }
+
+    private void initialize() {
+        System.setProperty("sun.java2d.opengl", "true");
     }
 }

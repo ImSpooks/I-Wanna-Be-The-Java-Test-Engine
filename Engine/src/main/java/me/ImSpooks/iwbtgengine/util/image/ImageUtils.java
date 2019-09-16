@@ -77,11 +77,16 @@ public class ImageUtils {
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
-    public void drawStringShadow(Graphics g, String string, int x, int y) {
+    public void drawStringShadow(Graphics g, String string, int x, int y, Color color) {
         Color prevColor = g.getColor();
+        g.setColor(color);
         g.drawString(string, x, y);
-        g.setColor(new Color(prevColor.getRed(), prevColor.getGreen(), prevColor.getBlue(), prevColor.getAlpha() / 3));
+        g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 6));
         g.drawString(string, x + 2, y + 1);
         g.setColor(prevColor);
+    }
+
+    public void drawStringShadow(Graphics g, String string, int x, int y) {
+        this.drawStringShadow(g, string, x, y, g.getColor());
     }
 }

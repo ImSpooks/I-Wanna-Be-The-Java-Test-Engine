@@ -85,7 +85,7 @@ public class ColoringUtils {
         return new Color(a << 24 | r << 16 | g << 8 | b);
     }
 
-    private int keep256(int i) {
+    public int keep256(int i) {
         if (i <= 255 && i >= 0)
             return i;
         if (i > 255)

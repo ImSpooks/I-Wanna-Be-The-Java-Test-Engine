@@ -223,5 +223,15 @@ public abstract class Room {
         return null;
     }
 
+
+    public void resetObjects() {
+        /*for (GameObject object : this.getObjects()) {
+            if (object instanceof Sign) {
+                ((Sign) object).setVisible(false);
+            }
+        }*/
+    }
+
     public abstract void onLoad();
+
 }

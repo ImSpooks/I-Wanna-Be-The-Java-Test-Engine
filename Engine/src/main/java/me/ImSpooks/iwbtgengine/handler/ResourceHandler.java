@@ -8,12 +8,14 @@ import me.ImSpooks.iwbtgengine.sound.Sound;
 import me.ImSpooks.iwbtgengine.util.StringUtils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -66,7 +68,7 @@ public class ResourceHandler {
 
     public <T> T get(String value, Class<T> clazz) {
         if (!resources.containsKey(value)) {
-            main.getLogger().log(Level.WARNING, "Resource {%s} was not initialized.", value);
+            main.getLogger().log(Level.WARNING, String.format("Resource {%s} was not initialized.", value));
             return null;
         }
 
@@ -76,7 +78,7 @@ public class ResourceHandler {
     @SuppressWarnings("unchecked")
     public <T> T get(String value) {
         if (!resources.containsKey(value)) {
-            main.getLogger().log(Level.WARNING, "Resource {%s} was not initialized.", value);
+            main.getLogger().log(Level.WARNING, String.format("Resource {%s} was not initialized.", value));
             return null;
         }
 
@@ -115,6 +117,20 @@ public class ResourceHandler {
                 }
                 break;
             }
+            case FONT: {
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+                try {
+                    Font font = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream(resource)).deriveFont(16.0f);
+
+                    ge.registerFont(font);
+
+
+                    this.resources.put(fileName, Arrays.asList(font, type.getClazz()));
+                } catch (FontFormatException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -124,6 +140,7 @@ public class ResourceHandler {
         GIF(new String[] {"gif"}, GIFIcon.class),
         TXT(new String[] {"txt"}, null),
         SOUND(new String[] {"wav", "brtsm"}, Sound.class),
+        FONT(new String[] {"ttf"}, Font.class),
         ;
 
         public static final ResourceType[] CACHE = values();
@@ -175,7 +192,7 @@ public class ResourceHandler {
     }
 
     private List<String> readLines(Reader input) throws IOException {
-        BufferedReader reader = toBufferedReader(input);
+        BufferedReader reader = input instanceof BufferedReader ? (BufferedReader) input : new BufferedReader(input);
         List<String> list = new ArrayList<>();
 
         for(String line = reader.readLine(); line != null; line = reader.readLine()) {
@@ -183,9 +200,5 @@ public class ResourceHandler {
         }
 
         return list;
-    }
-
-    private BufferedReader toBufferedReader(Reader reader) {
-        return reader instanceof BufferedReader ? (BufferedReader)reader : new BufferedReader(reader);
     }
 }

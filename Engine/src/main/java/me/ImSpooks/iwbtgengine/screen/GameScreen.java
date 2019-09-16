@@ -22,6 +22,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(Camera camera, Graphics graphics) {
+        graphics.setFont(this.getGame().getResourceHandler().get("Determination", Font.class));
         graphics.setColor(Color.CYAN);
         graphics.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
 

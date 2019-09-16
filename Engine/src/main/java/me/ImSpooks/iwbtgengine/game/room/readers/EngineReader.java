@@ -5,10 +5,10 @@ import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.SaveBlocker;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Cherry;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.ColoredCherry;
+import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerBlock;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
-import me.ImSpooks.iwbtgengine.game.object.objects.misc.Gravity;
-import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
-import me.ImSpooks.iwbtgengine.game.object.objects.misc.Walljump;
+import me.ImSpooks.iwbtgengine.game.object.objects.misc.*;
+import me.ImSpooks.iwbtgengine.game.object.objects.platforms.MovingPlatform;
 import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
@@ -110,7 +110,9 @@ public class EngineReader extends MapReader {
                         }
                         else if (objType.startsWith("Spike") || objType.startsWith("Mini")) {
                             gameObject = new Spike(this.getRoom(), x, y, this.getSprite(tile));
-
+                        }
+                        else if (objType.endsWith("Block")) {
+                            gameObject = new KillerBlock(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         break;
                     }
@@ -123,13 +125,29 @@ public class EngineReader extends MapReader {
                         else if (objType.startsWith("JumpRefresher")) {
                             gameObject = new JumpRefresher(this.getRoom(), x, y, this.getSprite(tile));
                         }
-                        else if (objType.startsWith("Walljump")) {
-                            gameObject = new Walljump(this.getRoom(), x, y, this.getSprite(tile), tile.endsWith("L") || tile.endsWith("Left"));
-                        }
-
                         else if (objType.startsWith("Gravity")) {
                             boolean up = objType.endsWith("Up");
                             gameObject = new Gravity(this.getRoom(), x, y, this.getSprite(tile), up);
+                        }
+                        else if (objType.startsWith("Sign")) {
+                            gameObject = new Sign(this.getRoom(), x, y, this.getSprite(tile));
+                        }
+                        else if (objType.startsWith("Walljump")) {
+                            gameObject = new Walljump(this.getRoom(), x, y, this.getSprite(tile), tile.endsWith("L") || tile.endsWith("Left"));
+                        }
+                        else if (objType.startsWith("Water")) {
+                            Water.WaterType waterType =     Water.WaterType.SINGLE_JUMP;
+                            if (objType.endsWith("1"))      waterType = Water.WaterType.FULL_JUMP;
+                            else if (objType.endsWith("2")) waterType = Water.WaterType.DOUBLE_JUMP;
+
+                            gameObject = new Water(this.getRoom(), x, y, this.getSprite(tile), waterType);
+                        }
+                        break;
+                    }
+
+                    case "platforms": {
+                        if (objType.startsWith("MovingPlatform")) {
+                            gameObject = new MovingPlatform(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         break;
                     }
@@ -153,6 +171,23 @@ public class EngineReader extends MapReader {
                         gameObject = new Save(this.getRoom(), x, y, this.getSprite(tile), difficulty, flip);
                         break;
                     }
+
+                    /*case "slopes": {
+                        if (objType.startsWith("Slope")) {
+                            if (objType.endsWith("Block")) {
+                                gameObject = new Block(this.getRoom(), x, y, this.getSprite(tile));
+                            }
+                            else {
+                                Slope.SlopeDirection direction =                  Slope.SlopeDirection.DOWN_LEFT;
+                                if (objType.endsWith("DownRight")) direction =    Slope.SlopeDirection.DOWN_RIGHT;
+                                else if (objType.endsWith("UpLeft")) direction =  Slope.SlopeDirection.UP_LEFT;
+                                else if (objType.endsWith("UpRight")) direction = Slope.SlopeDirection.UP_RIGHT;
+
+                                gameObject = new Slope(this.getRoom(), x, y, this.getSprite(tile), direction);
+                            }
+                        }
+                        break;
+                    }*/
 
                     case "triggers": {
                         if (objType.startsWith("TriggeMaskr")) {
