@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class SaveData {
 
+    @Getter @Setter private int saveId;
+
     @Getter @Setter private String roomId;
     @Getter @Setter private int x, y;
     @Getter @Setter public boolean flippedGravity;
@@ -26,20 +28,14 @@ public class SaveData {
     @Getter @Setter private long time;
     @Getter @Setter private int deaths;
 
-    @Getter @Setter private final Difficulty difficulty;
+    @Getter private Difficulty difficulty;
 
     @Getter @Setter private List<GameItems> items;
 
 
-    public SaveData() {
-        this.items = new ArrayList<>();
-        this.roomId = "";
-        this.x = -1;
-        this.y = -1;
-        this.flippedGravity = false;
-        this.time = 0L;
-        this.deaths = 0;
-        this.difficulty = Difficulty.HARD;
+    public SaveData(int saveId) {
+        this.saveId = saveId;
+        this.read();
     }
 
     public SaveData(String roomId, int x, int y, boolean flippedGravity, long time, int deaths, Difficulty difficulty, List<GameItems> items) {
@@ -54,7 +50,19 @@ public class SaveData {
     }
 
     public void save() {
+        //TODO write to file
+    }
 
+    public void read() {
+        //TODO read file
+        this.items = new ArrayList<>();
+        this.roomId = "";
+        this.x = -1;
+        this.y = -1;
+        this.flippedGravity = false;
+        this.time = 0L;
+        this.deaths = 0;
+        this.difficulty = Difficulty.HARD;
     }
 
     @SuppressWarnings("unchecked")

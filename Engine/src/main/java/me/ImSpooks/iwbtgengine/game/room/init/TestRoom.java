@@ -51,8 +51,6 @@ public class TestRoom extends Room {
             });
         }
 
-        // TODO save points
-
         for (GameObject gameObject : this.getObjectsById("warp1")) {
             Warp warp = (Warp) gameObject;
             warp.setOnTouch(kid -> {

@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.screen;
 
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
+import me.ImSpooks.iwbtgengine.data.SaveData;
 import me.ImSpooks.iwbtgengine.game.object.player.Kid;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
@@ -49,10 +50,11 @@ public class GameScreen extends AbstractScreen {
     public void preLoad() {
         this.setCamera(new Camera());
 
-        //TODO REMOVE
-        this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom(this.getHandler(), "stage1_room1"));
+        SaveData data = this.getHandler().getSaveData();
 
-        this.getHandler().setKid(new Kid(null, 32, 32, this.getHandler()));
+        this.getHandler().setRoom(this.getHandler().getMain().getRoomManager().getRoom(this.getHandler(), data.getRoomId()));
+
+        this.getHandler().setKid(new Kid(null, data.getX(), data.getY(), this.getHandler()));
         this.getHandler().getKid().reset();
     }
 
