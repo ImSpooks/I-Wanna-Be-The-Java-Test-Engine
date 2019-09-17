@@ -1,6 +1,8 @@
 package me.ImSpooks.iwbtgengine.game.room.init;
 
 import me.ImSpooks.iwbtgengine.camera.Camera;
+import me.ImSpooks.iwbtgengine.game.object.GameObject;
+import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.room.ReaderType;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
@@ -27,5 +29,16 @@ public class TestRoom2 extends Room {
     @Override
     public void onLoad() {
         this.getHandler().getSoundManager().reloadSound("bgm", "Test");
+
+        for (GameObject gameObject : this.getObjects()) {
+            if (!(gameObject instanceof Warp)) continue;
+
+            Warp warp = (Warp) gameObject;
+            warp.setOnTouch(kid -> {
+                Room room = this.getHandler().getMain().getRoomManager().getRoom(this.getHandler(), "stage1_room1");
+                this.getHandler().setRoom(room);
+                this.getHandler().getKid().setPosition(room.getMap().getStartX(), room.getMap().getStartY());
+            });
+        }
     }
 }

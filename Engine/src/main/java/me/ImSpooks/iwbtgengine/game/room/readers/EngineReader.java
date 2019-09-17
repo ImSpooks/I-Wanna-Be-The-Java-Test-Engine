@@ -12,7 +12,6 @@ import me.ImSpooks.iwbtgengine.game.object.objects.platforms.MovingPlatform;
 import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
-import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.game.room.RoomType;
 import me.ImSpooks.iwbtgengine.global.Difficulty;
@@ -153,7 +152,7 @@ public class EngineReader extends MapReader {
                     }
 
                     case "saves": {
-                        if (this.getRoom().getHandler().getSaveData().getDifficulty() == Difficulty.IMPOSSIBLE)
+                        if (this.getRoom().getHandler() == null || this.getRoom().getHandler().getSaveData().getDifficulty() == Difficulty.IMPOSSIBLE)
                             continue;
 
                         boolean flip = objType.endsWith("Flip");
@@ -214,9 +213,5 @@ public class EngineReader extends MapReader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    protected Sprite getSprite(String tile) {
-        return Sprite.generateSprite(this.getResourceHandler().getResource(tile));
     }
 }

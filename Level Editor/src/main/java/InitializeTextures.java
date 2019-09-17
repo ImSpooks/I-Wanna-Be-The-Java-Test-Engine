@@ -39,9 +39,7 @@ public class InitializeTextures {
                 String path = file.getPath();
                 path = path.substring(resourceFolder.getPath().length() + 1).replace(File.separator, "/");
 
-                System.out.println(path.split("/")[path.split("/").length - 2]);
-
-                Resource resource = new Resource(path, ResourceType.getFromType(path.split("/")[path.split("/").length - 2]));
+                Resource resource = new Resource(path, ResourceType.getFromType(path.split("/")[1]));
 
                 if (resource.getResourceType() != null && resource.getResourceType().isEnabled())
                     resources.add(resource);

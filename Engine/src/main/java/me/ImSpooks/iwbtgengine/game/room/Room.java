@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class Room {
 
-
     @Getter private MapReader map;
 
     private String path;
@@ -47,8 +46,7 @@ public abstract class Room {
         this.path = path;
         this.handler = handler;
 
-        if (this.handler != null)
-            this.readMap(type);
+        this.readMap(type);
     }
 
     public void render(Camera camera, Graphics graphics) {
@@ -169,8 +167,8 @@ public abstract class Room {
 
         for (GameObject gameObject : this.getObjects()) {
             if (existingObjects.contains(gameObject)) continue;
-            if (x >= gameObject.getX() && x <= gameObject.getX() + gameObject.getWidth()) {
-                if (y >= gameObject.getY() && y <= gameObject.getY() + gameObject.getHeight()) {
+            if (x >= gameObject.getX() && x < gameObject.getX() + gameObject.getWidth()) {
+                if (y >= gameObject.getY() && y < gameObject.getY() + gameObject.getHeight()) {
                     list.add(gameObject);
                 }
             }

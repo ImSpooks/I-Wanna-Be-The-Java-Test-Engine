@@ -3,16 +3,19 @@ package me.ImSpooks.iwbtgengine.game.room.readers;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.SaveBlocker;
+import me.ImSpooks.iwbtgengine.game.object.objects.killer.Cherry;
+import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerBlock;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.JumpRefresher;
+import me.ImSpooks.iwbtgengine.game.object.objects.misc.Walljump;
+import me.ImSpooks.iwbtgengine.game.object.objects.misc.Water;
+import me.ImSpooks.iwbtgengine.game.object.objects.platforms.Platform;
 import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
-import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Difficulty;
 import me.ImSpooks.iwbtgengine.global.Global;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,19 +75,19 @@ public class JToolReader extends MapReader {
                             }
 
                             else if (id == 21) { // warp
-                                object = new Warp(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprWarp", BufferedImage.class)));
+                                object = new Warp(this.getRoom(), x, y, this.getSprite("sprWarp"));
                             }
 
                             else if (id == 22) { // jump refresher
-                                object = new JumpRefresher(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprJumpRefresher", BufferedImage.class)));
+                                object = new JumpRefresher(this.getRoom(), x, y, this.getSprite("sprJumpRefresher"));
                             }
 
                             else if (id == 1) { // block
-                                object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprBlock", BufferedImage.class)));
+                                object = new Block(this.getRoom(), x, y, this.getSprite("sprBlock"));
                             }
 
                             else if (id == 2) { // mini block
-                                object = new Block(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprMiniblock", BufferedImage.class)));
+                                object = new Block(this.getRoom(), x, y, this.getSprite("sprMiniblock"));
                             }
 
 
@@ -103,7 +106,7 @@ public class JToolReader extends MapReader {
 
                                 boolean isMini = id >= 7;
 
-                                object = new Spike(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("spr" + (!isMini ? "Spike" : "Mini") + direction, BufferedImage.class)));
+                                object = new Spike(this.getRoom(), x, y, this.getSprite("spr" + (!isMini ? "Spike" : "Mini") + direction));
                             }
 
                             else if (id == 19) { // save blocker
@@ -111,49 +114,49 @@ public class JToolReader extends MapReader {
                             }
 
 
-                            /*else if (id == 18) { // killer blocker blockers
-                                object = new KillerBlock(x, y, ID.KILLER_BLOCK, handler);
-                                object.setSprite(getSprites().getKillerblockSprite());
+                            else if (id == 18) { // killer blocker
+                                object = new KillerBlock(this.getRoom(), x, y, this.getSprite("sprKillerBlock"));
                             }
 
                             //spikes
 
 
                             else if (id == 11) { // apple
-                                object = new Cherry(x, y, ID.SPIKE, handler);
-                                object.setSprite(getSprites().getCherrySprite());
-                                object.setX(object.getX() - object.getSpriteWidth() / 2);
-                                object.setY(object.getY() - object.getSpriteHeight() / 2);
-                            }*/
+                                object = new Cherry(this.getRoom(), x, y, this.getSprite("sprCherry"));
+
+                                object.setX(object.getX() - object.getSprite().getImage().getWidth() / 2.0);
+                                object.setY(object.getY() - object.getSprite().getImage().getHeight() / 2.0);
+                            }
 
                             else if (id == 12) { // save point
-                                object = new Save(this.getRoom(), x, y, new Sprite(this.getResourceHandler().get("sprSave", BufferedImage.class)), Difficulty.MEDIUM, false);
+                                object = new Save(this.getRoom(), x, y, this.getSprite("sprSave"), Difficulty.MEDIUM, false);
                             }
 
 
 
-                            /*else if (id == 13) { // platforms
-
+                            else if (id == 13) { // platforms
+                                object = new Platform(this.getRoom(), x, y, this.getSprite("sprMovingPlatform"));
                             }
                             else if (id == 14) { // water
-                                object = new Wootar(x, y, ID.WATER, handler, Wootar.WaterType.FULL_JUMP);
-                                object.setSprite(getSprites().getWaterSprite());
+                                object = new Water(this.getRoom(), x, y, this.getSprite("sprWater"), Water.WaterType.FULL_JUMP);
                             }
                             else if (id == 15) { // water
-                                object = new Wootar(x, y, ID.WATER, handler, Wootar.WaterType.NO_JUMP);
-                                object.setSprite(getSprites().getWaterSprite());
+                                object = new Water(this.getRoom(), x, y, this.getSprite("sprWater"), Water.WaterType.SINGLE_JUMP);
                             }
                             else if (id == 23) { // double jump water
-                                object = new Wootar(x, y, ID.WATER, handler, Wootar.WaterType.DOUBLE_JUMP);
-                                object.setSprite(getSprites().getWaterSprite());
-                            }*/
+                                object = new Water(this.getRoom(), x, y, this.getSprite("sprWater"), Water.WaterType.DOUBLE_JUMP);
+                            }
 
                             else if (id == 17) { // vine left
-
+                                object = new Walljump(this.getRoom(), x, y, this.getSprite("sprWalljumpR"), false);
+                            }
+                            else if (id == 18) {
+                                object = new Walljump(this.getRoom(), x, y, this.getSprite("sprWalljumpL"), true);
                             }
 
                             if (object != null)
                                 this.addObject(object);
+                            else if (id != 20) System.out.println(String.format("Unknown object id found with id \'%s\'", id));
 
                         } catch (NumberFormatException e) {
                             System.out.println("Something went wrong adding object at x = [" + splittedString[objects] + "], y = [" + splittedString[objects + 1] + "], id = [" + splittedString[objects + 2] + "]");

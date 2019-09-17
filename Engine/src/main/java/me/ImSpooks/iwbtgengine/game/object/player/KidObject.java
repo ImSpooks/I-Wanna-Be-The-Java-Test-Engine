@@ -114,8 +114,8 @@ public abstract class KidObject extends GameObject {
             if (this.bloodTicks-- > 0) {
                 Random random = Global.RANDOM;
                 for (int i = 0; i < this.bloodParticles / this.maxBloodTicks; i++) {
-                    double velX = (random.nextDouble() * 2 - 1) * 8;
-                    double velY = (random.nextDouble() * 10 - 2) * -1;
+                    double velX = (random.nextDouble() * 2 - 1) * 5.5;
+                    double velY = (random.nextDouble() * 11 - 3) * -1;
 
                     while (Math.sqrt(velX * velX + velY * velY) > 8) {
                         velX = (random.nextDouble() * 2 - 1) * 8;
@@ -283,12 +283,10 @@ public abstract class KidObject extends GameObject {
             sprite.draw(camera, graphics, this.x + (xScale == -1 ? 3 : 0), this.y, xScale == -1, Global.GRAVITY != 1);
         }
 
-        this.getHitbox().renderHitbox(camera, x, y, graphics);
+        //this.getHitbox().renderHitbox(camera, x, y, graphics);
 
         graphics.setColor(Color.RED);
         graphics.fillRect(721, 433, 1, 1);
-
-        wallCollision(xScale, graphics, camera);
 
         /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
             if (gameObject instanceof Block)
@@ -334,8 +332,8 @@ public abstract class KidObject extends GameObject {
     }
 
     @Getter private int bloodTicks = 0;
-    @Getter @Setter private int maxBloodTicks = 5;
-    @Getter @Setter private int bloodParticles = 150;
+    @Getter @Setter private int maxBloodTicks = 3;
+    @Getter @Setter private int bloodParticles = 100;
     public void kill() {
         if (this.onDeath()) {
             this.ticksLived = 0;
@@ -366,6 +364,10 @@ public abstract class KidObject extends GameObject {
         List<Class> classList = new ArrayList<>(Arrays.asList(Block.class, InvisibleBlock.class));
 
         for (GameObject gameObject : objects) {
+        }
+
+        for (GameObject gameObject : objects) {
+
             if (classList.contains(gameObject.getClass()) && gameObject instanceof Block) {
                 velY = 0;
 
@@ -387,9 +389,7 @@ public abstract class KidObject extends GameObject {
                     }
                 }
             }
-        }
 
-        for (GameObject gameObject : objects) {
             if (gameObject instanceof Interactable) {
                 if (gameObject.getHitbox() != null) {
                     if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {

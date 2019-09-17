@@ -60,8 +60,11 @@ public class RoomManager {
     private void setHandlerForRoom(GameHandler handler, String name) {
         if (this.rooms.containsKey(name)) {
             try {
-                if (rooms.get(name).getHandler() == null)
-                    rooms.put(name, rooms.get(name).getClass().getConstructor(GameHandler.class).newInstance(handler));
+                if (rooms.get(name).getHandler() == null) {
+                    Room room = rooms.get(name).getClass().getConstructor(GameHandler.class).newInstance(handler);
+                    room.setInternalId(name);
+                    rooms.put(name, room);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

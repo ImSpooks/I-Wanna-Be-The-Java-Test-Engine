@@ -38,10 +38,7 @@ public class GameHandler {
         this.eventHandler = new EventHandler(this);
 
 
-        this.saveData = new SaveData();
-        this.saveData.setRoomId("stage1_room1");
-        this.saveData.setX(736);
-        this.saveData.setY(512);
+        this.saveData = new SaveData(1);
 
         Global.GRAVITY = !this.saveData.flippedGravity ? 1.0 : -1.0;
     }

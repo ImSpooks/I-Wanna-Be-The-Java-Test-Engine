@@ -246,7 +246,7 @@ public abstract class IRoom extends IObject {
     //public abstract GameObject addedObject();
 
     protected void tickObjects() {
-        objects.forEach(gameObject -> gameObject.tick());
+        objects.forEach(IObject::tick);
     }
     protected void renderObjects(Graphics g) {
         objects.forEach(gameObject -> gameObject.render(g));
@@ -255,7 +255,7 @@ public abstract class IRoom extends IObject {
     @Override
     public void onRemove() {
         objects.clear();
-        handler.getKid().bullets.forEach(kidBullet -> kidBullet.onRemove());
+        handler.getKid().bullets.forEach(IObject::onRemove);
     }
 
     @Override

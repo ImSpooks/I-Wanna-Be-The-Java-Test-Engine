@@ -50,7 +50,7 @@ public class BloodParticle extends Particle {
             if (this.velX != 0 || this.velY != 0) {
                 if (!onBlock) {
                     this.velX *= 0.99;
-                    this.velY += 0.275 * Global.GRAVITY;
+                    this.velY += 0.175 * Global.GRAVITY;
 
                     /*for (GameObject gameObject : room.getObjectsAt((int) this.x, (int) this.y)) {
                         if (gameObject instanceof Block) {

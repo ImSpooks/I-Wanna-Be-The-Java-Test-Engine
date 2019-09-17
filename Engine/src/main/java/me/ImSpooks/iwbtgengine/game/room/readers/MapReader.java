@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
+import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.game.room.RoomType;
 import me.ImSpooks.iwbtgengine.handler.ResourceHandler;
@@ -47,7 +48,11 @@ public abstract class MapReader {
         return Main.getInstance().getResourceHandler();
     }
 
-    protected void addObject(GameObject object) {
+    void addObject(GameObject object) {
         this.objects.add(object);
+    }
+
+    Sprite getSprite(String tile) {
+        return Sprite.generateSprite(this.getResourceHandler().getResource(tile));
     }
 }
