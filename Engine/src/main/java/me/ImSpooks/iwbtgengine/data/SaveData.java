@@ -85,8 +85,6 @@ public class SaveData {
     }
 
     public void save() {
-        //TODO write to file
-
         try (BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(this.file))) {
             String output = this.serialize();
 
@@ -98,8 +96,6 @@ public class SaveData {
     }
 
     public void read() {
-        //TODO read file
-
         StringBuilder output = new StringBuilder();
 
         try(BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(this.file))) {
@@ -116,7 +112,7 @@ public class SaveData {
 
         SaveData data = SaveData.deserialize(decoded);
 
-        this.items = data.getItems();
+        assert data != null; this.items = data.getItems();
         this.roomId = data.getRoomId();
         this.x = data.getX();
         this.y = data.getY();

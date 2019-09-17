@@ -84,6 +84,18 @@ public class SoundManager {
         sounds.remove(name);
     }
 
+    public void pauseSound(String name) {
+        Sound sound = this.getSound(name);
+        if (sound != null)
+            sound.pause();
+    }
+
+    public void resumeSound(String name) {
+        Sound sound = this.getSound(name);
+        if (sound != null)
+            sound.resume();
+    }
+
     public Sound getSound(String name) {
         return sounds.get(name);
     }

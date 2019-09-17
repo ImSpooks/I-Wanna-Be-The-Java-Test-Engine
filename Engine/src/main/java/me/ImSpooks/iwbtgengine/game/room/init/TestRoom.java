@@ -31,7 +31,7 @@ public class TestRoom extends Room {
 
     @Override
     public void onLoad() {
-        this.getHandler().getSoundManager().reloadSound("bgm", "musGuyRock");
+        //this.getHandler().getSoundManager().reloadSound("bgm", "musGuyRock");
 
         AtomicBoolean touched = new AtomicBoolean(false);
 

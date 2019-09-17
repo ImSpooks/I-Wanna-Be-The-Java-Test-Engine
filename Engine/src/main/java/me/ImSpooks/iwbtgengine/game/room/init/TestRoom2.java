@@ -28,7 +28,7 @@ public class TestRoom2 extends Room {
 
     @Override
     public void onLoad() {
-        this.getHandler().getSoundManager().reloadSound("bgm", "Test");
+        //this.getHandler().getSoundManager().reloadSound("bgm", "Test");
 
         for (GameObject gameObject : this.getObjects()) {
             if (!(gameObject instanceof Warp)) continue;

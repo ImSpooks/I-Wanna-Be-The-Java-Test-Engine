@@ -93,7 +93,7 @@ public class Kid extends KidObject {
         this.getHandler().getSoundManager().playSound("sndDeath");
 
         this.getHandler().getSoundManager().playSound("deathBgm", "musOnDeath");
-        this.getHandler().getSoundManager().getSound("bgm").pause();
+        this.getHandler().getSoundManager().pauseSound("bgm");
         return true;
     }
 
