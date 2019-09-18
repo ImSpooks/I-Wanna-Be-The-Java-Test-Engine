@@ -56,7 +56,7 @@ public class Main extends Canvas {
         create();
     }
 
-    public void create() {
+    private void create() {
         long startTime = System.currentTimeMillis();
         logger.info("Loading game...");
 

@@ -1,6 +1,7 @@
 package me.ImSpooks.iwbtgengine;
 
 import lombok.Getter;
+import org.hackyourlife.gcn.dsp.BRSTMPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,6 @@ public class Window {
     @Getter private JFrame frame;
 
     public Window(Main main, String title, int width, int height) {
-
         this.initialize();
 
         this.frame = new JFrame(title);
@@ -33,5 +33,7 @@ public class Window {
 
     private void initialize() {
         System.setProperty("sun.java2d.opengl", "true");
+
+        new BRSTMPlayer(this.getClass().getResourceAsStream("/resources/sounds/music/STRM_N_KOOPA_N.brstm")).start();
     }
 }

@@ -139,7 +139,7 @@ public class ResourceHandler {
         IMAGE(new String[] {"png", "jpg", "jpeg", "bmp"}, BufferedImage.class),
         GIF(new String[] {"gif"}, GIFIcon.class),
         TXT(new String[] {"txt"}, null),
-        SOUND(new String[] {"wav", "brtsm"}, Sound.class),
+        SOUND(new String[] {"wav"}, Sound.class),
         FONT(new String[] {"ttf"}, Font.class),
         ;
 

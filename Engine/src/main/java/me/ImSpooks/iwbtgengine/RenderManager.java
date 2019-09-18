@@ -39,7 +39,6 @@ public class RenderManager implements Runnable {
 
                     delta = 0;
                     frames++;
-
                 }
 
                 if (System.currentTimeMillis() - timer > 1000) {
