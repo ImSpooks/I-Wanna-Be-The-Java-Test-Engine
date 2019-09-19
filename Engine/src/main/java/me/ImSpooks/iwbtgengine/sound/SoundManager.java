@@ -36,7 +36,6 @@ public class SoundManager {
         Sound currentBgm = this.getSound(name);
 
         if (!this.isPlaying(name, soundFile)) {
-
             if (currentBgm != null && currentBgm.getName().equalsIgnoreCase(soundFile))
                 return currentBgm.resume();
             else
@@ -49,7 +48,7 @@ public class SoundManager {
     public Sound playSound(String name, String soundFile) {
         stopSound(name);
 
-        Sound sound = this.instance.getHandler().getMain().getResourceHandler().get(soundFile, Sound.class);
+        Sound sound = this.instance.getResourceHandler().get(soundFile, Sound.class);
         sounds.put(name, sound);
         return sound.play();
     }
@@ -62,7 +61,7 @@ public class SoundManager {
     public Sound playSound(String name) {
         stopSound(name);
 
-        sounds.put(name, this.instance.getHandler().getMain().getResourceHandler().get(name, Sound.class));
+        sounds.put(name, this.instance.getResourceHandler().get(name, Sound.class));
         return sounds.get(name).play();
     }
 

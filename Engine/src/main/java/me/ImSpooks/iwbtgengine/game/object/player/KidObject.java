@@ -65,16 +65,16 @@ public abstract class KidObject extends GameObject {
 
         this.sprites = this.getSpriteMap();
 
-        this.setHitbox(normalHitbox = new Hitbox(Hitbox.HitboxType.RECTANGLE) {
+        Rectangle normalRectangle = new Rectangle(12, 11, 11, 21);//21
+        this.setHitbox(normalHitbox = new Hitbox(this, Hitbox.HitboxType.KID, normalRectangle) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> list = new ArrayList<>();
 
-                Rectangle rectangle = new Rectangle(12, 11, 11, 21);//21
 
-                for (int xx = 0; xx <= rectangle.width; xx++) {
-                    for (int yy = 0; yy <= rectangle.height; yy++) {
-                        list.add(new int[] {(int) rectangle.getX() + xx, (int) rectangle.getY() + yy});
+                for (int xx = 0; xx <= normalRectangle.width; xx++) {
+                    for (int yy = 0; yy <= normalRectangle.height; yy++) {
+                        list.add(new int[] {(int) normalRectangle.getX() + xx, (int) normalRectangle.getY() + yy});
                     }
                 }
 
@@ -82,16 +82,16 @@ public abstract class KidObject extends GameObject {
             }
         });
 
-        this.flippedHitbox = new Hitbox(Hitbox.HitboxType.RECTANGLE) {
+        Rectangle flippedRectangle = new Rectangle(12, 0, 11, 21);//21
+        this.flippedHitbox = new Hitbox(this, Hitbox.HitboxType.KID, flippedRectangle) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> list = new ArrayList<>();
 
-                Rectangle rectangle = new Rectangle(12, 0, 11, 21);//21
 
-                for (int xx = 0; xx <= rectangle.width; xx++) {
-                    for (int yy = 0; yy <= rectangle.height; yy++) {
-                        list.add(new int[] {(int) rectangle.getX() + xx, (int) rectangle.getY() + yy});
+                for (int xx = 0; xx <= flippedRectangle.width; xx++) {
+                    for (int yy = 0; yy <= flippedRectangle.height; yy++) {
+                        list.add(new int[] {(int) flippedRectangle.getX() + xx, (int) flippedRectangle.getY() + yy});
                     }
                 }
 
@@ -179,7 +179,7 @@ public abstract class KidObject extends GameObject {
 
             boolean left = velX < 0;
             for (int i = 0; i < Math.ceil(Math.abs(velX)); i++) {
-                if (wallCollision(left ? -1 : 1, null, null)) {
+                if (wallCollision(left ? -1 : 1)) {
                     if (left) {
                         this.x--;
                     }
@@ -373,7 +373,7 @@ public abstract class KidObject extends GameObject {
 
                         if (gameObject instanceof KillerObject) {
                             ((KillerObject) gameObject).onTouch().run(this);
-                            break;
+                            return false;
                         }
 
                         ((Interactable) gameObject).getOnTouch().run(this);
@@ -384,7 +384,7 @@ public abstract class KidObject extends GameObject {
         return true;
     }
 
-    private boolean wallCollision(int xScale, Graphics graphics, Camera camera) {
+    private boolean wallCollision(int xScale) {
 
         List<GameObject> objects = new ArrayList<>();
 
@@ -409,7 +409,7 @@ public abstract class KidObject extends GameObject {
 
                         if (gameObject instanceof KillerObject) {
                             ((KillerObject) gameObject).onTouch().run(this);
-                            break;
+                            return false;
                         }
 
                         ((Interactable) gameObject).getOnTouch().run(this);

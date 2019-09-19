@@ -1,10 +1,15 @@
 package org.hackyourlife.gcn.dsp;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class AsyncDecoder extends Thread implements Stream {
 	private Stream stream;
 	private byte[] data = null;
 	private boolean moreData = false;
 	private boolean closed = false;
+	
+	@Getter @Setter private boolean paused = false;
 
 	public AsyncDecoder(Stream stream) {
 		this.stream = stream;
@@ -18,7 +23,7 @@ public class AsyncDecoder extends Thread implements Stream {
 
 	@Override
 	public synchronized byte[] decode() throws Exception {
-		if(!hasMoreData()) {
+		if(!hasMoreData() || paused) {
 			return null;
 		}
 		while(data == null) {
@@ -54,6 +59,7 @@ public class AsyncDecoder extends Thread implements Stream {
 					if(data != null) {
 						wait();
 					}
+
 					data = stream.decode();
 					moreData = stream.hasMoreData();
 					notifyAll();

@@ -8,6 +8,7 @@ import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Gravity extends Interactable {
         super(parent, x, y, sprite);
         this.up = up;
 
-        this.setHitbox(new Hitbox() {
+        this.setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public java.util.List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

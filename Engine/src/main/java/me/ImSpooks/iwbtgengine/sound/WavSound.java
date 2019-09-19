@@ -14,7 +14,7 @@ import java.util.logging.Level;
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
-public class WavSound extends Sound{
+public class WavSound extends Sound {
 
     private AudioInputStream audioStream;
     @Getter private Clip audioClip;

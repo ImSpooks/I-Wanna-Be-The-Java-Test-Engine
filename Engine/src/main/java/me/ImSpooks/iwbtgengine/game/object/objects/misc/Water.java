@@ -11,6 +11,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class Water extends Interactable {
         super(parent, x, y, sprite);
         this.waterType = waterType;
 
-        this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
+        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

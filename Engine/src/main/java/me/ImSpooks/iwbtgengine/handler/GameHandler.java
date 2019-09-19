@@ -37,7 +37,6 @@ public class GameHandler {
         this.particleManager = new ParticleManager(this);
         this.eventHandler = new EventHandler(this);
 
-
         this.saveData = new SaveData(1);
 
         Global.GRAVITY = !this.saveData.flippedGravity ? 1.0 : -1.0;

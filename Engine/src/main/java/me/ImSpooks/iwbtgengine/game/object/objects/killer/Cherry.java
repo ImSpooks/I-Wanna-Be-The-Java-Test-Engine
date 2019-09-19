@@ -4,6 +4,7 @@ import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Cherry extends KillerObject {
     public Cherry(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
 
-        sprite.setOnUpdate(delta -> setHitbox(new Hitbox() {
+        sprite.setOnUpdate(delta -> setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public List<int[]> getPixels() {
 

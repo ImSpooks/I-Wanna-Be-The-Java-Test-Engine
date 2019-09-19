@@ -7,6 +7,7 @@ import me.ImSpooks.iwbtgengine.game.object.init.TouchAction;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class KillerBlock extends KillerObject {
         super(parent, x, y, sprite);
 
         if (sprite != null) {
-            this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
+            this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
                 @Override
                 public List<int[]> getPixels() {
                     List<int[]> pixels = new ArrayList<>();

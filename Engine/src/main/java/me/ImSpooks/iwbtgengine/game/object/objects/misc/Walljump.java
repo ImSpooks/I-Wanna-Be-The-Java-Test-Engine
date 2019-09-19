@@ -34,7 +34,7 @@ public class Walljump extends Interactable {
         this.x -= shift;
         this.setWidth(this.getWidth() + shift + 1);
 
-        this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
+        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public java.util.List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

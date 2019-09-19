@@ -23,7 +23,7 @@ public class Platform extends Interactable {
     public Platform(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
 
-        this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
+        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public java.util.List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

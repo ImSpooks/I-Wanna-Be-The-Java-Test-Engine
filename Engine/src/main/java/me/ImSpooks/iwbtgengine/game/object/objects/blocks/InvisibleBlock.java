@@ -8,6 +8,7 @@ import me.ImSpooks.iwbtgengine.game.object.init.ObjectsPriority;
 import me.ImSpooks.iwbtgengine.game.object.init.TouchAction;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class InvisibleBlock extends Block {
         this.setWidth(width);
         this.setHeight(height);
 
-        this.setHitbox(new Hitbox(Hitbox.HitboxType.SQUARE) {
+        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, width, height)) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

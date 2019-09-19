@@ -26,7 +26,7 @@ public class JumpRefresher extends Interactable {
     public JumpRefresher(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
 
-        this.setHitbox(new Hitbox() {
+        this.setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public java.util.List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

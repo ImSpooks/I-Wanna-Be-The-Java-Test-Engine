@@ -48,8 +48,8 @@ public class ResourceHandler {
 
                     for (ResourceType resourceType : ResourceType.CACHE) {
                         for (String extension : resourceType.getExtensions()) {
-                            if (resourceFile.toLowerCase().endsWith("." + extension)) {
-                                this.cacheResource(resourceFile, resourceType, extension);
+                            if (resourceFile.toLowerCase().endsWith("." + extension.toLowerCase())) {
+                                this.cacheResource(resourceFile, resourceType, extension.toLowerCase());
 
                                 continue resourcesLoop;
                             }
@@ -115,6 +115,7 @@ public class ResourceHandler {
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
+
                 break;
             }
             case FONT: {
@@ -139,7 +140,7 @@ public class ResourceHandler {
         IMAGE(new String[] {"png", "jpg", "jpeg", "bmp"}, BufferedImage.class),
         GIF(new String[] {"gif"}, GIFIcon.class),
         TXT(new String[] {"txt"}, null),
-        SOUND(new String[] {"wav"}, Sound.class),
+        SOUND(new String[] {"wav", "brstm"}, Sound.class),
         FONT(new String[] {"ttf"}, Font.class),
         ;
 

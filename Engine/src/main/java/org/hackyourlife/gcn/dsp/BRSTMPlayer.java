@@ -33,8 +33,6 @@ public class BRSTMPlayer {
         this.stream = BRSTMFile.getFromFile(randomAccessFile);
     }
 
-    private boolean isPlaying;
-
     private AsyncDecoder decoder;
 
     public void start() {
@@ -44,9 +42,6 @@ public class BRSTMPlayer {
         }
 
         // if audio is already playing it resets
-        if (isPlaying) {
-            this.stop();
-        }
 
         // setting up a async thread so the current doesn't freeze so other code in the same thread can continue
         this.asyncThread = new Thread(() -> {
@@ -63,6 +58,18 @@ public class BRSTMPlayer {
             }
         });
         this.asyncThread.start();
+    }
+
+    public void pause() {
+        this.decoder.setPaused(true);
+    }
+
+    public void resume() {
+        this.decoder.setPaused(false);
+    }
+
+    public boolean isPaused() {
+        return this.decoder.isPaused();
     }
 
     public void stop() {
@@ -109,6 +116,9 @@ public class BRSTMPlayer {
                 }
 
                 byte[] buffer = stream.decode();
+                if (buffer == null)
+                    continue;
+
                 buffer = sum(buffer, stream.getChannels());
                 waveout.write(buffer, 0, buffer.length);
             }

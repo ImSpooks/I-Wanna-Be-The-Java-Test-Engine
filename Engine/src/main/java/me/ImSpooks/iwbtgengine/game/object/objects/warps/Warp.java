@@ -5,6 +5,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Warp extends Trigger {
 
         this.setVisible(true);
 
-        this.setHitbox(new Hitbox() {
+        this.setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();

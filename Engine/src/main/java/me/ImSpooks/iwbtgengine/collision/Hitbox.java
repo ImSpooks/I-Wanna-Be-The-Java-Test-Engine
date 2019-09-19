@@ -3,6 +3,7 @@ package me.ImSpooks.iwbtgengine.collision;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.ImSpooks.iwbtgengine.camera.Camera;
+import me.ImSpooks.iwbtgengine.game.object.GameObject;
 
 import java.awt.*;
 import java.util.List;
@@ -15,16 +16,23 @@ import java.util.List;
 public abstract class Hitbox {
     private List<int[]> pixels;
 
-    @Getter private HitboxType hitboxType;
+    @Getter private final GameObject parent;
+    @Getter private final HitboxType hitboxType;
 
-    public Hitbox() {
+    @Getter private final Rectangle size;
+
+    public Hitbox(GameObject parent, Rectangle size) {
+        this.parent = parent;
         this.hitboxType = HitboxType.CUSTOM;
         this.pixels = this.getPixels();
+        this.size = size;
     }
 
-    public Hitbox(HitboxType hitboxType) {
+    public Hitbox(GameObject parent, HitboxType hitboxType, Rectangle size) {
+        this.parent = parent;
         this.hitboxType = hitboxType;
         this.pixels = this.getPixels();
+        this.size = size;
     }
 
     public List<int[]> getCachedPixels() {
@@ -34,37 +42,32 @@ public abstract class Hitbox {
     public abstract List<int[]> getPixels();
 
     public boolean intersects(Hitbox hitbox, double x1, double y1, double x2, double y2) {
-        if (this.getHitboxType().getDataType() == 1 && hitbox.getHitboxType().getDataType() == 1) {
-            Rectangle r1 = this.getRectIfPossible(x1, y1);
-            Rectangle r2 = hitbox.getRectIfPossible(x2, y2);
+        Rectangle r1 = this.getRectIfPossible(x1, y1);
+        Rectangle r2 = hitbox.getRectIfPossible(x2, y2);
 
-            int tw = r1.width;
-            int th = r1.height;
-            int rw = r2.width;
-            int rh = r2.height;
-            if (rw <= 0 || rh <= 0 || tw <= 0 || th <= 0) {
-                return false;
-            }
-            int tx = r1.x;
-            int ty = r1.y;
-            int rx = r2.x;
-            int ry = r2.y;
-            rw += rx;
-            rh += ry;
-            tw += tx;
-            th += ty;
-            //      overflow || intersect
-            return ((rw <= rx || rw >= tx) &&
-                    (rh <= ry || rh >= ty) &&
-                    (tw <= tx || tw >= rx) &&
-                    (th <= ty || th >= ry));
-        }
-        else {
-            for (int[] pixel : this.pixels) {
-                for (int[] cachedPixel : hitbox.getCachedPixels()) {
-                    if ((int)Math.floor(pixel[0] + x1) == (int)Math.floor(cachedPixel[0] + x2)
-                            && (int)Math.floor(pixel[1] + y1) == (int)Math.floor(cachedPixel[1] + y2)) {
-                        return true;
+        if (r1.intersects(r2)) {
+            if (this.getHitboxType().getDataType() == 1 && hitbox.getHitboxType().getDataType() == 1) {
+                return true;
+            } else {
+                for (int[] pixel : this.pixels) {
+                    for (int[] cachedPixel : hitbox.getCachedPixels()) {
+                        if (Math.floor(pixel[0] + x1) == Math.floor(cachedPixel[0] + x2) && Math.floor(pixel[1] + y1) == Math.floor(cachedPixel[1] + y2))
+                            return true;
+
+                        /*boolean pixelFilled1 = parent.getSprite().getImage().getRGB((int) Math.floor(pixel[0]), (int)Math.floor(pixel[1])) >> 24 != 0x00;
+                        boolean pixelFilled2 = hitbox.getParent().getSprite().getImage().getRGB((int) Math.floor(cachedPixel[0]), (int)Math.floor(cachedPixel[1])) >> 24 != 0x00;
+
+                        if (!pixelFilled1 && this.getHitboxType().getDataType() == 1) {
+                            pixelFilled1 = true;
+                        }
+
+                        if (!pixelFilled2 && hitbox.getHitboxType().getDataType() == 1) {
+                            pixelFilled2 = true;
+                            System.out.println("kid 2");
+                        }
+
+                        if (pixelFilled1 && pixelFilled2)
+                            return true;*/
                     }
                 }
             }
@@ -100,16 +103,7 @@ public abstract class Hitbox {
 
     private Rectangle cachedRectangle;
     public Rectangle getRectIfPossible() {
-        if (this.getHitboxType().getDataType() != 1)
-            return null;
-
-        if (cachedRectangle == null) {
-            int px = this.pixels.get(0)[0];
-            int py = this.pixels.get(0)[1];
-
-            return cachedRectangle = new Rectangle(px, py, this.pixels.get(this.pixels.size() - 1)[0] - px, this.pixels.get(this.pixels.size() - 1)[1] - py);
-        }
-        return cachedRectangle;
+        return size;
     }
 
     public Rectangle getRectIfPossible(double x, double y) {
@@ -119,8 +113,6 @@ public abstract class Hitbox {
 
         Rectangle clone = (Rectangle) rectangle.clone();
         clone.setLocation((int) (rectangle.getX() + x), (int) (rectangle.getY() + y));
-        //System.out.println("rectangle 1 = " + rectangle.toString());
-        //System.out.println("rectangle 2 = " + clone.toString() + String.format(" {%s + %s = %s}", x, rectangle.getX(), rectangle.getX() + x));
         return clone;
     }
 
@@ -128,6 +120,7 @@ public abstract class Hitbox {
     public enum HitboxType {
         SQUARE(1),
         RECTANGLE(1),
+        KID(1),
         CUSTOM(2),
         ;
 
