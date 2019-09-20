@@ -10,6 +10,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.killer.Spike;
 import me.ImSpooks.iwbtgengine.game.object.objects.misc.*;
 import me.ImSpooks.iwbtgengine.game.object.objects.platforms.MovingPlatform;
 import me.ImSpooks.iwbtgengine.game.object.objects.saves.Save;
+import me.ImSpooks.iwbtgengine.game.object.objects.slopes.Slope;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.room.Room;
@@ -171,7 +172,7 @@ public class EngineReader extends MapReader {
                         break;
                     }
 
-                    /*case "slopes": {
+                    case "slopes": {
                         if (objType.startsWith("Slope")) {
                             if (objType.endsWith("Block")) {
                                 gameObject = new Block(this.getRoom(), x, y, this.getSprite(tile));
@@ -186,7 +187,7 @@ public class EngineReader extends MapReader {
                             }
                         }
                         break;
-                    }*/
+                    }
 
                     case "triggers": {
                         if (objType.startsWith("TriggeMaskr")) {

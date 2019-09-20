@@ -56,15 +56,17 @@ public class Kid extends KidObject {
         Iterator<Bullet> iterator = this.bullets.iterator();
 
         while (iterator.hasNext()) {
-            Bullet bullet = iterator.next();
-            if (bullet.getParent() != Main.getInstance().getHandler().getRoom()
-                    || bullet.getX() < 0 || bullet.getX() > bullet.getParent().getMap().getRoomWidth()
-                    || bullet.getY() < 0 || bullet.getY() > bullet.getParent().getMap().getRoomHeight()) {
-                iterator.remove();
-                continue;
-            }
+            try {
+                Bullet bullet = iterator.next();
+                if (bullet.getParent() != Main.getInstance().getHandler().getRoom()
+                        || bullet.getX() < 0 || bullet.getX() > bullet.getParent().getMap().getRoomWidth()
+                        || bullet.getY() < 0 || bullet.getY() > bullet.getParent().getMap().getRoomHeight()) {
+                    iterator.remove();
+                    continue;
+                }
 
-            bullet.update(delta);
+                bullet.update(delta);
+            } catch (ConcurrentModificationException ignored) {}
         }
 
         //render death screen after 25 frames

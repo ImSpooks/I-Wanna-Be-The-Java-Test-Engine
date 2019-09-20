@@ -10,7 +10,6 @@ import me.ImSpooks.iwbtgengine.event.events.CutsceneEvent;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.objects.blocks.Block;
-import me.ImSpooks.iwbtgengine.game.object.objects.blocks.InvisibleBlock;
 import me.ImSpooks.iwbtgengine.game.object.objects.killer.KillerObject;
 import me.ImSpooks.iwbtgengine.game.object.objects.platforms.Platform;
 import me.ImSpooks.iwbtgengine.game.object.particles.BloodParticle;
@@ -24,8 +23,10 @@ import me.ImSpooks.iwbtgengine.keycontroller.KeyListener;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Nick on 04 May 2019.
@@ -336,11 +337,13 @@ public abstract class KidObject extends GameObject {
         }
 
         // check for blocks FIRST
-        List<Class> classList = new ArrayList<>(Arrays.asList(Block.class, InvisibleBlock.class));
 
         for (GameObject gameObject : objects) {
             debug.add(gameObject);
-            if (classList.contains(gameObject.getClass()) && gameObject instanceof Block) {
+            if (gameObject instanceof Block) {
+                if (gameObject.getHitbox().getHitboxType() == Hitbox.HitboxType.CUSTOM && !this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY()))
+                    continue;
+
                 velY = 0;
 
                 if (falling) {
@@ -386,16 +389,18 @@ public abstract class KidObject extends GameObject {
         List<GameObject> objects = new ArrayList<>();
 
         Rectangle rectangle = this.getHitbox().getRectIfPossible();
-        for (int i = (int) rectangle.getY() + (Global.GRAVITY > 0 ? 1 : 0); i < rectangle.getY() + rectangle.getHeight(); i++) {
+        for (int i = (int) rectangle.getY() + 1; i < rectangle.getY() + rectangle.getHeight(); i++) {
             int y = (int) this.y + i;
             objects.addAll(this.handler.getRoom().getObjectsAt((int) this.x + (xScale == 1 ? rectangle.getX() + rectangle.getWidth() : rectangle.getX()), y, objects));
         }
 
         // check for blocks FIRST
-        List<Class> classList = new ArrayList<>(Arrays.asList(Block.class, InvisibleBlock.class));
 
         for (GameObject gameObject : objects) {
-            if (classList.contains(gameObject.getClass()) && gameObject instanceof Block) {
+            if (gameObject instanceof Block) {
+                if (gameObject.getHitbox().getHitboxType() == Hitbox.HitboxType.CUSTOM && !this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY()))
+                    continue;
+
                 return false;
             }
         }

@@ -70,7 +70,6 @@ public class Walljump extends Interactable {
     public void render(Camera camera, Graphics graphics) {
         if (this.canRender(camera)) {
             sprite.draw(camera, graphics, this.x + shift, this.y);
-            this.getHitbox().renderHitbox(camera, this.x + shift, this.y, graphics);
         }
     }
 

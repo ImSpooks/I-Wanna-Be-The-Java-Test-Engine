@@ -17,7 +17,7 @@ public class InitializeTextures {
 
     /*
         Run this class to reinitialize all the resources in the resource folder for the editor to use.
-        The editor is maid with HTML and Javascript to save me some time, it is not optimal and does not automatically generate new sources.
+        The editor is made with HTML and Javascript to save me some time, it is not optimal and does not automatically generate new sources.
         Therefore this java code will run to (re)initialize edited, new and removed textures.
      */
 
