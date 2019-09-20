@@ -34,13 +34,13 @@ public class Walljump extends Interactable {
         this.x -= shift;
         this.setWidth(this.getWidth() + shift + 1);
 
-        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
+        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth() + shift +1, sprite.getImage().getHeight())) {
             @Override
             public java.util.List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();
 
                 if (!left) {
-                    for (int x = -1; x <= sprite.getImage().getWidth() - 18; x++) {
+                    for (int x = -shift; x <= sprite.getImage().getWidth() - 18; x++) {
                         for (int y = 0; y <= sprite.getImage().getHeight(); y++) {
 
                             // only adding outline to reduce lag
@@ -50,7 +50,7 @@ public class Walljump extends Interactable {
                     }
                 }
                 else {
-                    for (int x = 18; x <= sprite.getImage().getWidth() + 1; x++) {
+                    for (int x = 18; x <= sprite.getImage().getWidth(); x++) {
                         for (int y = 0; y <= sprite.getImage().getHeight(); y++) {
 
                             // only adding outline to reduce lag
@@ -70,6 +70,7 @@ public class Walljump extends Interactable {
     public void render(Camera camera, Graphics graphics) {
         if (this.canRender(camera)) {
             sprite.draw(camera, graphics, this.x + shift, this.y);
+            this.getHitbox().renderHitbox(camera, this.x + shift, this.y, graphics);
         }
     }
 

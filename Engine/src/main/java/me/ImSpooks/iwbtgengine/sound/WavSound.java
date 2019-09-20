@@ -46,9 +46,7 @@ public class WavSound extends Sound {
     }
 
     public WavSound loop(int times) {
-        new Thread(() -> {
-            audioClip.loop(times);
-        }).start();
+        new Thread(() -> audioClip.loop(times)).start();
         return this;
     }
 

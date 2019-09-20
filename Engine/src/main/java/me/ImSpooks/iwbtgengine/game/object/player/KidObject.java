@@ -366,7 +366,7 @@ public abstract class KidObject extends GameObject {
         for (GameObject gameObject : objects) {
             if (gameObject instanceof Interactable) {
                 if (gameObject.getHitbox() != null) {
-                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y - (gravity * Global.GRAVITY * (falling ? 1 : -1)), gameObject.getX(), gameObject.getY())) {
+                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
 
                         if (gameObject instanceof KillerObject) {
                             ((KillerObject) gameObject).onTouch().run(this);
@@ -402,7 +402,7 @@ public abstract class KidObject extends GameObject {
         for (GameObject gameObject : objects) {
             if (gameObject instanceof Interactable) {
                 if (gameObject.getHitbox() != null) {
-                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x - xScale * Global.GRAVITY, this.y, gameObject.getX(), gameObject.getY())) {
+                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x - xScale, this.y, gameObject.getX(), gameObject.getY())) {
 
                         if (gameObject instanceof KillerObject) {
                             ((KillerObject) gameObject).onTouch().run(this);
@@ -434,7 +434,7 @@ public abstract class KidObject extends GameObject {
         // cancel jump
         if (type == JumpType.VINE_JUMP) {
             onJump(JumpType.VINE_JUMP);
-            velY = -jump;
+            velY = -(9 - gravity);
             pressedShift = true;
 
             jumped = true;
@@ -542,7 +542,7 @@ public abstract class KidObject extends GameObject {
                             velX = -3;
                             xScale = -1;
 
-                            x = x + velX * 5;
+                            x = x - 15;
                             velX = 0;
                             jump(JumpType.VINE_JUMP);
                             return;
@@ -555,7 +555,7 @@ public abstract class KidObject extends GameObject {
 
                     // if player is riding a vine in the opposite direction of moving -> jump
                     if (kidState == direction && keyCodes.contains(Keybinds.JUMP) && previousState != KidState.IDLE && previousState != KidState.MOVING) {
-                        x = x + velX * 5;
+                        x = x + (xScale == 1 ? 15 : -15);
                         velX = 0;
                         jump(JumpType.VINE_JUMP);
                     }
@@ -566,7 +566,7 @@ public abstract class KidObject extends GameObject {
 
                     // if player is riding a left side vine -> jump
                     if (kidState == KidState.SLIDING_LEFT && keyCodes.contains(Keybinds.JUMP) && previousState != KidState.IDLE && previousState != KidState.MOVING) {
-                        x = x + velX * 5;
+                        x = x + 15;
                         velX = 0;
                         jump(JumpType.VINE_JUMP);
                     }
@@ -576,7 +576,7 @@ public abstract class KidObject extends GameObject {
             @Override
             public void onKeyRelease(int keycode) {
                 if (keycode == Keybinds.JUMP && pressedShift && velY * Global.GRAVITY < 0) {
-                    velY = (velY - gravity * Global.GRAVITY) * gravity;
+                    velY = (velY - gravity * Global.GRAVITY) * 0.45;
                     pressedShift = false;
                 }
 

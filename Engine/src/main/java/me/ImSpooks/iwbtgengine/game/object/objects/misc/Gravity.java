@@ -60,6 +60,8 @@ public class Gravity extends Interactable {
                 if (kid.getHitbox() != kid.getNormalHitbox())
                     kid.setHitbox(kid.getNormalHitbox());
             }
+
+            kid.setY(kid.getY() + 4 * Global.GRAVITY);
         };
     }
 }

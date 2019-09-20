@@ -6,6 +6,7 @@ import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -49,12 +50,26 @@ public abstract class Hitbox {
             if (this.getHitboxType().getDataType() == 1 && hitbox.getHitboxType().getDataType() == 1) {
                 return true;
             } else {
+                HashSet<String> thisPixels = new HashSet<>();
                 for (int[] pixel : this.pixels) {
-                    for (int[] cachedPixel : hitbox.getCachedPixels()) {
-                        if (Math.floor(pixel[0] + x1) == Math.floor(cachedPixel[0] + x2) && Math.floor(pixel[1] + y1) == Math.floor(cachedPixel[1] + y2))
-                            return true;
-                    }
+                    thisPixels.add((int) Math.floor(pixel[0] + x1) + ":" + (int) Math.floor(pixel[1] + y1));
                 }
+
+                HashSet<String> otherPixels = new HashSet<>();
+                for (int[] pixel : hitbox.getCachedPixels()) {
+                    otherPixels.add((int) Math.floor(pixel[0] + x2) + ":" + (int) Math.floor(pixel[1] + y2));
+                }
+
+                thisPixels.retainAll(otherPixels);
+
+                return thisPixels.size() > 0;
+
+//                for (int[] pixel : this.pixels) {
+//                    for (int[] cachedPixel : hitbox.getCachedPixels()) {
+//                        if (Math.floor(pixel[0] + x1) == Math.floor(cachedPixel[0] + x2) && Math.floor(pixel[1] + y1) == Math.floor(cachedPixel[1] + y2))
+//                            return true;
+//                    }
+//                }
             }
         }
         return false;
