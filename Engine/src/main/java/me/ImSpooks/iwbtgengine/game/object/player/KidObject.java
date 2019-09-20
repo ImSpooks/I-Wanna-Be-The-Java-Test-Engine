@@ -238,6 +238,11 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public void render(Camera camera, Graphics graphics) {
+        /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
+            if (gameObject instanceof KillerObject)
+                gameObject.getHitbox().renderHitbox(camera, (int)gameObject.getX(), (int)gameObject.getY(), graphics);
+        }//*/
+
         if (this.kidState == KidState.DEAD) {
             this.getHitbox().renderHitbox(camera, x, y, graphics);
             return;
@@ -259,14 +264,6 @@ public abstract class KidObject extends GameObject {
             gameObject.getHitbox().renderHitbox(camera, gameObject.getX(), gameObject.getY(), graphics);
         }*/
         debug.clear();
-
-        graphics.setColor(Color.RED);
-        graphics.fillRect(721, 433, 1, 1);
-
-        /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
-            if (gameObject instanceof Block)
-                gameObject.getHitbox().renderHitbox(camera, (int)gameObject.getX(), (int)gameObject.getY(), graphics);
-        }//*/
     }
 
     public abstract void onMove();
@@ -369,7 +366,7 @@ public abstract class KidObject extends GameObject {
         for (GameObject gameObject : objects) {
             if (gameObject instanceof Interactable) {
                 if (gameObject.getHitbox() != null) {
-                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
+                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y - (gravity * Global.GRAVITY * (falling ? 1 : -1)), gameObject.getX(), gameObject.getY())) {
 
                         if (gameObject instanceof KillerObject) {
                             ((KillerObject) gameObject).onTouch().run(this);
@@ -405,7 +402,7 @@ public abstract class KidObject extends GameObject {
         for (GameObject gameObject : objects) {
             if (gameObject instanceof Interactable) {
                 if (gameObject.getHitbox() != null) {
-                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x, this.y, gameObject.getX(), gameObject.getY())) {
+                    if (this.getHitbox().intersects(gameObject.getHitbox(), this.x - xScale * Global.GRAVITY, this.y, gameObject.getX(), gameObject.getY())) {
 
                         if (gameObject instanceof KillerObject) {
                             ((KillerObject) gameObject).onTouch().run(this);

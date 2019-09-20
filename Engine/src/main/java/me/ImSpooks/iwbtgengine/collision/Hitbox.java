@@ -53,21 +53,6 @@ public abstract class Hitbox {
                     for (int[] cachedPixel : hitbox.getCachedPixels()) {
                         if (Math.floor(pixel[0] + x1) == Math.floor(cachedPixel[0] + x2) && Math.floor(pixel[1] + y1) == Math.floor(cachedPixel[1] + y2))
                             return true;
-
-                        /*boolean pixelFilled1 = parent.getSprite().getImage().getRGB((int) Math.floor(pixel[0]), (int)Math.floor(pixel[1])) >> 24 != 0x00;
-                        boolean pixelFilled2 = hitbox.getParent().getSprite().getImage().getRGB((int) Math.floor(cachedPixel[0]), (int)Math.floor(cachedPixel[1])) >> 24 != 0x00;
-
-                        if (!pixelFilled1 && this.getHitboxType().getDataType() == 1) {
-                            pixelFilled1 = true;
-                        }
-
-                        if (!pixelFilled2 && hitbox.getHitboxType().getDataType() == 1) {
-                            pixelFilled2 = true;
-                            System.out.println("kid 2");
-                        }
-
-                        if (pixelFilled1 && pixelFilled2)
-                            return true;*/
                     }
                 }
             }

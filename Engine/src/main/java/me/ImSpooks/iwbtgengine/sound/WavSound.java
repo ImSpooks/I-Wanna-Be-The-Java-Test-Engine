@@ -30,8 +30,7 @@ public class WavSound extends Sound {
         if (this.audioClip != null) {
             this.stop();
         }
-        else
-            this.audioClip = this.getAudio();
+        this.audioClip = this.getAudio();
 
         new Thread(() -> {
             audioClip.setFramePosition(this.currentFrame = 0);
@@ -101,8 +100,7 @@ public class WavSound extends Sound {
 
     private Clip getAudio() {
         try {
-            if (audioStream == null)
-                audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(this.getResource())));
+            audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(this.getResource())));
 
             // load the sound into memory (a Clip)
 

@@ -11,10 +11,8 @@ import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Nick on 04 May 2019.
@@ -55,20 +53,19 @@ public class Kid extends KidObject {
         if (this.deathSprite != null)
             this.deathSprite.update(delta);
 
-        List<Bullet> toRemove = new ArrayList<>();
+        Iterator<Bullet> iterator = this.bullets.iterator();
 
-        for (Bullet bullet : bullets) {
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
             if (bullet.getParent() != Main.getInstance().getHandler().getRoom()
                     || bullet.getX() < 0 || bullet.getX() > bullet.getParent().getMap().getRoomWidth()
                     || bullet.getY() < 0 || bullet.getY() > bullet.getParent().getMap().getRoomHeight()) {
-                toRemove.add(bullet);
+                iterator.remove();
                 continue;
             }
 
             bullet.update(delta);
         }
-
-        bullets.removeAll(toRemove);
 
         //render death screen after 25 frames
         if (this.getTicksDead() > Global.FRAME_RATE / 2 && this.deathSprite == null) {
