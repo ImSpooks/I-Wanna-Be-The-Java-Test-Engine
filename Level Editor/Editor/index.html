@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Level editor</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link id="mode" rel="stylesheet" href="css/lightmode.css">
 </head>
 <body>
 
@@ -22,12 +24,12 @@
             <div id="items">
             </div>
             <div id="inputs">
-                <p>Export Name: <input id="internalName" type="text" value="DefaultRoom"></p>
+                <p>Export Name: <label for="internalName"></label><input id="internalName" type="text" value="DefaultRoom"></p>
 
-                <p>Grid Size: <input id="gridSize" type="number" value="32" min="1" max="32"></p>
+                <p>Grid Size: <label for="gridSize"></label><input id="gridSize" type="number" value="32" min="1" max="32"></p>
 
                 <p>Map type:
-                <select name="Map type" id="map_type">
+                    <label for="map_type"></label><select name="Map type" id="map_type">
                     <option value="normal">Normal</option>
                     <option value="scrolling">Scrolling</option>
                     <option value="shift">Shift</option>
@@ -38,12 +40,13 @@
                 </div>
 
                 <button id="export" onclick="exportMap()">Export</button>
+                <button id="copy" onclick="copyToClipboard()">Copy to clipboard</button>
 
                 <br>
                 <button id="exportText" onclick="exportText()">Export Text</button>
                 <button id="hideOutput" onclick="hideOutput()">Hide output</button>
-                <button id="copy" onclick="copyToClipboard()">Copy to clipboard</button>
-                <textarea id="exportTextOutput" style="display: none" readonly></textarea>
+                <label for="exportTextOutput"></label><textarea id="exportTextOutput" style="display: none" readonly></textarea>
+                <button id="toggleVisuals" onclick="toggleVisuals()">Toggle visuals</button>
 
                 <hr>
 
@@ -51,12 +54,19 @@
                 <button id="import" onclick="importMap()">Import</button>
             </div>
         </div>
+
+        <div id="properties">
+
+        </div>
     </div>
 
 
-    <script src="resources.js"></script>
-    <script src="mapProperties.js"></script>
-    <script src="script.js"></script>
-    <script src="canvas.js"></script>
+    <script src="resources/utils.js"></script>
+    <script src="resources/resources.js"></script>
+    <script src="resources/events.js"></script>
+    <script src="scripts/mapProperties.js"></script>
+    <script src="scripts/propertyHandler.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/canvas.js"></script>
 </body>
 </html>

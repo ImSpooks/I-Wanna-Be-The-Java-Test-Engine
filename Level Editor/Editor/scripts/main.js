@@ -9,6 +9,8 @@ var objectImage;
 var categoriesDiv = document.getElementById("categories");
 var itemsDiv = document.getElementById("items");
 
+var lightmode = true;
+
 function initialize() {
     for (let i = 0; i < Types.length; i++) {
         let type = document.createElement("button");
@@ -55,13 +57,17 @@ function initialize() {
 
     document.getElementById(selectedCategory).onclick();
 
+}
 
+function toggleVisuals() {
+    lightmode = !lightmode;
+    applyVisuals();
+}
+
+function applyVisuals() {
+    document.getElementById("mode").href = "css/" + (lightmode ? "lightmode" : "darkmode") + ".css";
 }
 
 
-String.prototype.capitalize = function () {
-    return this.substr(0, 1).toUpperCase() + this.substr(1).toLocaleLowerCase();
-};
-
-
 initialize();
+applyVisuals();

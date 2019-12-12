@@ -239,10 +239,6 @@ public abstract class KidObject extends GameObject {
 
     @Override
     public void render(Camera camera, Graphics graphics) {
-        /*for (GameObject gameObject : getHandler().getRoom().getObjects()) {
-            if (gameObject instanceof KillerObject)
-                gameObject.getHitbox().renderHitbox(camera, (int)gameObject.getX(), (int)gameObject.getY(), graphics);
-        }//*/
         for (GameObject gameObject : debug) {
             if (gameObject.getUpdatedHitbox() == null)
                 continue;
@@ -250,7 +246,6 @@ public abstract class KidObject extends GameObject {
         }
 
         if (this.kidState == KidState.DEAD) {
-            this.getHitbox().renderHitbox(camera, x, y, graphics);
             return;
         }
         debug.clear();

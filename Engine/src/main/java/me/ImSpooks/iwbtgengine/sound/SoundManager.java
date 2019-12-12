@@ -3,9 +3,6 @@ package me.ImSpooks.iwbtgengine.sound;
 import lombok.Getter;
 import me.ImSpooks.iwbtgengine.handler.ResourceManager;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**
@@ -65,24 +62,7 @@ public class SoundManager {
      * @param sound Sound instance
      */
     public void playAndDestroy(Sound sound) {
-        sound = sound.clone();
-        try {
-            sound.play();
-
-            Field field = sound.getClass().getDeclaredField("clip");
-
-            if (!field.isAccessible()) field.setAccessible(true);
-
-            Clip clip = (Clip) field.get(sound);
-            Sound finalSound = sound;
-            clip.addLineListener(e -> {
-                if (e.getType() == LineEvent.Type.STOP) {
-                    finalSound.close();
-                }
-            });
-        } catch (NoSuchFieldException | IllegalAccessException ignored) {
-
-        }
+        sound.play();
     }
 
     /**

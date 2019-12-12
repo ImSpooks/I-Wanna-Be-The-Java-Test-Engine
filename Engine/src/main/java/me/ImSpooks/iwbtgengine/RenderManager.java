@@ -25,46 +25,27 @@ public class RenderManager implements Runnable {
         long lastRender = System.nanoTime();
         double ns = 1000000000.0 / tps;
         double delta = 0;
-        long timer = System.currentTimeMillis();
 
+        long timer = System.currentTimeMillis();
         int frames = 0;
 
         while (true) {
-            //if (main.running) {
-                long now = System.nanoTime();
-                delta += (now - lastRender) / ns;
-                lastRender = now;
-                while(delta >= 1) {
-                    update((float)delta / 1000.0f);
-                    render();
+            long now = System.nanoTime();
+            delta += (now - lastRender) / ns;
+            lastRender = now;
+            while (delta >= 1) {
+                update((float) delta / 1000.0f);
+                render();
+                frames++;
 
-                    delta = 0;
-                    frames++;
-                }
+                delta--;
+            }
 
-                if (System.currentTimeMillis() - timer > 1000) {
-                    timer += 1000;
-                    Logger.debug("{} frames per second ", frames);
-                    frames = 0;
-
-                    /*if (SaveSelection.selected != null) {
-                        SaveFile file = SaveSelection.selected;
-
-                        file.setTime(file.getTime() + 1);
-
-                        long time = file.getTime();
-                        long lhours = time / 3600;
-                        long lminutes = (time % 3600) / 60;
-                        long lseconds = time % 60;
-
-                        String hours = String.valueOf(lhours).length() == 1 ? "0" + lhours : String.valueOf(lhours);
-                        String minutes = String.valueOf(lminutes).length() == 1 ? "0" + lminutes : String.valueOf(lminutes);
-                        String seconds = String.valueOf(lseconds).length() == 1 ? "0" + lseconds : String.valueOf(lseconds);
-
-                        Main.getInstance().frame.setTitle(Main.getInstance().title + " - Save " + (Integer.parseInt(file.getFile().getFileName().substring(file.getFile().getFileName().length() - 1)) + 1) + " - Deaths: " + file.getDeath() + "  Time: " + hours + ":" + minutes + ":" + seconds);
-                    }*/
-                }
-            //}
+            if (System.currentTimeMillis() - timer > 1000) {
+                timer += 1000;
+                Logger.debug("{} frames per second ", frames);
+                frames = 0;
+            }
         }
     }
 
@@ -77,7 +58,7 @@ public class RenderManager implements Runnable {
     private void render() {
         this.main.requestFocus();
         BufferStrategy bs = this.main.getBufferStrategy();
-        if (bs == null){
+        if (bs == null) {
             this.main.createBufferStrategy(3);
             return;
         }

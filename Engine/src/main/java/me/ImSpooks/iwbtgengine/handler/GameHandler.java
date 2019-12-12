@@ -31,7 +31,6 @@ public class GameHandler {
     @Getter private final ParticleManager particleManager;
     @Getter private final EventHandler eventHandler;
 
-
     public GameHandler(Main main) {
         this.main = main;
         this.particleManager = new ParticleManager(this);
@@ -66,10 +65,8 @@ public class GameHandler {
     }
 
     public void setRoom(Room room) {
-        this.room = room;
         room.onLoad();
-
-
+        this.room = room;
     }
 
     public SoundManager getSoundManager() {

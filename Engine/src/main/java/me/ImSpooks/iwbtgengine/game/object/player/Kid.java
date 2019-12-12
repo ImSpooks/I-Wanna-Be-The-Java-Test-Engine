@@ -39,7 +39,7 @@ public class Kid extends KidObject {
             bullets.forEach(bullet -> bullet.render(camera, graphics));
         } catch (ConcurrentModificationException ignored) {}
 
-        if (this.deathSprite != null) {
+        if (this.deathSprite != null && getKidState() == KidState.DEAD) {
             int width = this.deathSprite.getImage().getWidth();
             int height = this.deathSprite.getImage().getHeight();
 

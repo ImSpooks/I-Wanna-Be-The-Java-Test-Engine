@@ -13,12 +13,14 @@ var oldMousePosition = mousePosition;
 
 let leftClickDown = false;
 let rightClickDown = false;
+let middleClickDown = false;
 
 function loop(time){
     requestAnimationFrame(loop);
 
-    interval = 1000 / 240;
+    interval = 1000 / 60;
     now = new Date().getTime();
+
     delta = now - then;
 
     if (last + 1000 < now) {
@@ -40,7 +42,7 @@ function loop(time){
         let graphics = canvas.getContext("2d");
 
         graphics.imageSmoothingEnabled = false;
-        graphics.mozImageSmoothingEnabled = false;
+        graphics.unprefixed = false;
         graphics.webkitImageSmoothingEnabled = false;
 
         graphics.fillStyle = "#00b0b0";
@@ -116,12 +118,14 @@ function loop(time){
                     }
                 }
                 if (add)
-                    objects["x" + x + "_y" + y].push([selectedObject, Resources[selectedObject].type, x, y, Resources[selectedObject].path, objectImage, document.getElementById("custom_id").value]);
-
+                    objects["x" + x + "_y" + y].push([selectedObject, Resources[selectedObject].type, x, y, Resources[selectedObject].path, objectImage, document.getElementById("custom_id").value, []]);
             }
-
             else if (rightClickDown && objects["x" + x + "_y" + y] != null)
                 delete objects["x" + x + "_y" + y];
+            else if (middleClickDown && objects["x" + x + "_y" + y] != null) {
+                propertyObject = objects["x" + x + "_y" + y];
+                selectProperties();
+            }
         }
 
         Object.keys(objects).forEach(function (key, index, array) {
@@ -129,11 +133,15 @@ function loop(time){
 
             for (let i = 0; i < value.length; i++) {
                 let tileInfo = value[i];
-                if (tileInfo[1] == "SAVES") {
+
+                if (tileInfo[5] == null)
+                    continue;
+
+                if (tileInfo[1] === "SAVES") {
                     graphics.drawImage(tileInfo[5], 0, 0, 32, 32, tileInfo[2], tileInfo[3], 32, 32);
                 }
                 else {
-                    graphics.drawImage(tileInfo[5], tileInfo[2], tileInfo[3]);
+                   graphics.drawImage(tileInfo[5], tileInfo[2], tileInfo[3]);
                 }
 
             }
@@ -141,7 +149,7 @@ function loop(time){
 
 
         if (objectImage != null) {
-            if (Resources[selectedObject].type == "SAVES") {
+            if (Resources[selectedObject].type === "SAVES") {
                 graphics.drawImage(objectImage, 0, 0, 32, 32, x, y, 32, 32);
             }
             else {
@@ -151,40 +159,43 @@ function loop(time){
         }
 
         frames++;
-
         oldMousePosition = mousePosition;
     }
 }
-
-
 canvas.onmousedown = function(event) {
-    var isRightMB;
     event = event || window.event;
 
-    if ("which" in event)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
-        isRightMB = event.which == 3;
-    else if ("button" in event)  // IE, Opera
-        isRightMB = event.button == 2;
-
-    if (isRightMB)
-        rightClickDown = true;
-    else
-        leftClickDown = true;
+    if ("button" in event) {
+        switch (event.button) {
+            case 0:
+                leftClickDown = true;
+                break;
+            case 1:
+                middleClickDown = true;
+                break;
+            case 2:
+                rightClickDown = true;
+                break;
+        }
+    }
 };
 
 canvas.onmouseup = function(event) {
-    var isRightMB;
     event = event || window.event;
 
-    if ("which" in event)  // Gecko (Firefox), WebKit (Safari/Chrome) & Opera
-        isRightMB = event.which == 3;
-    else if ("button" in event)  // IE, Opera
-        isRightMB = event.button == 2;
-
-    if (isRightMB)
-        rightClickDown = false;
-    else
-        leftClickDown = false;
+    if ("button" in event) {
+        switch (event.button) {
+            case 0:
+                leftClickDown = false;
+                break;
+            case 1:
+                middleClickDown = false;
+                break;
+            case 2:
+                rightClickDown = false;
+                break;
+        }
+    }
 };
 
 window.addEventListener('mousemove', function (event) {

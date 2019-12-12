@@ -64,7 +64,7 @@ public class InitializeTextures {
     }
 
     private void generateJsonScript(String resourcePath, List<Resource> resources) {
-        String editorPath = dir + File.separator + "Level Editor" + File.separator + "Editor";
+        String editorPath = dir + File.separator + "Level Editor" + File.separator + "Editor" + File.separator + "resources";
 
         File file = new File(editorPath, "resources.js");
 
@@ -85,6 +85,8 @@ public class InitializeTextures {
 
             String fileName = resource.getPath().split("/")[resource.getPath().split("/").length - 1].split("\\.")[0];
 
+            // what is this OMEGALUL
+            // TODO convert to more an actual json instead of hardcoded strings
             content.add("   " + fileName + ": {");
 
             content.add("       " + "path: \"" + resource.getPath() + "\",");
