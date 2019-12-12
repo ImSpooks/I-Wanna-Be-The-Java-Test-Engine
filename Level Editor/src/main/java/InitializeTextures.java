@@ -35,11 +35,23 @@ public class InitializeTextures {
         List<Resource> resources = new ArrayList<>();
 
         for (File subFolder : this.getSubFolders(resourceFolder)) {
-            for (File file : this.getFilesInFolder(subFolder)) {
-                String path = file.getPath();
+            for (ResourceFile file : this.getFilesInFolder(subFolder)) {
+                String path = file.getFile().getPath();
                 path = path.substring(resourceFolder.getPath().length() + 1).replace(File.separator, "/");
 
-                Resource resource = new Resource(path, ResourceType.getFromType(path.split("/")[1]));
+                try {
+                    ResourceType type = ResourceType.getFromType(path.split("/")[0]);
+                    if (!Objects.requireNonNull(type).isEnabled())
+                        continue;
+                } catch (IllegalArgumentException | NullPointerException ignored) {
+                }
+
+                ResourceType type = ResourceType.getFromType(path.split("/")[1]);
+
+                if (!Objects.requireNonNull(type).isEnabled())
+                    continue;
+
+                Resource resource = new Resource(path, type, path.split("/")[2]);
 
                 if (resource.getResourceType() != null && resource.getResourceType().isEnabled())
                     resources.add(resource);
@@ -76,8 +88,9 @@ public class InitializeTextures {
             content.add("   " + fileName + ": {");
 
             content.add("       " + "path: \"" + resource.getPath() + "\",");
-            content.add("       " + "type: \"" + resource.getResourceType().getType().toUpperCase() + "\",");
-            content.add("       " + "subtype: \"" + resource.getResourceType().getSubtype().toUpperCase() + "\"");
+            content.add("       " + "parent: \"" + resource.getResourceType().getType().toUpperCase() + "\",");
+            content.add("       " + "type: \"" + resource.getResourceType().getSubtype().toUpperCase() + "\",");
+            content.add("       " + "subtype: \"" + resource.getSubType().toLowerCase() + "\"");
 
             content.add("   " + "}" + (i + 1 < resources.size() ? "," : ""));
         }
@@ -104,8 +117,8 @@ public class InitializeTextures {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Error while creating file");
+            e.printStackTrace();
         }
     }
 
@@ -122,14 +135,21 @@ public class InitializeTextures {
         return subFolders;
     }
 
-    private List<File> getFilesInFolder(File folder) {
-        List<File> subFiles = new ArrayList<>();
+    private List<ResourceFile> getFilesInFolder(File folder) {
+        List<ResourceFile> subFiles = new ArrayList<>();
 
         for (File subFile : Objects.requireNonNull(folder.listFiles())) {
             if (!subFile.isDirectory()) {
-                subFiles.add(subFile);
+                subFiles.add(new ResourceFile(subFile, subFile.getName()));
             }
         }
+
+        subFiles.sort((a, b) -> {
+            if (a.getFileName().replaceAll("[^0-9]+", "").isEmpty() || b.getFileName().replaceAll("[^0-9]+","").isEmpty())
+                return a.getFileName().compareTo(b.getFileName());
+
+            return Integer.parseInt(a.getFileName().replaceAll("[^0-9]+","")) - Integer.parseInt(b.getFileName().replaceAll("[^0-9]+",""));
+        });
 
         return subFiles;
     }
@@ -139,6 +159,13 @@ public class InitializeTextures {
 
         @Getter private final String path;
         @Getter private final InitializeTextures.ResourceType resourceType;
+        @Getter private final String subType;
+    }
+
+    @RequiredArgsConstructor
+    private static class ResourceFile {
+        @Getter private final File file;
+        @Getter private final String fileName;
     }
 
     @RequiredArgsConstructor
@@ -148,7 +175,8 @@ public class InitializeTextures {
          */
 
 
-        BACKGROUNDS("backgrounds", "", false),
+        BACKGROUNDS("backgrounds", "backgrounds", false),
+        FONT("font", "font", false),
 
         // Sounds
         MUSIC("sound", "music", false),

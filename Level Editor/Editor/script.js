@@ -24,7 +24,7 @@ function initialize() {
             Object.keys(Resources).forEach(function (key, index, array) {
                 let value = Resources[key];
 
-                if (value.subtype === selectedCategory) {
+                if (value.type === selectedCategory) {
                     let image = document.createElement("img");
                     image.alt = key;
                     image.id = key;

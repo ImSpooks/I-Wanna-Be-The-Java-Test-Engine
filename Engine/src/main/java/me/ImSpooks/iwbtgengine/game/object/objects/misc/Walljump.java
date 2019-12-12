@@ -33,8 +33,36 @@ public class Walljump extends Interactable {
 
         this.x -= shift;
         this.setWidth(this.getWidth() + shift + 1);
+    }
 
-        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth() + shift +1, sprite.getImage().getHeight())) {
+    @Override
+    public void render(Camera camera, Graphics graphics) {
+        if (this.canRender(camera)) {
+            sprite.draw(graphics, camera, this.x + shift, this.y);
+        }
+    }
+
+    public void onSlide(KidObject kid, GameHandler handler) {
+        kid.setVelY(2 * Global.GRAVITY);
+    }
+
+    @Override
+    public TouchAction onTouch() {
+        return kid -> {
+            // Everything is 'Vine'
+
+            if (kid != null) {
+                kid.setKidState(left ? KidState.SLIDING_LEFT : KidState.SLIDING_RIGHT);
+
+                this.onSlide(kid, this.getParent().getHandler());
+                kid.setXScale(left ? -1 : 1);
+            }
+        };
+    }
+
+    @Override
+    public Hitbox getUpdatedHitbox() {
+        return new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth() + shift +1, sprite.getImage().getHeight())) {
             @Override
             public java.util.List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();
@@ -59,34 +87,7 @@ public class Walljump extends Interactable {
                         }
                     }
                 }
-
-
                 return pixels;
-            }
-        });
-    }
-
-    @Override
-    public void render(Camera camera, Graphics graphics) {
-        if (this.canRender(camera)) {
-            sprite.draw(camera, graphics, this.x + shift, this.y);
-        }
-    }
-
-    public void onSlide(KidObject kid, GameHandler handler) {
-        kid.setVelY(2 * Global.GRAVITY);
-    }
-
-    @Override
-    public TouchAction onTouch() {
-        return kid -> {
-            // Everything is 'Vine'
-
-            if (kid != null) {
-                kid.setKidState(left ? KidState.SLIDING_LEFT : KidState.SLIDING_RIGHT);
-
-                this.onSlide(kid, this.getParent().getHandler());
-                kid.setXScale(left ? -1 : 1);
             }
         };
     }

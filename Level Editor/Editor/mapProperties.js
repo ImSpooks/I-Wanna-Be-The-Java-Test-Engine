@@ -49,10 +49,19 @@ function importMap() {
 
                 let array = json["objects"];
 
+                let pathToObject = {};
+                Object.keys(Resources).forEach(function (key) {
+                    pathToObject[Resources[key].path] = key;
+                });
+
                 for (let i = 0; i < array.length; i++) {
                     let object = array[i];
 
-                    let selectedObject = object["tile"];
+                    let selectedObject = pathToObject[object["tile"]];
+
+                    if (selectedObject == null)
+                        selectedObject = object["tile"];
+
                     let type = object["type"];
                     let x = object["x"] + 32;
                     let y = object["y"] + 32;
@@ -74,13 +83,13 @@ function importMap() {
                 map_type.value = map_type_json["type"];
                 map_type.onchange();
 
-                if (map_type.value == "scrolling") {
+                if (map_type.value === "scrolling") {
                     document.getElementById("room_width").value = map_type_json["width"];
                     document.getElementById("room_height").value = map_type_json["width"];
 
                     document.getElementById("room_height").onchange();
                 }
-                else if (map_type.value == "shift") {
+                else if (map_type.value === "shift") {
                     document.getElementById("rooms_h").value = map_type_json["rooms_horizontal"];
                     document.getElementById("rooms_v").value = map_type_json["rooms_vertical"];
 
@@ -174,7 +183,7 @@ function exportJson() {
             let tileInfo = value[i];
 
             let tile = {
-                tile: tileInfo[0],
+                tile: tileInfo[4],
                 type: tileInfo[1],
                 x: tileInfo[2] - 32,
                 y: tileInfo[3] - 32,
@@ -185,7 +194,7 @@ function exportJson() {
         }
     });
 
-    return JSON.stringify(data);
+    return JSON.stringify(data, undefined, 4);
 }
 
 function resetMap() {

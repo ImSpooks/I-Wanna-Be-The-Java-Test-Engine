@@ -24,20 +24,20 @@ public class BloodParticle extends Particle {
         super(x, y, velX, velY, Integer.MAX_VALUE);
         this.velY *= Global.GRAVITY;
 
-        BufferedImage image = room.getHandler().getMain().getResourceHandler().get("sprBlood" + (Global.RANDOM.nextInt(3) + 1), BufferedImage.class);
+        BufferedImage image = room.getHandler().getMain().getResourceManager().get("/resources/sprites/kid/default/sprBlood" + (Global.RANDOM.nextInt(3) + 1) + ".png", BufferedImage.class);
         this.room = room;
 
         if (Global.RANDOM.nextBoolean())
-            image = this.getImageUtils().flipImage(image, true);
+            image = this.getImageUtils().flipImageHorizontally(image);
         if (Global.RANDOM.nextBoolean())
-            image = this.getImageUtils().flipImage(image, false);
+            image = this.getImageUtils().flipImageVertically(image);
 
         this.sprite = new Sprite(image);
     }
 
     @Override
-    public void render(Camera camera, Graphics graphics) {
-        sprite.draw(camera, graphics, this.x, this.y);
+    public void render(Graphics graphics, Camera camera) {
+        sprite.draw(graphics, camera, this.x, this.y);
     }
 
     private boolean onBlock = false;

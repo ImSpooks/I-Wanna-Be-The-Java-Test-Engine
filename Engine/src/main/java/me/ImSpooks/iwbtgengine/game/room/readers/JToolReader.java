@@ -15,6 +15,7 @@ import me.ImSpooks.iwbtgengine.game.object.objects.warps.Warp;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Difficulty;
 import me.ImSpooks.iwbtgengine.global.Global;
+import org.tinylog.Logger;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
@@ -24,7 +25,9 @@ import java.util.List;
  * Created by Nick on 01 May 2019.
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
+ * @deprecated
  */
+@Deprecated
 public class JToolReader extends MapReader {
 
     public JToolReader(BufferedReader reader, Room room, Object... args) {
@@ -44,6 +47,7 @@ public class JToolReader extends MapReader {
 
         try {
             //reading room from jmap file
+            // discontinued
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -75,19 +79,19 @@ public class JToolReader extends MapReader {
                             }
 
                             else if (id == 21) { // warp
-                                object = new Warp(this.getRoom(), x, y, this.getSprite("sprWarp"));
+                                object = new Warp(this.getRoom(), x, y, this.getSprite("sprites/warps/default/sprWarp.png"));
                             }
 
                             else if (id == 22) { // jump refresher
-                                object = new JumpRefresher(this.getRoom(), x, y, this.getSprite("sprJumpRefresher"));
+                                object = new JumpRefresher(this.getRoom(), x, y, this.getSprite("sprites/misc/default/sprJumpRefresher.png"));
                             }
 
                             else if (id == 1) { // block
-                                object = new Block(this.getRoom(), x, y, this.getSprite("sprBlock"));
+                                object = new Block(this.getRoom(), x, y, this.getSprite("sprites/blocks/default/sprBlock.png"));
                             }
 
                             else if (id == 2) { // mini block
-                                object = new Block(this.getRoom(), x, y, this.getSprite("sprMiniblock"));
+                                object = new Block(this.getRoom(), x, y, this.getSprite("sprites/blocks/default/sprMiniblock.png"));
                             }
 
 
@@ -106,7 +110,7 @@ public class JToolReader extends MapReader {
 
                                 boolean isMini = id >= 7;
 
-                                object = new Spike(this.getRoom(), x, y, this.getSprite("spr" + (!isMini ? "Spike" : "Mini") + direction));
+                                object = new Spike(this.getRoom(), x, y, this.getSprite("sprites/killers/default/spr" + (!isMini ? "Spike" : "Mini") + direction + ".png"));
                             }
 
                             else if (id == 19) { // save blocker
@@ -115,52 +119,51 @@ public class JToolReader extends MapReader {
 
 
                             else if (id == 18) { // killer blocker
-                                object = new KillerBlock(this.getRoom(), x, y, this.getSprite("sprKillerBlock"));
+                                object = new KillerBlock(this.getRoom(), x, y, this.getSprite("sprites/killers/default/sprKillerBlock.png"));
                             }
 
                             //spikes
 
 
                             else if (id == 11) { // apple
-                                object = new Cherry(this.getRoom(), x, y, this.getSprite("sprCherry"));
+                                object = new Cherry(this.getRoom(), x, y, this.getSprite("sprites/killers/default/sprCherry.gif"));
 
                                 object.setX(object.getX() - object.getSprite().getImage().getWidth() / 2.0);
                                 object.setY(object.getY() - object.getSprite().getImage().getHeight() / 2.0);
                             }
 
                             else if (id == 12) { // save point
-                                object = new Save(this.getRoom(), x, y, this.getSprite("sprSave"), Difficulty.MEDIUM, false);
+                                object = new Save(this.getRoom(), x, y, this.getSprite("sprites/saves/default/sprSave.png"), Difficulty.MEDIUM, false);
                             }
 
 
 
                             else if (id == 13) { // platforms
-                                object = new Platform(this.getRoom(), x, y, this.getSprite("sprMovingPlatform"));
+                                object = new Platform(this.getRoom(), x, y, this.getSprite("sprites/platforms/default/sprMovingPlatform.png"));
                             }
                             else if (id == 14) { // water
-                                object = new Water(this.getRoom(), x, y, this.getSprite("sprWater"), Water.WaterType.FULL_JUMP);
+                                object = new Water(this.getRoom(), x, y, this.getSprite("sprites/misc/default/sprWater.png"), Water.WaterType.FULL_JUMP);
                             }
                             else if (id == 15) { // water
-                                object = new Water(this.getRoom(), x, y, this.getSprite("sprWater"), Water.WaterType.SINGLE_JUMP);
+                                object = new Water(this.getRoom(), x, y, this.getSprite("sprites/misc/default/sprWater.png"), Water.WaterType.SINGLE_JUMP);
                             }
                             else if (id == 23) { // double jump water
-                                object = new Water(this.getRoom(), x, y, this.getSprite("sprWater"), Water.WaterType.DOUBLE_JUMP);
+                                object = new Water(this.getRoom(), x, y, this.getSprite("sprites/misc/default/sprWater.png"), Water.WaterType.DOUBLE_JUMP);
                             }
 
                             else if (id == 17) { // vine left
-                                object = new Walljump(this.getRoom(), x, y, this.getSprite("sprWalljumpR"), false);
+                                object = new Walljump(this.getRoom(), x, y, this.getSprite("sprites/misc/default/sprWalljumpR.png"), false);
                             }
                             else if (id == 18) {
-                                object = new Walljump(this.getRoom(), x, y, this.getSprite("sprWalljumpL"), true);
+                                object = new Walljump(this.getRoom(), x, y, this.getSprite("sprites/misc/default/sprWalljumpL.png"), true);
                             }
 
                             if (object != null)
                                 this.addObject(object);
-                            else if (id != 20) System.out.println(String.format("Unknown object id found with id \'%s\'", id));
+                            else if (id != 20) Logger.warn("Unknown object id found with id \"{}\"", id);
 
                         } catch (NumberFormatException e) {
-                            System.out.println("Something went wrong adding object at x = [" + splittedString[objects] + "], y = [" + splittedString[objects + 1] + "], id = [" + splittedString[objects + 2] + "]");
-                            e.printStackTrace();
+                            Logger.warn(e, "Something went wrong adding object at x = [{}], y = [{}], id = [{}]", splittedString[objects], splittedString[objects + 1], splittedString[objects + 2]);
                         }
                         objects = objects + 3;
                     }
@@ -169,8 +172,7 @@ public class JToolReader extends MapReader {
             }
 
         } catch (Exception e) {
-            System.out.println("Something went wrong adding object at x = [" + lastX + "], y = [" + lastY + "], id = [" + lastID + "]");
-            e.printStackTrace();
+            Logger.warn(e, "Something went wrong adding object at x = [{}], y = [{}], id = [{}]", lastX, lastY, lastID);
         }
     }
 }

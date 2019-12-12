@@ -82,6 +82,7 @@ public abstract class Hitbox {
 
         switch (hitboxType.getDataType()) {
             case 1: {
+//                System.out.println("this.parent = " + this.parent);
                 int px = this.pixels.get(0)[0];
                 int py = this.pixels.get(0)[1];
                 graphics.fillRect((int) x + px - camera.getCameraX(), (int) y + py - camera.getCameraY(), this.pixels.get(this.pixels.size() - 1)[0] - px, this.pixels.get(this.pixels.size() - 1)[1] - py);

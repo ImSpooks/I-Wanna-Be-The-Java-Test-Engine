@@ -34,18 +34,18 @@ public abstract class Particle {
         lifespan--;
     }
 
-    public void createGraphics(Camera camera, Graphics graphics) {
+    public void createGraphics(Graphics graphics, Camera camera) {
         if (!this.canRender(camera))
             return;
 
         Graphics2D g2d = (Graphics2D) graphics.create();
 
-        this.render(camera, g2d);
+        this.render(g2d, camera);
 
         g2d.dispose();
     }
 
-    public abstract void render(Camera camera, Graphics graphics);
+    public abstract void render(Graphics graphics, Camera camera);
 
     public boolean canRender(Camera camera) {
         return camera != null && !(this.x < camera.getCameraX() || this.x > camera.getCameraX() + Global.GAME_WIDTH

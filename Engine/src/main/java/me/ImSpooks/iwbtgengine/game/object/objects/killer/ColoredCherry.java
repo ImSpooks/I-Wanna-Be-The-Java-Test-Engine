@@ -3,21 +3,18 @@ package me.ImSpooks.iwbtgengine.game.object.objects.killer;
 import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
-import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Nick on 06 sep. 2019.
  * No part of this publication may be reproduced, distributed, or transmitted in any form or by any means.
  * Copyright © ImSpooks
  */
-public class ColoredCherry extends KillerObject {
+public class ColoredCherry extends Cherry {
     
     @Getter @Setter private Color color;
 
@@ -25,26 +22,6 @@ public class ColoredCherry extends KillerObject {
         super(parent, x, y, sprite);
 
         this.color = color;
-
-        sprite.setOnUpdate(delta -> setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
-            @Override
-            public List<int[]> getPixels() {
-
-                List<int[]> pixels = new ArrayList<>();
-
-                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
-                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
-
-                        if ((sprite.getImage().getRGB(x,y) >>24) == 0x00)
-                            continue;
-
-                        pixels.add(new int[] {x, y});
-                    }
-                }
-
-                return pixels;
-            }
-        }));
     }
 
     @Override

@@ -2,116 +2,311 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="de3e6802-705e-4ddd-950b-28b5e82f2285" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/canvas.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/AtlasSprite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/EmptySprite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/atlas/TextureAtlas.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/gif/GifDecoder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/gif/GifIcon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/helpers/AtomicObject.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/helpers/JavaHelpers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/helpers/NumberConversions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/helpers/StringHelpers.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/helpers/ThreadBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sounds/music/BC3.brstm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprBlock3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/room/level/stage1/rStage01.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/room/main/difficulty_select.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/room/main/main_menu.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/room/main/save_menu.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/tinylog.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/.start.bat" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/.start.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/RenderManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/RenderManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/collision/Hitbox.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/collision/Hitbox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/data/SaveData.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/data/SaveData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/Interactable.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/Interactable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/blocks/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/blocks/Block.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/blocks/InvisibleBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/blocks/InvisibleBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/Cherry.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/Cherry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/ColoredCherry.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/ColoredCherry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/KillerBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/KillerBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/Spike.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/killer/Spike.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Gravity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Gravity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/JumpRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/JumpRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Sign.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Sign.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Walljump.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Walljump.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Water.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/misc/Water.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/platforms/Platform.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/platforms/Platform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/slopes/Slope.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/slopes/Slope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/triggers/Trigger.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/triggers/Trigger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/warps/Warp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/objects/warps/Warp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/particles/BloodParticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/particles/BloodParticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/particles/init/Particle.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/particles/init/Particle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/particles/init/ParticleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/particles/init/ParticleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/player/Kid.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/player/Kid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/player/KidObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/player/KidObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Registry.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Registry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/BeanTool.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/BeanTool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/GIFIcon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/GIFSprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/GIFSprite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/Sprite.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/object/sprite/Sprite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/init/TestRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/init/TestRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/init/TestRoom2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/init/TestRoom2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/readers/EngineReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/readers/EngineReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/readers/JToolReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/readers/JToolReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/readers/MapReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/game/room/readers/MapReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/handler/GameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/handler/GameHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/handler/ResourceHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/handler/ResourceManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/keycontroller/KeyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/keycontroller/KeyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/screen/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/screen/GameScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/BrstmSound.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/BrstmSound.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/Sound.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/Sound.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/SoundManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/SoundManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/WavSound.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/sound/WavSound.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/util/CustomEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/util/HexEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/util/StringUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/util/image/ColoringUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/util/image/ColoringUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/util/image/ImageUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/java/me/ImSpooks/iwbtgengine/util/image/ImageUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/ADPCMDecoder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/AsyncDecoder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/BRSTMPlayer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/FileFormatException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/Stream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/endianess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/file/BFSTMFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/file/BRSTMFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/file/DSPFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/file/RS03File.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/stream/BFSTMStream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/stream/BRSTMStream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/stream/DSPStream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/java/org/hackyourlife/gcn/dsp/stream/RS03Stream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/lib/lombok.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/backgrounds/test background.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/backgrounds/default/test background.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/sprBlock.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprBlock.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/sprBlock2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprBlock2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/sprMiniblock.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprMiniblock.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/sprSaveBlocker.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprSaveBlocker.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/sprSlideBlock.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprSlideBlock.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/sprSlideBlockL.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprSlideBlockL.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/sprSlideBlockR.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/blocks/default/sprSlideBlockR.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/items/sprBossItem.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/items/default/sprBossItem.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/items/sprSecretItem.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/items/default/sprSecretItem.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/Naamloos.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprBlood1.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprBlood1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprBlood2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprBlood2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprBlood3.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprBlood3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprBow.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprBow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprBullet.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprBullet.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprGameOver.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprGameOver.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprPlayerFall.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprPlayerFall.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprPlayerIdle.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprPlayerIdle.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprPlayerJump.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprPlayerJump.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprPlayerRunning.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprPlayerRunning.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/sprPlayerSliding.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/kid/default/sprPlayerSliding.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprCherry.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprCherry.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprCherryWhite.gif" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprCherryWhite.gif" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprKillerBlock.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprKillerBlock.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprMiniDown.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprMiniDown.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprMiniLeft.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprMiniLeft.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprMiniRight.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprMiniRight.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprMiniUp.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprMiniUp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprSpikeDown.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprSpikeDown.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprSpikeLeft.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprSpikeLeft.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprSpikeRight.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprSpikeRight.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/sprSpikeUp.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/killers/default/sprSpikeUp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/playerstart.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/playerstart.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/sprGravityDown.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/sprGravityDown.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/sprGravityUp.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/sprGravityUp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/sprJumpRefresher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/sprJumpRefresher.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/sprSign.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/sprSign.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/sprWalljumpL.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/sprWalljumpL.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/sprWalljumpR.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/sprWalljumpR.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/sprWater.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/misc/default/sprWater.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/platforms/sprMovingPlatform.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/platforms/default/sprMovingPlatform.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/platforms/sprPlatform.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/platforms/default/sprPlatform.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/sprSave.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/default/sprSave.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/sprSaveFlip.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/default/sprSaveFlip.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/sprSaveMedium.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/default/sprSaveMedium.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/sprSaveMediumFlip.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/default/sprSaveMediumFlip.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/sprSaveVHard.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/default/sprSaveVHard.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/sprSaveVHardFlip.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/saves/default/sprSaveVHardFlip.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/sprSlopeBlock.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/default/sprSlopeBlock.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/sprSlopeDownLeft.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/default/sprSlopeDownLeft.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/sprSlopeDownRight.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/default/sprSlopeDownRight.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/sprSlopeUpLeft.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/default/sprSlopeUpLeft.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/sprSlopeUpRight.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/slopes/default/sprSlopeUpRight.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/sprButton_strip2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/default/sprButton_strip2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/sprSpikeTriggerDown.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/default/sprSpikeTriggerDown.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/sprSpikeTriggerLeft.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/default/sprSpikeTriggerLeft.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/sprSpikeTriggerRight.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/default/sprSpikeTriggerRight.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/sprSpikeTriggerUp.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/default/sprSpikeTriggerUp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/sprTriggerMask.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/triggers/default/sprTriggerMask.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/ui/loadingScreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/ui/default/loadingScreen.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/warps/sprWarp.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/resources/sprites/warps/default/sprWarp.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/room/level/stage1/DefaultRoom.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../Engine/src/main/resources/room/level/stage1/DefaultRoom.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/room/main/MainMenu.jmap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/main/resources/room/main/SaveMenu.jmap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/Start.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/Handler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/RenderManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/ArrayHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/Data.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/Event.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/EventManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/EventPriority.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/EventTarget.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/Listener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/debug/ChangeAlignmentEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/debug/ClickWarpEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/keyboard/KeyHoldEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/keyboard/KeyPressEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/keyboard/KeyReleaseEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/kid/KidJumpEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/kid/KidMoveEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/kid/KidShootEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/event/events/kid/KidSlideEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/filemanager/ConfigFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/filemanager/FileManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/filemanager/IFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/filemanager/SaveData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/game/CachedRooms.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/game/IRoom.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/game/mainmenu/LoadingScreen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/game/mainmenu/MainMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/game/mainmenu/SaveSelection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/game/room/stage1/Room1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/hitbox/CustomHitbox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/hitbox/Hitbox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/hitbox/RectangleHitbox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/keyinputs/Keyboard.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/ID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/IObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/blocks/Block.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/blocks/MiniBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/blocks/SaveBlocker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/items/ObjBossItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/items/ObjSecretItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/kid/Blood.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/kid/Bow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/kid/FakeKid.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/kid/Kid.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/kid/KidBullet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/killers/Cherry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/killers/KillerBlock.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/killers/MiniSpike.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/killers/Spike.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/misc/JumpRefresher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/misc/Wootar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gameobjects/saves/Save.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/gui/IGui.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/interfaces/GameObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/interfaces/KidObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/interfaces/KidObjects.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/interfaces/KillerObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/object/interfaces/MultipleSprites.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/save/SaveFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/settings/Global.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/settings/Keybinds.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/IResourceFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/ISound.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/RegisteredSounds.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/SoundPlayer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/fx/IResourceSoundFX.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/fx/ISoundFX.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/music/IMusic.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/sound/music/IResourceMusic.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/utils/ReflectionUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/utils/ResourceHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/me/ImSpooks/IWBTJ/utils/SomeValues.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/BasicMultiMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/BasicOptionMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/BasicProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/BasicProfileSection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/BasicRegistry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/BasicRegistryKey.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/CommentedMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/CommonMultiMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Config.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/ConfigParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Configurable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Ini.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/IniPreferences.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/IniPreferencesFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/InvalidFileFormatException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/MultiMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/OptionMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Options.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Persistable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Profile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Reg.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Registry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/Wini.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/package.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/AbstractBeanInvocationHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/AbstractFormatter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/AbstractParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/AbstractProfileBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/BeanAccess.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/BeanTool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/EscapeTool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/HandlerBase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/IniBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/IniFormatter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/IniHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/IniParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/IniSource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/OptionsBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/OptionsFormatter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/OptionsHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/OptionsParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/RegBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/RegEscapeTool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/ServiceFinder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/TypeValuesPair.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/UnicodeInputStreamReader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/Warnings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/WinEscapeTool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/ini4j/spi/package.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/CDL.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/Cookie.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/CookieList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/HTTP.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/HTTPTokener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONArray.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONML.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONPointer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONPointerException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONPropertyIgnore.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONPropertyName.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONString.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONStringer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONTokener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/JSONWriter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/Property.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/XML.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Engine/src/test/java/org/json/XMLTokener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/canvas.js" beforeDir="false" afterPath="$PROJECT_DIR$/canvas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapProperties.js" beforeDir="false" afterPath="$PROJECT_DIR$/mapProperties.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/InitializeTextures.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/InitializeTextures.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Resources/src/main/resources/resources/sprites/kid/sprPlayerFall.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Resources/src/main/resources/resources/sprites/kid/sprPlayerIdle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Resources/src/main/resources/resources/sprites/kid/sprPlayerJump.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Resources/src/main/resources/resources/sprites/kid/sprPlayerRunning.png" beforeDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="1297485695">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="coffee" value="1" />
-          <entry key="css" value="2" />
-          <entry key="html" value="3" />
-          <entry key="js" value="11" />
-          <entry key="ts" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="CSS" value="2" />
-          <entry key="CoffeeScript" value="1" />
-          <entry key="HTML" value="3" />
-          <entry key="JavaScript" value="11" />
-          <entry key="TypeScript" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="css" value="128" />
-          <entry key="html" value="279" />
-          <entry key="js" value="1425" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="CSS" value="128" />
-          <entry key="HTML" value="279" />
-          <entry key="JavaScript" value="1425" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
-  <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="31" lean-forward="true" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/script.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="24" column="54" selection-start-line="24" selection-start-column="54" selection-end-line="24" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="14" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/canvas.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -126,65 +321,29 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/test.coffee" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/canvas.js" />
-        <option value="$PROJECT_DIR$/style.css" />
-        <option value="$PROJECT_DIR$/script.js" />
-      </list>
-    </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
-  </component>
+  <component name="ProjectId" id="1UsHadk48epfj9RjHKEsEqQHZYg" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Editor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Editor" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -199,108 +358,11 @@
       <option name="presentableId" value="Default" />
       <updated>1567443047983</updated>
       <workItem from="1567443051428" duration="3079000" />
+      <workItem from="1576138448660" duration="1469000" />
     </task>
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3079000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17857143" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Database" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17857143" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="1" />
-      <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="3" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="4" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Message" order="5" />
-      <window_info anchor="bottom" id="Find" order="6" />
-      <window_info anchor="bottom" id="Run" order="7" />
-      <window_info anchor="bottom" id="Debug" order="8" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="11" />
-      <window_info anchor="right" id="Database" order="0" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-    </layout-to-restore>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test.coffee">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="10119" column="12" selection-start-line="10119" selection-start-column="12" selection-end-line="10119" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/canvas.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="31" lean-forward="true" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="14" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/script.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="54" selection-start-line="24" selection-start-column="54" selection-end-line="24" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>

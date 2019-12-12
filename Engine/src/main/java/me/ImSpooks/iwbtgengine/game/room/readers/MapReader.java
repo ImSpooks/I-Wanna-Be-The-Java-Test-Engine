@@ -7,7 +7,8 @@ import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.game.room.RoomType;
-import me.ImSpooks.iwbtgengine.handler.ResourceHandler;
+import me.ImSpooks.iwbtgengine.handler.ResourceManager;
+import org.tinylog.Logger;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -44,8 +45,8 @@ public abstract class MapReader {
         this.args = args;
     }
 
-    public ResourceHandler getResourceHandler() {
-        return Main.getInstance().getResourceHandler();
+    public ResourceManager getResourceHandler() {
+        return Main.getInstance().getResourceManager();
     }
 
     void addObject(GameObject object) {
@@ -53,6 +54,11 @@ public abstract class MapReader {
     }
 
     Sprite getSprite(String tile) {
-        return Sprite.generateSprite(this.getResourceHandler().getResource(tile));
+        try {
+            return Sprite.generateSprite(this.getResourceHandler().getResource("/resources/" + tile));
+        } catch (NullPointerException e){
+            Logger.error("Sprite \"{}\" is null", tile);
+            return null;
+        }
     }
 }

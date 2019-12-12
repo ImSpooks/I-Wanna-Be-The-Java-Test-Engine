@@ -3,7 +3,6 @@ package me.ImSpooks.iwbtgengine.game.object.objects.misc;
 import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
-import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.player.KidObject;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
@@ -31,24 +30,6 @@ public class Sign extends GameObject {
 
     public Sign(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
-
-        this.setHitbox(new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
-            @Override
-            public java.util.List<int[]> getPixels() {
-                List<int[]> pixels = new ArrayList<>();
-
-                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
-                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
-
-                        // only adding outline to reduce lag
-
-                        pixels.add(new int[]{x, y});
-                    }
-                }
-
-                return pixels;
-            }
-        });
     }
 
     public void setText(String text) {
@@ -128,23 +109,18 @@ public class Sign extends GameObject {
             for (int i = 0; i < entryList.size(); i++) {
                 Map.Entry<String, Integer> entry = entryList.get(i);
 
-                this.getImageUtils().drawStringShadow(graphics, entry.getKey(), (int) x - (entry.getValue() / 2), (int) y - 16 * (lines.size() - i), color);
+                this.getImageUtils().drawStringShadow(graphics, entry.getKey(), (int) x - camera.getCameraX() - (entry.getValue() / 2), (int) y - camera.getCameraY() - 16 * (lines.size() - i), color);
             }
         }
     }
 
     @Override
-    public boolean update(float delta) {
-        if (super.update(delta)) {
-            KidObject kid = this.getParent().getHandler().getKid();
-            if (kid == null)
-                return false;
+    public void update(float delta) {
+        KidObject kid = this.getParent().getHandler().getKid();
+        if (kid == null)
+            return;
 
-            visible = this.getHitbox().intersects(kid.getHitbox(), this.x, this.y, kid.getX(), kid.getY());
-
-            return true;
-        }
-        return false;
+        visible = this.getUpdatedHitbox().intersects(kid.getUpdatedHitbox(), this.x, this.y, kid.getX(), kid.getY());
     }
 
     private int ticksIn = 0;

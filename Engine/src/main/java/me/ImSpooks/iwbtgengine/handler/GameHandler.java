@@ -68,6 +68,8 @@ public class GameHandler {
     public void setRoom(Room room) {
         this.room = room;
         room.onLoad();
+
+
     }
 
     public SoundManager getSoundManager() {

@@ -3,9 +3,9 @@ package me.ImSpooks.iwbtgengine.game.object.player;
 import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.player.subplayer.Bullet;
-import me.ImSpooks.iwbtgengine.game.object.sprite.GIFIcon;
 import me.ImSpooks.iwbtgengine.game.object.sprite.GIFSprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
+import me.ImSpooks.iwbtgengine.game.object.sprite.gif.GifIcon;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
@@ -35,8 +35,9 @@ public class Kid extends KidObject {
     public void render(Camera camera, Graphics graphics) {
         super.render(camera, graphics);
 
-        bullets.forEach(bullet -> bullet.render(camera, graphics));
-
+        try {
+            bullets.forEach(bullet -> bullet.render(camera, graphics));
+        } catch (ConcurrentModificationException ignored) {}
 
         if (this.deathSprite != null) {
             int width = this.deathSprite.getImage().getWidth();
@@ -47,7 +48,7 @@ public class Kid extends KidObject {
     }
 
     @Override
-    public boolean update(float delta) {
+    public void update(float delta) {
         super.update(delta);
 
         if (this.deathSprite != null)
@@ -71,10 +72,8 @@ public class Kid extends KidObject {
 
         //render death screen after 25 frames
         if (this.getTicksDead() > Global.FRAME_RATE / 2 && this.deathSprite == null) {
-            this.deathSprite = Sprite.generateSprite(this.getHandler().getMain().getResourceHandler().getResource("sprGameOver"));
+            this.deathSprite = Sprite.generateSprite(this.getHandler().getMain().getResourceManager().getResource("/resources/sprites/kid/default/sprGameOver.png"));
         }
-
-        return true;
     }
 
     @Override
@@ -84,14 +83,14 @@ public class Kid extends KidObject {
 
     @Override
     public void onJump(JumpType type) {
-        this.getHandler().getSoundManager().playSound("snd" + (type == JumpType.VINE_JUMP || getCanJump() == getMaxJumps() ? "" : "D") + "Jump");
+        this.getHandler().getSoundManager().playAndDestroy("/resources/sounds/sfx/snd" + (type == JumpType.VINE_JUMP || getCanJump() == getMaxJumps() ? "" : "D") + "Jump.wav");
     }
 
     @Override
     public boolean onDeath() {
-        this.getHandler().getSoundManager().playSound("sndDeath");
+        this.getHandler().getSoundManager().playAndDestroy("/resources/sounds/sfx/sndDeath.wav");
 
-        this.getHandler().getSoundManager().playSound("deathBgm", "musOnDeath");
+        this.getHandler().getSoundManager().playSound("deathBgm", "/resources/sounds/music/musOnDeath.wav");
         this.getHandler().getSoundManager().pauseSound("bgm");
         return true;
     }
@@ -106,10 +105,10 @@ public class Kid extends KidObject {
     @Override
     public void onShoot() {
         if (bullets.size() < maxBullets) {
-            Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceHandler().getResource("sprBullet")), this.getXScale(), this);
+            Bullet bullet = new Bullet(getHandler().getRoom(), this.getX() + 14 + (14 * this.getXScale()), this.getY() + 20, Sprite.generateSprite(getHandler().getMain().getResourceManager().getResource("/resources/sprites/kid/default/sprBullet.gif")), this.getXScale(), this);
             bullets.add(bullet);
 
-            this.getHandler().getSoundManager().playSound("sndShoot");
+            this.getHandler().getSoundManager().playAndDestroy("/resources/sounds/sfx/sndShoot.wav");
         }
     }
 
@@ -118,11 +117,11 @@ public class Kid extends KidObject {
         Map<String, Sprite> spritesMap = new HashMap<>();
 
         //spritesMap.put("idle", new AnimatedSprite(Main.getInstance().getResourceHandler().get("player_default_idle", BufferedImage.class), 32, 32, 4, 5));
-        spritesMap.put("idle", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerIdle", GIFIcon.class)));
-        spritesMap.put("running", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerRunning", GIFIcon.class)));
-        spritesMap.put("fall", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerFall", GIFIcon.class)));
-        spritesMap.put("jump", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerJump", GIFIcon.class)));
-        spritesMap.put("sliding", new GIFSprite(getHandler().getMain().getResourceHandler().get("sprPlayerSliding", GIFIcon.class)));
+        spritesMap.put("idle", new GIFSprite(getHandler().getMain().getResourceManager().get("/resources/sprites/kid/default/sprPlayerIdle.gif", GifIcon.class)));
+        spritesMap.put("running", new GIFSprite(getHandler().getMain().getResourceManager().get("/resources/sprites/kid/default/sprPlayerRunning.gif", GifIcon.class)));
+        spritesMap.put("fall", new GIFSprite(getHandler().getMain().getResourceManager().get("/resources/sprites/kid/default/sprPlayerFall.gif", GifIcon.class)));
+        spritesMap.put("jump", new GIFSprite(getHandler().getMain().getResourceManager().get("/resources/sprites/kid/default/sprPlayerJump.gif", GifIcon.class)));
+        spritesMap.put("sliding", new GIFSprite(getHandler().getMain().getResourceManager().get("/resources/sprites/kid/default/sprPlayerSliding.gif", GifIcon.class)));
 
         return spritesMap;
     }

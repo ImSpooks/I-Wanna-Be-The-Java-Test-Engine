@@ -54,7 +54,7 @@ public class ParticleManager {
 
     public void render(Camera camera, Graphics graphics) {
         for (Particle particle : particles) {
-            particle.createGraphics(camera, graphics);
+            particle.createGraphics(graphics, camera);
         }
     }
 }

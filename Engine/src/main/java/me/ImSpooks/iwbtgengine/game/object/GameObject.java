@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.collision.Hitbox;
 import me.ImSpooks.iwbtgengine.game.object.init.ObjectPriority;
+import me.ImSpooks.iwbtgengine.game.object.sprite.EmptySprite;
 import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Global;
@@ -40,6 +41,8 @@ public abstract class GameObject {
 
     @Getter private ImageUtils imageUtils = ImageUtils.getInstance();
 
+    @Getter @Setter private boolean visible = true;
+
     public GameObject(Room parent, double x, double y, Sprite sprite) {
         this.parent = parent;
         this.x = x;
@@ -49,7 +52,12 @@ public abstract class GameObject {
 
         if (this.sprite != null) {
             this.width = sprite.getImage().getWidth();
-            this.height= sprite.getImage().getHeight();
+            this.height = sprite.getImage().getHeight();
+
+            this.updateHitbox();
+        }
+        else {
+            this.sprite = new EmptySprite();
         }
     }
 
@@ -58,17 +66,13 @@ public abstract class GameObject {
         parent.getMap().getObjects().remove(this);
     }
 
-    public boolean update(float delta) {
-        if (this.canRender(this.getParent().getHandler().getMain().getScreen().getCamera())) {
-            this.sprite.update(delta);
-            return true;
-        }
-        return false;
+    public void update(float delta) {
+        this.sprite.update(delta);
     }
 
     public void render(Camera camera, Graphics graphics) {
         if (this.canRender(camera)) {
-            sprite.draw(camera, graphics, this.x, this.y);
+            sprite.draw(graphics, camera, this.x, this.y);
 
             //if (this.getHitbox() != null) this.getHitbox().renderHitbox(camera, (int) this.x, (int) this.y, graphics);
         }
@@ -84,5 +88,38 @@ public abstract class GameObject {
     public void setPosition(int x, int y) {
         this.setX(x);
         this.setY(y);
+    }
+
+    public boolean isSolid() {
+        return false;
+    }
+
+    public void updateHitbox() {
+        this.hitbox = this.getUpdatedHitbox();
+    }
+
+    public Hitbox getUpdatedHitbox() {
+        return new Hitbox(this, Hitbox.HitboxType.SQUARE, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
+            @Override
+            public List<int[]> getPixels() {
+                List<int[]> pixels = new ArrayList<>();
+
+                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
+                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
+
+                        // only adding outline to reduce lag
+
+                        pixels.add(new int[]{x, y});
+                    }
+                }
+
+                return pixels;
+            }
+        };
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s[x: %s, y: %s]", this.getClass().getSimpleName(), x, y);
     }
 }

@@ -73,7 +73,7 @@ public class EngineReader extends MapReader {
 
             JSONArray objects = map.get("objects", JSONArray.class);
 
-            //Iterate over employee array
+            //Iterate over object array
 
             for (Object obj : objects) {
                 GameObject gameObject = null;
@@ -86,7 +86,8 @@ public class EngineReader extends MapReader {
                 int x = Math.toIntExact(object.get("x", Long.class));
                 int y = Math.toIntExact(object.get("y", Long.class));
 
-                String objType = tile.replace("spr", "");
+                String objType = tile.replace("spr", "").split("\\.")[0];
+                objType = objType.split("/")[objType.split("/").length - 1];
 
                 switch (type.toLowerCase()) {
                     default: break;
@@ -190,7 +191,7 @@ public class EngineReader extends MapReader {
                     }
 
                     case "triggers": {
-                        if (objType.startsWith("TriggeMaskr")) {
+                        if (objType.startsWith("TriggerMask")) {
                             gameObject = new Trigger(this.getRoom(), x, y, this.getSprite(tile));
                         }
                         break;

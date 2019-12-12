@@ -18,6 +18,9 @@ public class ImageUtils {
 
     private static ImageUtils instance;
 
+    /**
+     * @return Static image util instance
+     */
     public static ImageUtils getInstance() {
         if (instance == null)
             instance = new ImageUtils();
@@ -26,20 +29,41 @@ public class ImageUtils {
 
     @Getter private ColoringUtils coloringUtils = new ColoringUtils();
 
-    public void drawImage(Graphics g, BufferedImage sourceImage, double x, double y, int imageNumber, int tileWidth, int tileHeight) {
+    /**
+     * @deprecated
+     */
+    @Deprecated
+    public void drawImage(Graphics graphics, BufferedImage sourceImage, double x, double y, int imageNumber, int tileWidth, int tileHeight) {
         int px = (int)((x));
         int py = (int)((Math.floor(y)));
         int sx = (imageNumber%20) * tileWidth;
         int sy = tileHeight * (imageNumber/20);
-        g.drawImage(sourceImage, px, py, px + tileWidth,
+        graphics.drawImage(sourceImage, px, py, px + tileWidth,
                 py + tileHeight, sx, sy, sx + tileWidth, sy + tileHeight,
                 null);
     }
 
+    /**
+     * Get a subimage in an image
+     *
+     * @param sourceImage Source image
+     * @param column Column
+     * @param row Row
+     * @param tileWidth Sub image width
+     * @param tileHeight Sub image height
+     * @return Sub image
+     */
     public BufferedImage getSubImage(BufferedImage sourceImage, int column, int row, int tileWidth, int tileHeight) {
         return sourceImage.getSubimage(column * tileWidth, row * tileHeight, tileWidth, tileHeight);
     }
 
+    /**
+     * Scales an image
+     *
+     * @param image Source image
+     * @param scale Image scale
+     * @return Scaled image
+     */
     public BufferedImage scaleImage(BufferedImage image, double scale) {
         int w = image.getWidth();
         int h = image.getHeight();
@@ -51,41 +75,72 @@ public class ImageUtils {
         return scaleOp.filter(image, after);
     }
 
-    public BufferedImage flipImage(BufferedImage image, boolean horizontally) {
-        AffineTransform tx;
-        AffineTransformOp op;
+    /**
+     * Flips an image horizontally
+     *
+     * @param image Source image
+     * @return Horizontally flipped image
+     */
+    public BufferedImage flipImageHorizontally(BufferedImage image) {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-image.getWidth(), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        image = op.filter(image, null);
 
-        if (horizontally) { // flip horizontally
-            tx = AffineTransform.getScaleInstance(-1, 1);
-            tx.translate(-image.getWidth(), 0);
-            op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            image = op.filter(image, null);
-        }
-        else { // flip vertically
-            tx = AffineTransform.getScaleInstance(1, -1);
-            tx.translate(0, -image.getHeight(null));
-            op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-            image = op.filter(image, null);
-        }
         return image;
     }
 
-    public BufferedImage cloneimage(BufferedImage bi) {
-        ColorModel cm = bi.getColorModel();
+    /**
+     * Flips an image vertically
+     *
+     * @param image Source image
+     * @return Horizontally flipped image
+     */
+    public BufferedImage flipImageVertically(BufferedImage image) {
+        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+        tx.translate(0, -image.getHeight(null));
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        image = op.filter(image, null);
+
+        return image;
+    }
+
+    /**
+     * Clones an image
+     *
+     * @param image Image to clone
+     * @return Cloned image
+     */
+    public BufferedImage cloneImage(BufferedImage image) {
+        ColorModel cm = image.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
+        WritableRaster raster = image.copyData(null);
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 
-    public void drawStringShadow(Graphics g, String string, int x, int y, Color color) {
-        Color prevColor = g.getColor();
-        g.setColor(color);
-        g.drawString(string, x, y);
-        g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 6));
-        g.drawString(string, x + 2, y + 1);
-        g.setColor(prevColor);
+    /**
+     * Draws a string with an shadow underneath
+     *
+     * @param graphics Game graphics
+     * @param string String to render
+     * @param x X position
+     * @param y Y position
+     * @param color Text color
+     */
+    public void drawStringShadow(Graphics graphics, String string, int x, int y, Color color) {
+        Color prevColor = graphics.getColor();
+        graphics.setColor(color);
+        graphics.drawString(string, x, y);
+        graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 6));
+        graphics.drawString(string, x + 2, y + 1);
+        graphics.setColor(prevColor);
     }
-
+    /**
+     * Draws string with current color on the game's graphics
+     * @see ImageUtils#drawStringShadow(Graphics, String, int, int, Color)
+     * @deprecated
+     */
+    @Deprecated
     public void drawStringShadow(Graphics g, String string, int x, int y) {
         this.drawStringShadow(g, string, x, y, g.getColor());
     }

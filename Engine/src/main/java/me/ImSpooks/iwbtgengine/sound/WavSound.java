@@ -2,12 +2,11 @@ package me.ImSpooks.iwbtgengine.sound;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.ImSpooks.iwbtgengine.Main;
+import org.tinylog.Logger;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.logging.Level;
 
 /**
  * Created by Nick on 04 sep. 2019.
@@ -16,60 +15,59 @@ import java.util.logging.Level;
  */
 public class WavSound extends Sound {
 
-    private AudioInputStream audioStream;
-    @Getter private Clip audioClip;
-
+    @Getter private Clip clip;
     @Getter @Setter private int currentFrame = 0;
+    @Getter private boolean paused;
 
     public WavSound(String name, String resource) {
         super(name, resource);
     }
 
+    @Override
     public WavSound play() {
         long now = System.currentTimeMillis();
-        if (this.audioClip != null) {
+        if (this.clip != null) {
             this.stop();
         }
         else
-            this.audioClip = this.getAudio();
+            this.clip = this.getAudio();
 
-        assert audioClip != null;
-        audioClip.setFramePosition(this.currentFrame = 0);
+        assert clip != null;
+        clip.setFramePosition(this.currentFrame = 0);
         new Thread(() -> {
-            audioClip.start();
+            clip.start();
 
             long delay = System.currentTimeMillis() - now;
             if (delay > 20)
-                Main.getInstance().getLogger().log(Level.WARNING, String.format("Took %s milis to play sound '%s'", delay, this.getName()));
+                Logger.warn("Took {} milis to play sound '{}'", delay, this.getName());
         }).start();
         return this;
     }
 
+    @Override
     public WavSound loop(int times) {
-        new Thread(() -> audioClip.loop(times)).start();
+        new Thread(() -> clip.loop(times)).start();
         return this;
     }
 
+    @Override
     public WavSound stop() {
-        if (audioClip.isRunning())
-            audioClip.stop();
+        if (clip.isRunning())
+            clip.stop();
         return this;
     }
 
-    public boolean isPaused() {
-        return paused;
-    }
-
-    private boolean paused;
-
+    @Override
     public WavSound pause() {
         if (paused)
             return this;
         paused = true;
-        this.currentFrame = this.audioClip.getFramePosition();
+        this.currentFrame = this.clip.getFramePosition();
         stop();
         return this;
     }
+
+    @Override
     public WavSound resume() {
         if (!paused)
             return this;
@@ -77,42 +75,52 @@ public class WavSound extends Sound {
         long now = System.currentTimeMillis();
 
         paused = false;
-        this.audioClip.setFramePosition(this.currentFrame);
+        this.clip.setFramePosition(this.currentFrame);
 
         new Thread(() -> {
-            audioClip.start();
+            clip.start();
 
             long delay = System.currentTimeMillis() - now;
             if (delay > 20)
-                Main.getInstance().getLogger().log(Level.WARNING, String.format("Took %s milis to resume sound '%s'", delay, this.getName()));
+                Logger.warn("Took {} milis to resume sound '{}'", delay, this.getName());
         }).start();
 
         return this;
     }
 
-    public WavSound setVolume(double volume) {
-        FloatControl gain = (FloatControl) this.audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+    @Override
+    public WavSound setVolume(float volume) {
+        FloatControl gain = (FloatControl) this.clip.getControl(FloatControl.Type.MASTER_GAIN);
         float dB = (float) (Math.log(volume) / Math.log(gain.getMaximum()) * 20);
         gain.setValue(dB);
         return this;
     }
 
+    @Override
+    public void close() {
+        this.stop();
+        this.clip.close();
+    }
+
+    @Override
+    public Sound clone() {
+        return new WavSound(this.getName(), this.getResource());
+    }
 
     private Clip getAudio() {
+        Clip clip = null;
         try {
-            if (audioStream == null)
-                audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(this.getResource())));
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new BufferedInputStream(getClass().getResourceAsStream(this.getResource())));
 
             // load the sound into memory (a Clip)
 
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(audioStream);
-            clip.setFramePosition(this.currentFrame);
 
             return clip;
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-            Main.getInstance().getLogger().log(Level.WARNING, String.format("1 Unable to load resource '%s', thrown exception: '%s'", this.getResource(), e.getClass().getSimpleName()));
-            e.printStackTrace();
+            Logger.warn(e, "Unable to load resource \"{}\"", this.getResource());
+            if (clip != null) clip.close();
         }
         return null;
     }

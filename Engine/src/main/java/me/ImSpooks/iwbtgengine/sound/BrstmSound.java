@@ -1,6 +1,14 @@
 package me.ImSpooks.iwbtgengine.sound;
 
-import org.hackyourlife.gcn.dsp.BRSTMPlayer;
+import lombok.Getter;
+import me.ImSpooks.iwbtgengine.helpers.NumberConversions;
+import org.hackyourlife.gcn.dsp.BRSTM;
+import org.hackyourlife.gcn.dsp.FileFormatException;
+import org.hackyourlife.gcn.dsp.input.InputData;
+import org.hackyourlife.gcn.dsp.player.BrstmPlayer;
+import org.tinylog.Logger;
+
+import java.io.IOException;
 
 /**
  * Created by Nick on 19 sep. 2019.
@@ -9,33 +17,37 @@ import org.hackyourlife.gcn.dsp.BRSTMPlayer;
  */
 public class BrstmSound extends Sound {
 
+    @Getter private BrstmPlayer player;
+
     public BrstmSound(String name, String resource) {
         super(name, resource);
+
+        try {
+            this.player = new BrstmPlayer(new BRSTM(InputData.getInputData(this.getClass().getResourceAsStream(resource))));
+        } catch (FileFormatException | IOException e) {
+            Logger.warn(e);
+        }
     }
 
-    private BRSTMPlayer player;
 
     @Override
-    public Sound play() {
-        if (this.player != null) {
-            try {
-                this.player.stop();
-            } catch (IllegalStateException ignored) {}
-        }
-        this.player = new BRSTMPlayer(this.getClass().getResourceAsStream(this.getResource()));
+    public BrstmSound play() {
         this.player.start();
         return this;
     }
 
     @Override
-    public Sound loop(int times) {
-        throw new UnsupportedOperationException("Brstm sounds doesnt support looping.");
+    public BrstmSound loop(int times) {
+        throw new UnsupportedOperationException("Brstm audio files cannot be looped manually");
     }
 
     @Override
-    public Sound stop() {
-        if (this.player != null)
+    public BrstmSound stop() {
+        try {
             this.player.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return this;
     }
 
@@ -45,19 +57,34 @@ public class BrstmSound extends Sound {
     }
 
     @Override
-    public Sound pause() {
+    public BrstmSound pause() {
         this.player.pause();
         return this;
     }
 
     @Override
-    public Sound resume() {
+    public BrstmSound resume() {
         this.player.resume();
         return this;
     }
 
     @Override
-    public Sound setVolume(double volume) {
-        throw new UnsupportedOperationException("Brstm sounds doesnt support changing volume.");
+    public BrstmSound setVolume(float volume) {
+        this.player.setVolume(NumberConversions.clamp(volume, 0.0F, 1.0F));
+        return this;
+    }
+
+    @Override
+    public void close() {
+        try {
+            this.player.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Sound clone() {
+        return new BrstmSound(this.getName(), this.getResource());
     }
 }

@@ -24,16 +24,42 @@ public class Gravity extends Interactable {
     public Gravity(Room parent, double x, double y, Sprite sprite, boolean up) {
         super(parent, x, y, sprite);
         this.up = up;
+    }
 
-        this.setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
+    @Override
+    public TouchAction onTouch() {
+        return (kid) -> {
+            if ((this.up && Global.GRAVITY > 0) || (!this.up && Global.GRAVITY < 0))
+                kid.setY(kid.getY() - 4 * Global.GRAVITY);
+
+            if (this.up) {
+                Global.GRAVITY = -1.0;
+
+                if (kid.getUpdatedHitbox() != kid.getFlippedHitbox())
+                    kid.setHitbox(kid.getFlippedHitbox());
+            }
+            else {
+                Global.GRAVITY = 1.0;
+
+                if (kid.getUpdatedHitbox() != kid.getNormalHitbox())
+                    kid.setHitbox(kid.getNormalHitbox());
+            }
+
+        };
+    }
+
+
+    @Override
+    public Hitbox getUpdatedHitbox() {
+        return new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
-            public java.util.List<int[]> getPixels() {
+            public List<int[]> getPixels() {
                 List<int[]> pixels = new ArrayList<>();
 
                 for (int x = 0; x < sprite.getImage().getWidth(); x++) {
                     for (int y = 0; y < sprite.getImage().getHeight(); y++) {
 
-                        if ((sprite.getImage().getRGB(x,y) >>24) == 0x00)
+                        if ((sprite.getImage().getRGB(x,y) >> 24) == 0x00)
                             continue;
 
                         pixels.add(new int[] {x, y});
@@ -42,26 +68,6 @@ public class Gravity extends Interactable {
 
                 return pixels;
             }
-        });
-    }
-
-    @Override
-    public TouchAction onTouch() {
-        return (kid) -> {
-            if (this.up) {
-                Global.GRAVITY = -1.0;
-
-                if (kid.getHitbox() != kid.getFlippedHitbox())
-                    kid.setHitbox(kid.getFlippedHitbox());
-            }
-            else {
-                Global.GRAVITY = 1.0;
-
-                if (kid.getHitbox() != kid.getNormalHitbox())
-                    kid.setHitbox(kid.getNormalHitbox());
-            }
-
-            kid.setY(kid.getY() + 4 * Global.GRAVITY);
         };
     }
 }

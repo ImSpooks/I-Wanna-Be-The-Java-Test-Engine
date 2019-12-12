@@ -37,15 +37,13 @@ public class Save extends GameObject {
     private int saveTicks = 0;
 
     @Override
-    public boolean update(float delta) {
+    public void update(float delta) {
         if ((Global.GRAVITY > 0 && !flip) || (Global.GRAVITY < 0 && flip)) {
             if (saveTicks-- < 30 && !canSave)
                 canSave = true;
         }
         else if (canSave)
             canSave = false;
-
-        return true;
     }
 
     @Override

@@ -6,14 +6,17 @@ import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.camera.Camera;
 import me.ImSpooks.iwbtgengine.game.object.GameObject;
 import me.ImSpooks.iwbtgengine.game.object.init.ObjectPriority;
+import me.ImSpooks.iwbtgengine.game.object.objects.Interactable;
 import me.ImSpooks.iwbtgengine.game.object.objects.triggers.Trigger;
 import me.ImSpooks.iwbtgengine.game.object.player.KidState;
+import me.ImSpooks.iwbtgengine.game.object.sprite.Sprite;
 import me.ImSpooks.iwbtgengine.game.room.readers.EngineReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.JToolReader;
 import me.ImSpooks.iwbtgengine.game.room.readers.MapReader;
 import me.ImSpooks.iwbtgengine.global.ErrorCodes;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
+import org.tinylog.Logger;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -39,6 +42,7 @@ public abstract class Room {
     @Getter @Setter private String internalId = "";
 
     @Getter protected BufferedImage background = null;
+    @Getter protected Color color = null;
 
     @Getter protected boolean shiftBackgroundImage = true;
 
@@ -50,13 +54,19 @@ public abstract class Room {
     }
 
     public void render(Camera camera, Graphics graphics) {
+        if (this.color != null) {
+            Color prevColor = graphics.getColor();
+            graphics.setColor(color);
+            graphics.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
+            graphics.setColor(prevColor);
+        }
         if (this.background != null) {
             if (this.map.getRoomType() == RoomType.SHIFT && shiftBackgroundImage) graphics.drawImage(this.background, 0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT, null);
             else graphics.drawImage(this.background, 0 - camera.getCameraX(), 0 - camera.getCameraY(), map.getRoomWidth(), map.getRoomHeight(), null);
         }
 
         this.getMap().getObjects().stream()
-                .filter(object -> !(!Main.getInstance().isDebugging() && object instanceof Trigger && !((Trigger) object).isVisible()))
+                .filter(object -> object.isVisible() || !(!Main.getInstance().isDebugging() && object instanceof Trigger && !object.isVisible()))
                 .forEach(object -> object.render(camera, graphics));
 
     }
@@ -212,7 +222,7 @@ public abstract class Room {
             long time = System.nanoTime() - now;
 
             if (time > TimeUnit.MILLISECONDS.toNanos(20)) {
-                System.out.println(String.format("Reloading room took more than a single frame (%s ns, %s ms)", time, time / 1000000L));
+                Logger.info("Reloading room took more than a single frame ({} ns, {} ms)", time, time / 1000000L);
             }
             return room;
         } catch (Exception e) {
@@ -230,6 +240,52 @@ public abstract class Room {
         }*/
     }
 
-    public abstract void onLoad();
+    public void onLoad() {
+        List<String> done = new ArrayList<>();
 
+        for (GameObject object : this.getObjects()) {
+            if (object.getCustomId() == null || object.getCustomId().isEmpty())
+                continue;
+
+            String id = object.getCustomId();
+
+            String[] properties = id.split(";");
+            id = id.replace(";", "");
+
+            if (id.contains(";") || (id.contains(":") && properties.length == 1)) {
+                for (String property : properties) {
+                    if (properties.length > 1 && property.equalsIgnoreCase(properties[properties.length - 1]))
+                        continue;
+
+                    String key = property.split(":")[0];
+                    String value = property.split(":")[1];
+
+                    switch (key.toLowerCase()) {
+                        default:
+                            break;
+                        case "texture":
+                            object.setSprite(Sprite.generateSprite(this.getHandler().getMain().getResourceManager().getResource(value)));
+                            object.setWidth(object.getSprite().getImage().getWidth());
+                            object.setHeight(object.getSprite().getImage().getHeight());
+                            object.updateHitbox();
+                            break;
+                    }
+
+                    id = id.replace(property, "");
+                }
+            }
+
+            object.setCustomId(id);
+
+            if (object.getCustomId() == null || object.getCustomId().isEmpty())
+                continue;
+
+            if (object instanceof Interactable) {
+                if (((Interactable) object).getOnTouch() == null && !done.contains(object.getCustomId())) {
+                    done.add(object.getCustomId());
+                    Logger.debug("Object \"{}\" with id \"{}\" has no interaction.", object.getClass().getSimpleName(), object.getCustomId());
+                }
+            }
+        }
+    }
 }

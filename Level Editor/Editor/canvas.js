@@ -116,7 +116,7 @@ function loop(time){
                     }
                 }
                 if (add)
-                    objects["x" + x + "_y" + y].push([selectedObject, Resources[selectedObject].subtype, x, y, Resources[selectedObject].path, objectImage, document.getElementById("custom_id").value]);
+                    objects["x" + x + "_y" + y].push([selectedObject, Resources[selectedObject].type, x, y, Resources[selectedObject].path, objectImage, document.getElementById("custom_id").value]);
 
             }
 
@@ -141,7 +141,7 @@ function loop(time){
 
 
         if (objectImage != null) {
-            if (Resources[selectedObject].subtype == "SAVES") {
+            if (Resources[selectedObject].type == "SAVES") {
                 graphics.drawImage(objectImage, 0, 0, 32, 32, x, y, 32, 32);
             }
             else {

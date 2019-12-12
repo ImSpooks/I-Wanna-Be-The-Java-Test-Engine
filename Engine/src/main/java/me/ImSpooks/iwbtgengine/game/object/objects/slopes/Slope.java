@@ -22,27 +22,6 @@ public class Slope extends Block {
     public Slope(Room parent, double x, double y, Sprite sprite, SlopeDirection direction) {
         super(parent, x, y, sprite);
         this.direction = direction;
-
-        if (sprite != null) {
-            this.setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
-                @Override
-                public List<int[]> getPixels() {
-                    List<int[]> pixels = new ArrayList<>();
-
-                    for (int x = 0; x < sprite.getImage().getWidth(); x++) {
-                        for (int y = 0; y < sprite.getImage().getHeight(); y++) {
-
-                            if ((sprite.getImage().getRGB(x,y) >> 24) == 0x00)
-                                continue;
-
-                            pixels.add(new int[] {x, y});
-                        }
-                    }
-
-                    return pixels;
-                }
-            });
-        }
     }
 
     public enum SlopeDirection {
@@ -51,5 +30,28 @@ public class Slope extends Block {
         UP_LEFT,
         UP_RIGHT,
         ;
+    }
+
+
+    @Override
+    public Hitbox getUpdatedHitbox() {
+        return new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
+            @Override
+            public List<int[]> getPixels() {
+                List<int[]> pixels = new ArrayList<>();
+
+                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
+                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
+
+                        if ((sprite.getImage().getRGB(x,y) >> 24) == 0x00)
+                            continue;
+
+                        pixels.add(new int[] {x, y});
+                    }
+                }
+
+                return pixels;
+            }
+        };
     }
 }

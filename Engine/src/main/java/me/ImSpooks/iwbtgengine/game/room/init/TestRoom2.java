@@ -28,7 +28,7 @@ public class TestRoom2 extends Room {
 
     @Override
     public void onLoad() {
-        this.getHandler().getSoundManager().reloadSound("bgm", "Test");
+        this.getHandler().getSoundManager().playSound("bgm", "/resources/sounds/music/Test.wav").setVolume(0.2f);
 
         for (GameObject gameObject : this.getObjects()) {
             if (!(gameObject instanceof Warp)) continue;
@@ -40,5 +40,7 @@ public class TestRoom2 extends Room {
                 this.getHandler().getKid().setPosition(room.getMap().getStartX(), room.getMap().getStartY());
             });
         }
+
+        super.onLoad();
     }
 }

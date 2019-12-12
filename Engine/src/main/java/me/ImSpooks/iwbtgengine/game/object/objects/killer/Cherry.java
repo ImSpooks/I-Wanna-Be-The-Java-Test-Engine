@@ -18,7 +18,12 @@ public class Cherry extends KillerObject {
     public Cherry(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
 
-        sprite.setOnUpdate(delta -> setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
+        sprite.setOnUpdate(delta -> this.updateHitbox());
+    }
+
+    @Override
+    public Hitbox getUpdatedHitbox() {
+        return new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
             @Override
             public List<int[]> getPixels() {
 
@@ -36,6 +41,6 @@ public class Cherry extends KillerObject {
 
                 return pixels;
             }
-        }));
+        };
     }
 }

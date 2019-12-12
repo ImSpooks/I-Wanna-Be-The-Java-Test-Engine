@@ -2,6 +2,7 @@ package me.ImSpooks.iwbtgengine.game.object.sprite;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.ImSpooks.iwbtgengine.game.object.sprite.gif.GifIcon;
 import me.ImSpooks.iwbtgengine.global.Global;
 
 import java.awt.image.BufferedImage;
@@ -13,10 +14,10 @@ import java.awt.image.BufferedImage;
  */
 public class GIFSprite extends Sprite {
 
-    @Getter private final GIFIcon icon;
+    @Getter private final GifIcon icon;
 
-    public GIFSprite(GIFIcon icon) {
-        super((BufferedImage) icon.getImage());
+    public GIFSprite(GifIcon icon) {
+        super(null);
         this.icon = icon;
     }
 
@@ -31,12 +32,12 @@ public class GIFSprite extends Sprite {
     public void update(float delta) {
         int old = renderedFrame;
 
-        if (++tick >= this.getIcon().getDuration(this.renderedFrame) / (100.0 / Global.FRAME_RATE)) {
+        if (++tick >= this.getIcon().getDelay(this.renderedFrame) / (100.0 / Global.FRAME_RATE) / 10.0) {
             tick = 0;
             renderedFrame++;
         }
 
-        if (renderedFrame >= this.icon.getFrameCount()) {
+        if (renderedFrame >= this.icon.getFrames().size()) {
             this.renderedFrame = 0;
         }
 
@@ -47,13 +48,13 @@ public class GIFSprite extends Sprite {
 
     @Override
     public BufferedImage getImage() {
-        return (BufferedImage) this.icon.getImage(renderedFrame);
+        return this.icon.getFrame(renderedFrame);
     }
 
     @Override
     public void setImage(BufferedImage image) {
         super.setImage(image);
-        this.icon.setImage(this.getImage());
+        this.image = image;
     }
 
     public BufferedImage getOriginalImage() {

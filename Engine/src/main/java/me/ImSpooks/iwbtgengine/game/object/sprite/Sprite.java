@@ -3,12 +3,13 @@ package me.ImSpooks.iwbtgengine.game.object.sprite;
 import lombok.Getter;
 import lombok.Setter;
 import me.ImSpooks.iwbtgengine.camera.Camera;
+import me.ImSpooks.iwbtgengine.game.object.sprite.gif.GifIcon;
 import me.ImSpooks.iwbtgengine.global.Global;
+import me.ImSpooks.iwbtgengine.handler.ResourceManager;
 import me.ImSpooks.iwbtgengine.util.image.ImageUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 /**
  * Created by Nick on 04 May 2019.
@@ -30,27 +31,86 @@ public class Sprite {
 
     }
 
-    public static Sprite generateSprite(List<Object> value) {
-        switch (((Class) value.get(1)).getSimpleName()) {
-            case "BufferedImage": return new Sprite((BufferedImage) value.get(0));
-            case "GIFIcon":   return new GIFSprite((GIFIcon) value.get(0));
-            default:    return null;
+    public static Sprite generateSprite(ResourceManager.CachedResource<?> cachedResource) {
+        if (cachedResource == null) {
+            throw new NullPointerException("Cached image is null");
         }
+        switch (cachedResource.getObject().getClass().getSimpleName()) {
+            case "BufferedImage":    return new Sprite((BufferedImage) cachedResource.getObject());
+            case "GifIcon":          return new GIFSprite((GifIcon) cachedResource.getObject());
+        }
+        return null;
     }
 
-    public void draw(Camera camera, Graphics graphics, double x, double y) {
-        this.draw(camera, graphics, x, y, false, false);
-    }
-
-    public void draw(Camera camera, Graphics graphics, double x, double y, boolean flipHorizontal, boolean flipVertical) {
+    /**
+     * Draws image
+     *
+     * @param graphics Game graphics
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param width Render width
+     * @param height Render height
+     * @param flipHorizontal Horizontal flip
+     * @param flipVertical Vertical flip
+     */
+    public void draw(Graphics graphics, double x, double y, double width, double height, boolean flipHorizontal, boolean flipVertical) {
         BufferedImage image = this.getImage();
 
         if (flipHorizontal)
-            image = this.imageUtils.flipImage(image, true);
+            image = imageUtils.flipImageHorizontally(image);
         if (flipVertical)
-            image = this.imageUtils.flipImage(image, false);
+            image = imageUtils.flipImageVertically(image);
 
-        graphics.drawImage(image, (int) x - camera.getCameraX(), (int) y - camera.getCameraY(), null);
+        graphics.drawImage(image, (int) x, (int) y, (int) width, (int) height, null);
+    }
+
+    /**
+     * @see Sprite#draw(Graphics, double, double, double, double, boolean, boolean)
+     */
+    public void draw(Graphics graphics, double x, double y, double width, double height) {
+        this.draw(graphics, x, y, width, height, false, false);
+    }
+
+    /**
+     * @see Sprite#draw(Graphics, double, double, double, double, boolean, boolean)
+     */
+    public void draw(Graphics graphics, double x, double y) {
+        this.draw(graphics, x, y, this.getImage().getWidth(), this.getImage().getHeight());
+    }
+
+    /**
+     * @see Sprite#draw(Graphics, double, double, double, double, boolean, boolean)
+     */
+    public void draw(Graphics graphics, double x, double y, boolean flipHorizontal, boolean flipVertical) {
+        this.draw(graphics, x, y, this.getImage().getWidth(), this.getImage().getHeight(), flipHorizontal, flipVertical);
+    }
+
+    /**
+     * @see Sprite#draw(Graphics, double, double, double, double, boolean, boolean)
+     */
+    public void draw(Graphics graphics, Camera camera, double x, double y, double width, double height, boolean flipHorizontal, boolean flipVertical) {
+        this.draw(graphics,x - camera.getCameraX(), y - camera.getCameraY(), width, height, flipHorizontal, flipVertical);
+    }
+
+    /**
+     * @see Sprite#draw(Graphics, double, double, double, double, boolean, boolean)
+     */
+    public void draw(Graphics graphics, Camera camera, double x, double y, boolean flipHorizontal, boolean flipVertical) {
+        this.draw(graphics, camera, x, y, this.getImage().getWidth(), this.getImage().getHeight(), flipHorizontal, flipVertical);
+    }
+
+    /**
+     * @see Sprite#draw(Graphics, double, double, double, double, boolean, boolean)
+     */
+    public void draw(Graphics graphics, Camera camera, double x, double y, double width, double height) {
+        this.draw(graphics, camera, x, y, width, height, false, false);
+    }
+
+    /**
+     * @see Sprite#draw(Graphics, double, double, double, double, boolean, boolean)
+     */
+    public void draw(Graphics graphics, Camera camera, double x, double y) {
+        this.draw(graphics, camera, x, y, this.getImage().getWidth(), this.getImage().getHeight());
     }
 
     public void setOnUpdate(SpriteUpdate onUpdate) {

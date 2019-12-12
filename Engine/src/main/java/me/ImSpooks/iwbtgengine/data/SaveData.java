@@ -6,7 +6,7 @@ import me.ImSpooks.iwbtgengine.Main;
 import me.ImSpooks.iwbtgengine.game.item.GameItems;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.global.Difficulty;
-import me.ImSpooks.iwbtgengine.util.CustomEncoder;
+import me.ImSpooks.iwbtgengine.util.HexEncoder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -90,7 +90,7 @@ public class SaveData {
             String output = this.serialize();
 
 
-            bufferedOutputStream.write(Base64.getEncoder().encode(CustomEncoder.encode(output).getBytes(StandardCharsets.UTF_8)));
+            bufferedOutputStream.write(Base64.getEncoder().encode(HexEncoder.encode(output).getBytes(StandardCharsets.UTF_8)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -109,7 +109,7 @@ public class SaveData {
            e.printStackTrace();
         }
 
-        String decoded = CustomEncoder.decode(new String(Base64.getDecoder().decode(output.toString())));
+        String decoded = HexEncoder.decode(new String(Base64.getDecoder().decode(output.toString())));
 
         SaveData data = SaveData.deserialize(decoded);
 

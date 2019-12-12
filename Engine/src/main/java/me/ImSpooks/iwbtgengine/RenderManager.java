@@ -1,6 +1,7 @@
 package me.ImSpooks.iwbtgengine;
 
 import me.ImSpooks.iwbtgengine.global.Global;
+import org.tinylog.Logger;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -43,7 +44,7 @@ public class RenderManager implements Runnable {
 
                 if (System.currentTimeMillis() - timer > 1000) {
                     timer += 1000;
-                    System.out.println("frames per second = " + frames);
+                    Logger.debug("{} frames per second ", frames);
                     frames = 0;
 
                     /*if (SaveSelection.selected != null) {

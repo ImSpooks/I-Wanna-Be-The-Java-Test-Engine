@@ -17,7 +17,7 @@ import me.ImSpooks.iwbtgengine.game.room.Room;
 @ObjectPriority(renderPriority = ObjectsPriority.HIGH)
 public abstract class Interactable extends GameObject {
 
-    @Getter @Setter private TouchAction onTouch = (kid) -> {};
+    @Getter @Setter private TouchAction onTouch = null;
 
     public Interactable(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);

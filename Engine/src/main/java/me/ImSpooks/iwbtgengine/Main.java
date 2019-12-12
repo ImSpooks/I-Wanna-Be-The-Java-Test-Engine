@@ -5,7 +5,7 @@ import me.ImSpooks.iwbtgengine.filemanager.FileManager;
 import me.ImSpooks.iwbtgengine.game.room.RoomManager;
 import me.ImSpooks.iwbtgengine.global.Global;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
-import me.ImSpooks.iwbtgengine.handler.ResourceHandler;
+import me.ImSpooks.iwbtgengine.handler.ResourceManager;
 import me.ImSpooks.iwbtgengine.keycontroller.KeyController;
 import me.ImSpooks.iwbtgengine.screen.AbstractScreen;
 import me.ImSpooks.iwbtgengine.screen.GameScreen;
@@ -26,7 +26,7 @@ public class Main extends Canvas {
     @Getter private static Main instance;
 
     // Resource Handler
-    @Getter private final ResourceHandler resourceHandler = new ResourceHandler(this);
+    @Getter private final ResourceManager resourceManager = new ResourceManager(this);
 
     // Game screen
     @Getter private AbstractScreen screen;
@@ -64,13 +64,13 @@ public class Main extends Canvas {
 
         this.addKeyListener(this.keyController = new KeyController(this));
 
-        this.resourceHandler.initialize();
+        this.resourceManager.initialize();
 
         this.fileManager = new FileManager(this);
 
         this.roomManager = new RoomManager();
 
-        this.soundManager = new SoundManager(this);
+        this.soundManager = new SoundManager(this.getResourceManager());
 
         this.setScreen(new GameScreen(this, new GameHandler(this)));
 

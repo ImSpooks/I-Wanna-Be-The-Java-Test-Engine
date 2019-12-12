@@ -25,25 +25,6 @@ public class JumpRefresher extends Interactable {
 
     public JumpRefresher(Room parent, double x, double y, Sprite sprite) {
         super(parent, x, y, sprite);
-
-        this.setHitbox(new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
-            @Override
-            public java.util.List<int[]> getPixels() {
-                List<int[]> pixels = new ArrayList<>();
-
-                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
-                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
-
-                        if ((sprite.getImage().getRGB(x,y) >>24) == 0x00)
-                            continue;
-
-                        pixels.add(new int[] {x, y});
-                    }
-                }
-
-                return pixels;
-            }
-        });
     }
 
     @Override
@@ -60,11 +41,9 @@ public class JumpRefresher extends Interactable {
     }
 
     @Override
-    public boolean update(float delta) {
+    public void update(float delta) {
         if (deactivatedTicks > 0)
             deactivatedTicks--;
-
-        return super.update(delta);
     }
 
     @Override
@@ -72,12 +51,34 @@ public class JumpRefresher extends Interactable {
         if (this.canRender(camera)) {
 
             if (deactivatedTicks > 0) {
-                BufferedImage cloneImage = this.getImageUtils().cloneimage(sprite.getImage());
+                BufferedImage cloneImage = this.getImageUtils().cloneImage(sprite.getImage());
                 graphics.drawImage(this.getImageUtils().getColoringUtils().setAlpha(cloneImage, 40), (int) x - camera.getCameraX(), (int) y - camera.getCameraY(), null);
             }
             else {
-                sprite.draw(camera, graphics, x, y);
+                sprite.draw(graphics, camera, x, y);
             }
         }
+    }
+
+    @Override
+    public Hitbox getUpdatedHitbox() {
+        return new Hitbox(this, new Rectangle(0, 0, sprite.getImage().getWidth(), sprite.getImage().getHeight())) {
+            @Override
+            public List<int[]> getPixels() {
+                List<int[]> pixels = new ArrayList<>();
+
+                for (int x = 0; x < sprite.getImage().getWidth(); x++) {
+                    for (int y = 0; y < sprite.getImage().getHeight(); y++) {
+
+                        if ((sprite.getImage().getRGB(x,y) >> 24) == 0x00)
+                            continue;
+
+                        pixels.add(new int[] {x, y});
+                    }
+                }
+
+                return pixels;
+            }
+        };
     }
 }

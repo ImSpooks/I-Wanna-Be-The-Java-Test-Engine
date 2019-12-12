@@ -34,19 +34,23 @@ public class KeyController extends KeyAdapter {
         try {
             List<Integer> keyList = new ArrayList<>(keys.keySet());
 
-            for (GameObject gameObject : main.getHandler().getRoom().getObjects()) {
-                if (!gameObject.getKeyListener().isEmpty()) {
-                    gameObject.getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keyList));
+            if (main.getHandler() != null) {
+                if (main.getHandler().getRoom() != null) {
+                    for (GameObject gameObject : main.getHandler().getRoom().getObjects()) {
+                        if (!gameObject.getKeyListener().isEmpty()) {
+                            gameObject.getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keyList));
+                        }
+                    }
                 }
-            }
 
-            if (main.getHandler().getKid() != null) {
-                if (!main.getHandler().getKid().getKeyListener().isEmpty()) {
-                    main.getHandler().getKid().getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keyList));
+                if (main.getHandler().getKid() != null) {
+                    if (!main.getHandler().getKid().getKeyListener().isEmpty()) {
+                        main.getHandler().getKid().getKeyListener().forEach(keyListener -> keyListener.onKeyHold(keyList));
+                    }
                 }
             }
-        } catch (ConcurrentModificationException e) {
-            System.out.println("ConcurrentModificationException thrown, but whatever TODO REMOVE THIS MESSAGE");
+        } catch (ConcurrentModificationException ignored) {
+            // Ignore this error, doesnt brake the game whatsoever
         }
     }
 

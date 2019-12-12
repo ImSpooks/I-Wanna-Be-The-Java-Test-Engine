@@ -28,32 +28,25 @@ public class Bullet extends GameObject {
     }
 
     @Override
-    public boolean update(float delta) {
-        if (super.update(delta)) {
-            this.x += 12 * xScale;
+    public void update(float delta) {
+        this.x += 12 * xScale;
 
-            for (GameObject gameObject : this.getParent().getObjectsAt((int) this.x, (int) this.y)) {
-                if (gameObject instanceof Block || gameObject instanceof SaveBlocker) {
-                    this.x = -1000;
-                    this.y = -1000;
-                    break;
-                }
-                else if (gameObject instanceof Save) {
-                    if (((Save) gameObject).canSave()) {
-                        ((Save) gameObject).save(this.getParent().getHandler(), this.shooter);
-                    }
-                }
-            }
-
-            if (ticksAlive++ > Global.FRAME_RATE) {
+        for (GameObject gameObject : this.getParent().getObjectsAt((int) this.x, (int) this.y)) {
+            if (gameObject instanceof Block || gameObject instanceof SaveBlocker) {
                 this.x = -1000;
                 this.y = -1000;
+                break;
             }
-            return true;
+            else if (gameObject instanceof Save) {
+                if (((Save) gameObject).canSave()) {
+                    ((Save) gameObject).save(this.getParent().getHandler(), this.shooter);
+                }
+            }
         }
-        this.x = -1000;
-        this.y = -1000;
 
-        return false;
+        if (ticksAlive++ > Global.FRAME_RATE) {
+            this.x = -1000;
+            this.y = -1000;
+        }
     }
 }

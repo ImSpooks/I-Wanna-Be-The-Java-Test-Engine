@@ -1,8 +1,11 @@
 package me.ImSpooks.iwbtgengine.sound;
 
 import lombok.Getter;
-import me.ImSpooks.iwbtgengine.Main;
+import me.ImSpooks.iwbtgengine.handler.ResourceManager;
 
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**
@@ -12,89 +15,129 @@ import java.util.HashMap;
  */
 public class SoundManager {
 
-    private final Main instance;
-
+    @Getter private final ResourceManager resourceManager;
     @Getter private final HashMap<String, Sound> sounds;
 
-    public SoundManager(Main instance) {
-        this.instance = instance;
+    /**
+     * Creates the sound manager instance
+     *
+     * @param resourceManager Resource manager
+     */
+    public SoundManager(ResourceManager resourceManager) {
+        this.resourceManager = resourceManager;
         this.sounds = new HashMap<>();
     }
 
-    public void playSound(Sound sound) {
-        sound.play();
-    }
-
-    public Sound playSound(String name, Sound sound) {
-        stopSound(name);
-
-        sounds.put(name, sound);
-        return sound.play();
-    }
-
-    public Sound reloadSound(String name, String soundFile) {
+    /**
+     * Play a sound file
+     *
+     * @param name Name of global sound, e.g. {@code "bgm"} as background music
+     * @param soundFile File name in the resource manager
+     * @return The sound instance
+     */
+    public Sound playSound(String name, String soundFile) {
         Sound currentBgm = this.getSound(name);
 
         if (!this.isPlaying(name, soundFile)) {
-            if (currentBgm != null && currentBgm.getName().equalsIgnoreCase(soundFile))
+            if (currentBgm != null && currentBgm.getResource().equalsIgnoreCase(soundFile))
                 return currentBgm.resume();
-            else
-                return this.playSound(name, soundFile);
-        }
+            else {
+                stopSound(name);
 
+                Sound sound = this.resourceManager.get(soundFile, Sound.class);
+                sounds.put(name, sound);
+                return sound.play();
+            }
+        }
         return currentBgm;
     }
-
-    public Sound playSound(String name, String soundFile) {
-        stopSound(name);
-
-        Sound sound = this.instance.getResourceHandler().get(soundFile, Sound.class);
-        sounds.put(name, sound);
-        return sound.play();
+    /**
+     * @param soundFile File name in the resource manager
+     * @see SoundManager#playAndDestroy(Sound)
+     */
+    public void playAndDestroy(String soundFile) {
+        this.playAndDestroy(resourceManager.get(soundFile, Sound.class));
     }
 
-    public Sound addSound(String name, Sound sound) {
-        sounds.put(sound.getName(), sound);
-        return sound;
+    /**
+     * Play a sound file and destroy it right afterwards
+     *
+     * @param sound Sound instance
+     */
+    public void playAndDestroy(Sound sound) {
+        sound = sound.clone();
+        try {
+            sound.play();
+
+            Field field = sound.getClass().getDeclaredField("clip");
+
+            if (!field.isAccessible()) field.setAccessible(true);
+
+            Clip clip = (Clip) field.get(sound);
+            Sound finalSound = sound;
+            clip.addLineListener(e -> {
+                if (e.getType() == LineEvent.Type.STOP) {
+                    finalSound.close();
+                }
+            });
+        } catch (NoSuchFieldException | IllegalAccessException ignored) {
+
+        }
     }
 
-    public Sound playSound(String name) {
-        stopSound(name);
-
-        sounds.put(name, this.instance.getResourceHandler().get(name, Sound.class));
-        return sounds.get(name).play();
-    }
-
-    public void loopSound(String name, int times) {
-        sounds.get(name).loop(times);
-    }
-
+    /**
+     * @param name Name of global sound, e.g. {@code "bgm"} as background music
+     * @return {@code true} if the sound exists and is playing, {@code false} otherwise
+     */
     public boolean isPlaying(String name) {
         return sounds.containsKey(name) && !sounds.get(name).isPaused();
     }
-
-    public boolean isPlaying(String name, String file) {
-        return sounds.containsKey(name) && sounds.get(name).getName().equalsIgnoreCase(file) && !sounds.get(name).isPaused();
+    /**
+     * @param name Name of global sound, e.g. {@code "bgm"} as background music
+     * @param soundFile File name in the resource manager
+     * @return {@code true} if the sound exists and is playing, {@code false} otherwise
+     */
+    public boolean isPlaying(String name, String soundFile) {
+        return sounds.containsKey(name) && sounds.get(name).getResource().equalsIgnoreCase(soundFile) && !sounds.get(name).isPaused();
     }
 
+    /**
+     * Stop a sound
+     *
+     * @param name Name of global sound, e.g. {@code "bgm"} as background music
+     */
     public void stopSound(String name) {
         if (sounds.containsKey(name))
             sounds.get(name).stop();
         sounds.remove(name);
     }
 
+    /**
+     * Pause a sound
+     *
+     * @param name Name of global sound, e.g. {@code "bgm"} as background music
+     */
     public void pauseSound(String name) {
         Sound sound = this.getSound(name);
         if (sound != null)
             sound.pause();
     }
 
+    /**
+     * Resume a sound
+     *
+     * @param name Name of global sound, e.g. {@code "bgm"} as background music
+     */
     public void resumeSound(String name) {
         Sound sound = this.getSound(name);
         if (sound != null)
             sound.resume();
     }
 
+    /**
+     * @param name Name of global sound, e.g. {@code "bgm"} as background music
+     * @return Sound instance with specified global name
+     */
     public Sound getSound(String name) {
         return sounds.get(name);
     }

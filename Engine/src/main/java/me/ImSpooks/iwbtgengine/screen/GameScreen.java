@@ -23,18 +23,20 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(Camera camera, Graphics graphics) {
-        graphics.setFont(this.getGame().getResourceHandler().get("Determination", Font.class));
+        graphics.setFont(this.getGame().getResourceManager().get("/resources/font/Determination.ttf", Font.class));
         graphics.setColor(Color.CYAN);
         graphics.fillRect(0, 0, Global.GAME_WIDTH, Global.GAME_HEIGHT);
 
         graphics.setColor(new Color(0, 255, 255, 128).darker().darker());
 
-        for (int i = (int)Math.floor(camera.getCameraX() / 32.0); i < (int)Math.ceil(camera.getCameraX() / 32.0) + 26; i++) {
-            graphics.drawLine(32 * i - camera.getCameraX(), 0, 32 * i - camera.getCameraX(), Global.GAME_HEIGHT);
-        }
+        if (this.getGame().isDebugging()) {
+            for (int i = (int) Math.floor(camera.getCameraX() / 32.0); i < (int) Math.ceil(camera.getCameraX() / 32.0) + 26; i++) {
+                graphics.drawLine(32 * i - camera.getCameraX(), 0, 32 * i - camera.getCameraX(), Global.GAME_HEIGHT);
+            }
 
-        for (int i = (int)Math.floor(camera.getCameraY() / 32.0); i < (int)Math.floor(camera.getCameraY() / 32.0) + 20; i++) {
-            graphics.drawLine(0, 32 * i - camera.getCameraY(), Global.GAME_WIDTH, 32 * i - camera.getCameraY());
+            for (int i = (int) Math.floor(camera.getCameraY() / 32.0); i < (int) Math.floor(camera.getCameraY() / 32.0) + 20; i++) {
+                graphics.drawLine(0, 32 * i - camera.getCameraY(), Global.GAME_WIDTH, 32 * i - camera.getCameraY());
+            }
         }
 
         this.getHandler().render(camera, graphics);

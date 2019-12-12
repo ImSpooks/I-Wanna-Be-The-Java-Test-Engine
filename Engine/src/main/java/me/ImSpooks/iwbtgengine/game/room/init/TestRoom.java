@@ -8,6 +8,7 @@ import me.ImSpooks.iwbtgengine.game.room.ReaderType;
 import me.ImSpooks.iwbtgengine.game.room.Room;
 import me.ImSpooks.iwbtgengine.handler.GameHandler;
 
+import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -18,10 +19,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class TestRoom extends Room {
 
     public TestRoom(GameHandler handler) {
-        super(ReaderType.ENGINE, "/room/level/stage1/DefaultRoom.json", handler);
+        super(ReaderType.ENGINE, "/room/level/stage1/rStage01.json", handler);
+//        super(ReaderType.ENGINE, "/room/level/stage1/DefaultRoom.json", handler);
 
         //this.background = Main.getInstance().getResourceHandler().get("test background");
-        this.shiftBackgroundImage = true;
+        this.color = new Color(128, 255, 128);
     }
 
     @Override
@@ -31,12 +33,12 @@ public class TestRoom extends Room {
 
     @Override
     public void onLoad() {
-        //this.getHandler().getSoundManager().reloadSound("bgm", "musGuyRock");
-        this.getHandler().getSoundManager().reloadSound("bgm", "STRM_N_KOOPA_N");
+        //this.getHandler().getSoundManager().playSound("bgm", "/resources/sounds/music/musGuyRock.wav");
+        this.getHandler().getSoundManager().playSound("bgm", "/resources/sounds/music/BC3.brstm").setVolume(0.2f);
 
         AtomicBoolean touched = new AtomicBoolean(false);
 
-        for (GameObject gameObject : this.getObjectsById("trigger1")) {
+        for (GameObject gameObject : this.getObjectsById("trigger_1")) {
             Trigger trigger = (Trigger) gameObject;
 
 
@@ -52,7 +54,7 @@ public class TestRoom extends Room {
             });
         }
 
-        for (GameObject gameObject : this.getObjectsById("warp1")) {
+        for (GameObject gameObject : this.getObjectsById("warp_1")) {
             Warp warp = (Warp) gameObject;
             warp.setOnTouch(kid -> {
                 Room room = this.getHandler().getMain().getRoomManager().getRoom(this.getHandler(), "stage1_room2");
@@ -61,5 +63,7 @@ public class TestRoom extends Room {
                 this.getHandler().getKid().setPosition(room.getMap().getStartX(), room.getMap().getStartY());
             });
         }
+
+        super.onLoad();
     }
 }
