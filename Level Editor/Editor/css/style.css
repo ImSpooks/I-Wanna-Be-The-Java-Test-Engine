@@ -6,9 +6,7 @@
 
 #canvasParent {
     grid-area: canvas;
-
     max-height: 679px; /*674 + 5*/
-
     overflow: auto;
 }
 
@@ -26,4 +24,8 @@ div {
 
 img {
     image-rendering: pixelated;
+}
+
+.property {
+    vertical-align: top;
 }

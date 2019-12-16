@@ -1,5 +1,5 @@
 var Types = ["BLOCKS", "ITEMS", "KILLERS", "MISC", "PLATFORMS", "SAVES", "SLOPES", "TRIGGERS", "WARPS"];
-var Resources = {
+var RESOURCES = {
    sprBlock: {
        path: "sprites/blocks/default/sprBlock.png",
        parent: "SPRITES",

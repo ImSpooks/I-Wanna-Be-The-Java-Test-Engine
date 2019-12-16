@@ -43,36 +43,68 @@ function importMap() {
 
                 let loaded = selectedCategory;
 
-                let result = event.target.result;
-
-                let json = JSON.parse(result);
+                let json = JSON.parse(event.target.result || new ArrayBuffer(0));
 
                 let array = json["objects"];
 
                 let pathToObject = {};
-                Object.keys(Resources).forEach(function (key) {
-                    pathToObject[Resources[key].path] = key;
+                Object.keys(RESOURCES).forEach(function (key) {
+                    pathToObject[RESOURCES[key].path] = key;
                 });
 
                 for (let i = 0; i < array.length; i++) {
                     let object = array[i];
 
-                    let selectedObject = pathToObject[object["tile"]];
+                    let selectedObject = pathToObject[object["tile"] || "sprites/blocks/default/sprBlock.png"];
 
                     if (selectedObject == null)
-                        selectedObject = object["tile"];
+                        selectedObject = object["tile"] || "sprites/blocks/default/sprBlock.png";
 
-                    let type = object["type"];
-                    let x = object["x"] + 32;
-                    let y = object["y"] + 32;
-                    let customId = object["custom_id"];
+                    let type = object["type"] || "BLOCKS";
+                    let x = (object["x"] || 0) + 32;
+                    let y = (object["y"] || 0) + 32;
+                    let customId = object["custom_id"] || "";
 
-                    document.getElementById(type).onclick();
+                    let events = [];
+                    (object["events"] || []).forEach(function (value) {
+                        let conditions = [];
+                        (value["conditions"] || []).forEach(function (condition) {
+                            conditions.push(valuesToCondition(condition.internalName, condition.type, condition.parameters));
+                        });
+
+                        events.push(valuesToEvent(value.internalName, value.type, value.parameters, conditions));
+                    });
+
+                    let properties = [];
+                    (object["properties"] || []).forEach(function (value) {
+                        properties.push(valuesToProperty(value.internalName, value.parameters));
+                    });
+
+                    document.getElementById(RESOURCES[selectedObject].type).onclick();
 
                     if (objects["x" + x + "_y" + y] == null)
                         objects["x" + x + "_y" + y] = [];
 
-                    objects["x" + x + "_y" + y].push([selectedObject, type, x, y, Resources[selectedObject].path, document.getElementById(selectedObject), customId]);
+                    let deserializedObject = [
+                        selectedObject,                             // object
+                        type,                                       // type
+                        x,                                          // x
+                        y,                                          // y
+                        RESOURCES[selectedObject].path,             // sprite path
+                        document.getElementById(selectedObject),    // rendered image
+                        customId,                                   // custom id
+                        events,                                     // events
+                        properties,                                 // properties
+                        object["originalProperties"] || {},         // local properties
+                        {}                                          // temp properties
+                    ];
+
+                    properties.forEach((value, index) => {
+                        let func = value.reference.callback || function (object, value) {};
+                        func.call(func, deserializedObject, value.parameters);
+                    })
+
+                    objects["x" + x + "_y" + y].push(deserializedObject);
                 }
 
                 document.getElementById(loaded).onclick();
@@ -96,7 +128,10 @@ function importMap() {
                     document.getElementById("rooms_v").onchange();
                 }
 
+                document.getElementById("mapVariables").value = (json["map_variables"] || []).join("|");
+
                 x.value = "";
+                framesRendered = 0;
             };
 
             reader.readAsText(file);
@@ -174,6 +209,8 @@ function exportJson() {
         }
     }
 
+    data["map_variables"] = document.getElementById("mapVariables").value.split("|");
+
     data["objects"] = [];
 
     Object.keys(objects).forEach(function (key, index, array) {
@@ -182,18 +219,32 @@ function exportJson() {
         for (let i = 0; i < value.length; i++) {
             let tileInfo = value[i];
 
+            let events = [];
+            tileInfo[7].forEach(function (value) {
+                events.push(value.toJson());
+            });
+
+            let properties = [];
+            tileInfo[8].forEach(function (value) {
+                properties.push(value.toJson());
+            });
+
             let tile = {
                 tile: tileInfo[4],
                 type: tileInfo[1],
                 x: tileInfo[2] - 32,
                 y: tileInfo[3] - 32,
-                custom_id: tileInfo[6]
+                custom_id: tileInfo[6],
+                events: events,
+                properties: properties,
+                originalProperties: {originalPath: tileInfo[9].originalPath}
             };
 
             data["objects"].push(tile);
         }
     });
 
+    cleanArray(data, true);
     return JSON.stringify(data, undefined, 4);
 }
 

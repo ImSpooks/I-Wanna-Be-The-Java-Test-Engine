@@ -1,5 +1,4 @@
-
-var EVENTS = {
+const EVENTS = {
     OBJECT: {
         moveObject: {
             name: "Move Object Event",
@@ -9,7 +8,7 @@ var EVENTS = {
                 objectId: "string",
                 velocityX: "number",
                 velocityY: "number"
-            }
+            },
         },
         teleportObject: {
             name: "Teleport Object Event",
@@ -41,7 +40,10 @@ var EVENTS = {
             name: "Spawn Object Event",
             description: "Spawn an object",
             parameters: {
-                type: ["BLOCK", "KILLERS", "MISC", "PLATFORMS", "SAVES", "SLOPES", "TRIGGERS", "WARPS"],
+                type: {
+                    type: "string",
+                    options: ["BLOCK", "KILLERS", "MISC", "PLATFORMS", "SAVES", "SLOPES", "TRIGGERS", "WARPS", "ENEMY"]
+                },
                 path: "string",
                 x: "number",
                 y: "number",
@@ -86,14 +88,113 @@ var EVENTS = {
                 path: "string"
             }
         }
+    },
+
+    // Variables
+    VARIABLES: {
+        setRoomVariable: {
+            name: "Set Room Variable",
+            description: "TODO",
+            note: "Throws NullPointerException when variable couldn't be found.",
+            parameters: {
+                variableName: "string",
+                value: "string",
+                type: {
+                    type: "string",
+                    options: ["string", "byte", "short", "int", "long", "double", "float", "boolean", "array", "json"]
+                }
+            }
+        },
+        setRoomArrayVariable: {
+            name: "Set Room Array Variable",
+            description: "TODO",
+            note: "Throws NullPointerException when variable couldn't be found.",
+            parameters: {
+                variableName: "string",
+                index: "int",
+                value: "string",
+                type: {
+                    type: "string",
+                    options: ["string", "byte", "short", "int", "long", "double", "float", "boolean"]
+                }
+            }
+        },
+        setRoomJsonVariable: {
+            name: "Set Room Json Variable",
+            description: "TODO",
+            note: "Throws NullPointerException when variable couldn't be found.",
+            parameters: {
+                variableName: "string",
+                key: "string",
+                value: "string",
+                type: {
+                    type: "string",
+                    options: ["string", "byte", "short", "int", "long", "double", "float", "boolean"]
+                }
+            }
+        },
+        setGameVariable: {
+            name: "Set Game Variable",
+            description: "TODO",
+            note: "Throws NullPointerException when variable couldn't be found. <i>Uses Java Reflection, so performance isnt optimal</i>",
+            parameters: {
+                variableName: "string",
+                value: "string",
+                type: {
+                    type: "string",
+                    options: ["string", "byte", "short", "int", "long", "double", "float", "boolean", "array", "json"]
+                }
+            }
+        },
+        setGameArrayVariable: {
+            name: "Set Game Array Variable",
+            description: "TODO",
+            note: "Throws NullPointerException when variable couldn't be found. <i>Uses Java Reflection, so performance isnt optimal</i>",
+            parameters: {
+                variableName: "string",
+                index: "int",
+                value: "string",
+                type: {
+                    type: "string",
+                    options: ["string", "byte", "short", "int", "long", "double", "float", "boolean"]
+                }
+            }
+        },
+        setGameJsonVariable: {
+            name: "Set Game Json Variable",
+            description: "TODO",
+            note: "Throws NullPointerException when variable couldn't be found. <i>Uses Java Reflection, so performance isnt optimal</i>",
+            parameters: {
+                variableName: "string",
+                key: "string",
+                value: "string",
+                type: {
+                    type: "string",
+                    options: ["string", "byte", "short", "int", "long", "double", "float", "boolean"]
+                }
+            }
+        }
     }
 };
 
-var GameEvent = function (internalName, reference, arguments = []) {
+var GameEvent = function (internalName, type, reference, parameters = [], conditions = []) {
     var self = this;
     var local = {};
 
-    self.reference = reference;
     self.internalName = internalName;
-    self.arguments = arguments;
+    self.type = type;
+    self.reference = reference;
+    self.parameters = parameters;
+    self.conditions = conditions;
+
+
+    self.toJson = function () {
+        let conditions = [];
+        self.conditions.forEach(value => conditions.push(value.toJson()));
+        return {type: self.type, internalName: self.internalName, parameters: self.parameters, conditions: conditions};
+    };
 };
+
+function valuesToEvent(internalName, type, parameters, events, conditions) {
+    return new GameEvent(internalName, type, EVENTS[type][internalName], parameters, events, conditions);
+}

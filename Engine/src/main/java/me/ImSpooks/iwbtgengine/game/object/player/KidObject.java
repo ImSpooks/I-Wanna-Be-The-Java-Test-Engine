@@ -259,9 +259,6 @@ public abstract class KidObject extends GameObject {
         }
 
         this.getHitbox().renderHitbox(camera, x, y, graphics);
-
-        graphics.setColor(Color.RED);
-        graphics.fillRect((int)Math.round(this.x) - camera.getCameraX(), (int)Math.round(getY() + hitbox.getRectIfPossible().getY() + hitbox.getRectIfPossible().getHeight() + Math.ceil(getVelY())) - camera.getCameraY(), 11, 10);
     }
 
     public abstract void onMove();

@@ -36,7 +36,7 @@ String.prototype.format = function () {
  * Checks if the compared string are the same, not case sensitive
  *
  * @param match String to be compared with
- * @returns {@code true} if the strings match, {@code false} otherwise
+ * @returns {boolean} {@code true} if the strings match, {@code false} otherwise
  */
 String.prototype.equalsIgnoreCase = function(match) {
     return this.toLowerCase() === match.toLowerCase();
@@ -54,7 +54,7 @@ String.prototype.toArray = function() {
 /**
  * Capitalizes the first letter of a string
  *
- * @returns {@code String} with first letter capitalized
+ * @returns {string} {@code String} with first letter capitalized
  */
 String.prototype.capitalize = function () {
     return this.substr(0, 1).toUpperCase() + this.substr(1).toLocaleLowerCase();
@@ -71,11 +71,15 @@ String.prototype.contains = function(str) {
     return this.includes(str);
 };
 
+String.prototype.isEmpty = function() {
+    return this === "" || this.length === 0;
+};
+
 /**
  * Rounds the number to x amount of decimals
  *
  * @param places Amount of decimals
- * @returns Rounded number
+ * @returns {string} Rounded number as string
  */
 Number.prototype.round = function (places) {
     return this.toFixed(places);
@@ -86,7 +90,7 @@ Number.prototype.round = function (places) {
  * @code object1 == object2
  *
  * @param object Object to compare to
- * @returns {@code true} if the 2 objects are the same, {@code false} otherwise
+ * @returns {boolean} {@code true} if the 2 objects are the same, {@code false} otherwise
  */
 Object.prototype.equals = function (object) {
     return this === object;
@@ -108,12 +112,21 @@ Array.prototype.moveObject = function(old_index, new_index) {
     this.splice(new_index, 0, this.splice(old_index, 1)[0]);
 };
 
+/**
+ * Checks if array is empty
+ *
+ * @returns {boolean} {@code true} if length equals to 0, {@code false} otherwise
+ */
+Array.prototype.isEmpty = function () {
+    return this.length === 0;
+};
+
 // FUNCTIONS
 /**
  * Create an element with set type of properties
  *
  * @param type Element type, e.g. "button" or "img"
- * @param properties {@see adjustElement(element, properties, callback)}
+ * @param properties {object} {@see adjustElement(element, properties, callback)}
  * @param callback Callback when called after creation
  * @returns Element that was created
  */
@@ -135,12 +148,21 @@ function createElement(type, properties = {}, callback = null) {
  */
 function adjustElement(element, properties = {}, callback = null) {
     Object.keys(properties).forEach(function (key, index, array) {
-        if (key.toLowerCase() === "style") {
-            Object.keys(properties[key]).forEach(function (styleKey, index, array) {
-                element.style[styleKey] = properties[key][styleKey];
-            });
+        switch (key.toLowerCase()) {
+            case "style":
+                Object.keys(properties[key]).forEach(function (styleKey, index, array) {
+                    element.style[styleKey] = properties[key][styleKey];
+                });
+                break;
+
+            case "classes":
+                element.classList.add(properties[key]);
+                break;
+
+            default:
+                element[key] = properties[key];
+                break;
         }
-        else element[key] = properties[key];
     });
 
     if (callback != null && typeof callback === "function")
@@ -148,7 +170,19 @@ function adjustElement(element, properties = {}, callback = null) {
 }
 
 /**
- * @returns Current client date as dd-mm-yyyy
+ * Clamps a value between minimum and maximum range
+ *
+ * @param {number} value Value
+ * @param {number} min Minimum
+ * @param {number} max Maximum
+ * @returns {number} Clamped value
+ */
+function clamp(value, min, max) {
+    return value > max ? max : (value < min ? min : value)
+}
+
+/**
+ * @returns {string} Current client date as dd-mm-yyyy
  */
 function getCurrentDate() {
     let today = new Date();
@@ -160,7 +194,7 @@ function getCurrentDate() {
 }
 
 /**=
- * @returns Current client time as hh:mm:ss
+ * @returns {string} Current client time as hh:mm:ss
  */
 function getCurrentTime() {
     let today = new Date();
@@ -172,7 +206,7 @@ function getCurrentTime() {
 }
 
 /**
- * @returns Random UUID as a string
+ * @returns {string} Random UUID as a string
  * @see <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a>
  */
 function randomUUID() {
@@ -188,7 +222,7 @@ function randomUUID() {
  * @param text Input text
  * @param size Text size
  * @param font Font style
- * @returns Width in pixels
+ * @returns {number} Width in pixels
  */
 function getTextWidth(text, size, font) {
     // re-use canvas object for better performance
@@ -201,9 +235,8 @@ function getTextWidth(text, size, font) {
 }
 
 /**
- *
  * @param arrayOfNumbers Array of different numbers
- * @returns Scaled number of arrays with values between 0-1
+ * @returns {array} Scaled number of arrays with values between 0-1
  * @see <a href="https://stats.stackexchange.com/questions/351696/normalize-an-array-of-numbers-to-specific-range">Normalize an array of numbers to specific range</a>
  */
 function normalize(arrayOfNumbers) {
@@ -229,7 +262,7 @@ function normalize(arrayOfNumbers) {
  * @param y1 Point 1
  * @param x2 Point 2
  * @param y2 Point 2
- * @returns Squared distance between 2 points
+ * @returns {number} Squared distance between 2 points
  */
 function distance2dSquared(x1, y1, x2, y2) {
     return (Math.abs(x1 - x2) * Math.abs(x1 - x2)) + (Math.abs(y1 - y2) * Math.abs(y1 - y2));
@@ -247,7 +280,7 @@ function distance2d(x1, y1, x2, y2) {
  *
  * @param element Target element
  * @param property CSS property
- * @returns Value from the CSS property
+ * @returns {string} Value from the CSS property
  */
 function css( element, property ) {
     return window.getComputedStyle( element, null ).getPropertyValue( property );
@@ -283,7 +316,7 @@ function clearAllIntervals() {
  *
  * @param x Value X from vector
  * @param y Value Y from vector
- * @returns Angle from 0-360
+ * @returns {number} Angle from 0-360
  */
 function vectorToAngle(x, y) {
     return ((Math.atan2(y, x) * (180 / Math.PI)) + 90) % 360;
@@ -299,4 +332,49 @@ function angleToVector(angle) {
     let x = Math.cos(angle / 180 * Math.PI);
     let y = Math.sin(angle / 180 * Math.PI);
     return {x: x, y: y};
+}
+
+/**
+ * Clean empty values in a json
+ *
+ * @param json Input json
+ * @param clearArrays If {@code true} it'll also remove empty arrays/json
+ */
+function cleanArray(json, clearArrays = false) {
+    if (json.constructor === ({}).constructor) {
+        const propNames = Object.getOwnPropertyNames(json);
+        for (let i = 0; i < propNames.length; i++) {
+            const propName = propNames[i];
+            if (json[propName] === null || json[propName] === undefined) {
+                delete json[propName];
+            }
+            else if (clearArrays) {
+                if (Array.isArray(json[propName])) {
+                    if (json[propName].isEmpty()) {
+                        delete json[propName];
+                    }
+                    else {
+                        for (let i = 0; i < json[propName].length; i++) {
+                            if (json[propName][i].constructor === ({}).constructor) {
+                                if (Object.keys(json[propName][i]).isEmpty()) {
+                                    delete json[propName][i];
+                                }
+                                else {
+                                    cleanArray(json[propName][i], clearArrays);
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (json[propName].constructor === ({}).constructor) {
+                    if (Object.keys(json[propName]).isEmpty()) {
+                        delete json[propName];
+                    }
+                    else {
+                        cleanArray(json[propName], clearArrays);
+                    }
+                }
+            }
+        }
+    }
 }

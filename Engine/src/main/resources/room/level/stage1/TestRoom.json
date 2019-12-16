@@ -1,0 +1,300 @@
+{
+    "map_type": {
+        "type": "normal"
+    },
+    "map_variables": [
+        ""
+    ],
+    "objects": [
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 288,
+            "y": 256,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 320,
+            "y": 320,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 352,
+            "y": 384,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 416,
+            "y": 416,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 480,
+            "y": 416,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 544,
+            "y": 384,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 576,
+            "y": 352,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 608,
+            "y": 320,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 576,
+            "y": 256,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 512,
+            "y": 192,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 416,
+            "y": 160,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 320,
+            "y": 160,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 256,
+            "y": 192,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 224,
+            "y": 256,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 224,
+            "y": 288,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 256,
+            "y": 320,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 320,
+            "y": 352,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 384,
+            "y": 320,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 480,
+            "y": 288,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 512,
+            "y": 224,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 512,
+            "y": 160,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 480,
+            "y": 128,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 416,
+            "y": 128,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 320,
+            "y": 128,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 224,
+            "y": 160,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 192,
+            "y": 224,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 192,
+            "y": 256,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 288,
+            "y": 320,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        },
+        {
+            "tile": "sprites/blocks/default/sprBlock.png",
+            "type": "BLOCKS",
+            "x": 416,
+            "y": 320,
+            "custom_id": "",
+            "originalProperties": {
+                "originalPath": "sprites/blocks/default/sprBlock.png"
+            }
+        }
+    ]
+}

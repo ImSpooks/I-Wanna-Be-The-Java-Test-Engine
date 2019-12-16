@@ -23,8 +23,8 @@ function initialize() {
             while (itemsDiv.children.length > 0)
                 itemsDiv.children[0].remove();
 
-            Object.keys(Resources).forEach(function (key, index, array) {
-                let value = Resources[key];
+            Object.keys(RESOURCES).forEach(function (key, index, array) {
+                let value = RESOURCES[key];
 
                 if (value.type === selectedCategory) {
                     let image = document.createElement("img");
